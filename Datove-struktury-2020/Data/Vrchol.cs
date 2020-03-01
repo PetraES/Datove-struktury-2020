@@ -10,7 +10,7 @@ namespace Datove_struktury_2020.Data
         public float XSouradniceVrcholu { get; set; } //property
         public float YSouradniceVrcholu { get; set; } //property
         public TypyVrcholu TypVrcholu { get; set; } //property
-        List<Hrana> ListHran { get; set; } //property proto je to velkym pismenem
+        public List<Hrana> ListHran { get; set; } //property proto je to velkym pismenem
 
         public Vrchol()
         {

@@ -7,7 +7,12 @@ namespace Datove_struktury_2020.Data
     class KoordinatorLesnichDobrodruzstvi
     {
         public List<Vrchol> vsechnyVrcholy;
-
+        public List<Hrana> vsechnyHrany;
+        public KoordinatorLesnichDobrodruzstvi()
+        {
+            vsechnyVrcholy = vytvorVrcholy();
+            vsechnyHrany = vytvorHrany();
+        }
         public List<Vrchol> vytvorVrcholy()
         {
             NacteniCSV nacteniCSV = new NacteniCSV();
@@ -44,9 +49,17 @@ namespace Datove_struktury_2020.Data
             List<Hrana> listHran = new List<Hrana>();
             foreach (string[] radek in objekt)
             {
+                //vytvorime novou instanci hrany
                 Hrana novaHrana = new Hrana();
-                novaHrana.PocatekHrany = najdiVrchol(float.Parse(radek[1]), float.Parse(radek[2]));
-                novaHrana.KonecHrany = najdiVrchol(float.Parse(radek[4]), float.Parse(radek[5]));
+                //najdemem pocatecni vrchol hrany  v listu vrcholů jiz nactenych
+                Vrchol pocatecniVrchol = najdiVrchol(float.Parse(radek[1]), float.Parse(radek[2]));
+                //nalezeny vrchol nastavime jako pocatek hrany
+                novaHrana.PocatekHrany = pocatecniVrchol;
+                //pocatecnimu vrcholu priradime hranu
+                pocatecniVrchol.ListHran.Add(novaHrana);   
+                Vrchol konecnyVrchol = najdiVrchol(float.Parse(radek[4]), float.Parse(radek[5]));
+                novaHrana.KonecHrany = pocatecniVrchol;
+                konecnyVrchol.ListHran.Add(novaHrana);
                 novaHrana.DelkaHrany = short.Parse(radek[6]);
                 listHran.Add(novaHrana);
             }

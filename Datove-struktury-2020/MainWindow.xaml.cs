@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Datove_struktury_2020.Data;
 
 namespace Datove_struktury_2020
 {
@@ -23,6 +24,8 @@ namespace Datove_struktury_2020
         public MainWindow()
         {
             InitializeComponent();
+            KoordinatorLesnichDobrodruzstvi k = new KoordinatorLesnichDobrodruzstvi();
+
         }
     }
 }
