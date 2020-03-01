@@ -6,10 +6,10 @@ namespace Datove_struktury_2020.Data
 {
     class Hrana
     {
-        Vrchol PocatekHrany { get; set; }
-        Vrchol KonecHrany { get; set; }
-        bool JeFunkcniCesta { get; set; }
-        short DelkaHrany { get; set; }
+        public Vrchol PocatekHrany { get; set; }
+        public Vrchol KonecHrany { get; set; }
+        public bool JeFunkcniCesta { get; set; }
+        public short DelkaHrany { get; set; }
 
 
     }

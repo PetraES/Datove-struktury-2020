@@ -6,11 +6,12 @@ namespace Datove_struktury_2020.Data
 {
     class KoordinatorLesnichDobrodruzstvi
     {
+        public List<Vrchol> vsechnyVrcholy;
+
         public List<Vrchol> vytvorVrcholy()
         {
             NacteniCSV nacteniCSV = new NacteniCSV();
             List<string[]> objekt = nacteniCSV.NactiSoubor(@"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\vrcholy_csv2020.csv");
-
             List<Vrchol> vseckyVrcholy = new List<Vrchol>();
             foreach (string[] radek in objekt)
             {
@@ -23,5 +24,34 @@ namespace Datove_struktury_2020.Data
             }
             return vseckyVrcholy;
         }
+
+        public Vrchol najdiVrchol(float x, float y)
+        {
+            foreach (Vrchol w in vsechnyVrcholy)
+            {
+                if (w.XSouradniceVrcholu == x && w.YSouradniceVrcholu == y)
+                {
+                    return w;
+                }
+            }
+            throw new Exception("vrchol nenalezen");
+        }
+
+        public List<Hrana> vytvorHrany()
+        {
+            NacteniCSV nacteniCSV = new NacteniCSV();
+            List<string[]> objekt = nacteniCSV.NactiSoubor(@"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\hrany_csv2020.csv");
+            List<Hrana> listHran = new List<Hrana>();
+            foreach (string[] radek in objekt)
+            {
+                Hrana novaHrana = new Hrana();
+                novaHrana.PocatekHrany = najdiVrchol(float.Parse(radek[1]), float.Parse(radek[2]));
+                novaHrana.KonecHrany = najdiVrchol(float.Parse(radek[4]), float.Parse(radek[5]));
+                novaHrana.DelkaHrany = short.Parse(radek[6]);
+                listHran.Add(novaHrana);
+            }
+            return listHran;
+        }
+
     }
 }
