@@ -18,6 +18,7 @@ namespace Datove_struktury_2020.Data
         }
     }
 
+    
     public enum TypyVrcholu
     {
         None = 0,
