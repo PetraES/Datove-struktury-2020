@@ -197,6 +197,10 @@ namespace Datove_struktury_2020
                 }
                 else if (vyberKonecny)
                 {
+                    foreach (Hrana h in mapa.vsechnyHrany)
+                    {
+                        h.OznaceniHrany = false;
+                    }
                     konec = o;
                     vyberKonecny = false;
                     label1.Content = "Pocatecni bod je " + pocatek.ToString() + ".\n"
@@ -212,8 +216,10 @@ namespace Datove_struktury_2020
                         + "Konecny bod je " + konec.ToString() + ". ";
                     foreach (Hrana h in cesta.NavstiveneHrany)
                     {
+                        h.OznaceniHrany = true;
                         vypisCesty += "(" + h.PocatekHrany.NazevVrcholu + ", " + h.KonecHrany.NazevVrcholu + "), ";
                     }
+                    vykresliMapu();
                     label1.Content = vypisCesty;
                 }
                 //ObecInfo info = new ObecInfo(o);

@@ -15,6 +15,7 @@ namespace Datove_struktury_2020.Data
         public Hrana()
         {
             JeFunkcniCesta = true;
+            OznaceniHrany = false;
         }
 
     }

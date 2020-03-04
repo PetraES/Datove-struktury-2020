@@ -31,10 +31,16 @@ namespace Datove_struktury_2020.Data
             NejkratsiNalezenaCesta = null;
             VrcholyUzVyresene.Clear();
             this.konec = konec;
-            foreach (Hrana h in zacatek.ListHran)
-            {
-                VlozCestuDoFronty(zacatek, h, h.DelkaHrany);
-            }
+
+            PrvekHaldy<Cesta> obecnyPrvek = new PrvekHaldy<Cesta>();
+
+            Cesta c = new Cesta();
+            c.AktualniVrchol = zacatek;
+            c.CenaCeleCesty = 0;
+            obecnyPrvek.Informace = c;
+            obecnyPrvek.Priorita = 0;
+
+            D.VlozPrvek(obecnyPrvek);
             ProjdiGraf();
         }
 
@@ -105,7 +111,8 @@ namespace Datove_struktury_2020.Data
             }
 
             //v hranate zavorce je x-ty prvek listu - tady je to ten posledni, posledni projita cesta, tady h
-            Hrana h = dosavadniProjitaCesta.Informace.NavstiveneHrany[dosavadniProjitaCesta.Informace.NavstiveneHrany.Count - 1];
+
+            Hrana h = dosavadniProjitaCesta.Informace.NavstiveneHrany.Count == 0 ? null : dosavadniProjitaCesta.Informace.NavstiveneHrany[dosavadniProjitaCesta.Informace.NavstiveneHrany.Count - 1];
             foreach (Hrana obecnaHrana in dosavadniProjitaCesta.Informace.AktualniVrchol.ListHran)
             {
                 // preskoci cestu po ktere jsme prisli
