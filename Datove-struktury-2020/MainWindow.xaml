@@ -7,6 +7,21 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="23*"/>
+            <ColumnDefinition Width="300*"/>
+            <ColumnDefinition Width="1043*"/>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition Width="0*"/>
+        </Grid.ColumnDefinitions>
+        <Canvas x:Name="canvasMainElem" HorizontalAlignment="Left" Height="904" Margin="10,10,0,0" VerticalAlignment="Top" Width="1268" Grid.ColumnSpan="3">
+            <Canvas x:Name="canvasButt" Height="40" Canvas.Left="1" Width="1191">
+                <Button x:Name="PridatBodButt" Content="Přidat obec" Canvas.Left="10" Canvas.Top="10" Width="75" RenderTransformOrigin="-0.16,0.6" Click="PridatBodButt_Click"/>
+                <Button x:Name="PridatCestuButt" Content="Přidat silnici" Canvas.Left="90" Canvas.Top="10" Width="75" Click="PridatCestuButt_Click"/>
+                <Button x:Name="NajdiCestuButt" Content="Najdi cestu k nehodě" Canvas.Left="170" Canvas.Top="10" Width="121" Click="NajdiCestuButt_Click"/>
+            </Canvas>
+            <Canvas x:Name="canvasElem" Height="983" Canvas.Top="40" Width="1600" Background="DarkGreen">
+            </Canvas>
+        </Canvas>
     </Grid>
 </Window>

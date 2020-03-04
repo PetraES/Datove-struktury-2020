@@ -16,6 +16,11 @@ namespace Datove_struktury_2020.Data
         {
             ListHran = new List<Hrana>();
         }
+
+        public override string ToString()
+        {
+            return NazevVrcholu + " (" + XSouradniceVrcholu + ";" + YSouradniceVrcholu + ")";
+        }
     }
 
     

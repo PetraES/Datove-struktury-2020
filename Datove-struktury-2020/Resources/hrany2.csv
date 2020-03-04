@@ -1,0 +1,159 @@
+﻿Bečov nad Teplou,16.7,167.7,Vojtanov,33.3,63.4,6
+Bochov,30.2,209.1,Čichalov,24.9,234.2,9
+Bražec,34.5,209.3,Verušičky,28.3,234.8,9
+Březová,29.2,128.7,Šabina,27.1,116.5,5
+Bukovany,33.3,114.6,Citice,32.5,122.7,2
+Citice,32.5,122.7,Šabina,27.1,116.5,6
+Čichalov,24.9,234.2,Horní Slavkov,27.7,161.5,9
+Dasnice,29.3,113.5,Chyše,20.9,249.8,1
+Dolní Rychnov,32.9,129,Citice,32.5,122.7,1
+Dolní Žandov,3.6,110.2,Libá,25.7,46.2,6
+Františkovy Lázně,24,70,Lázně Kynžvart,2.1,125,3
+Hazlov,31.3,54.5,Pšov,10.3,234.2,5
+Horní Slavkov,27.7,161.5,Dasnice,29.3,113.5,7
+Cheb,15.9,74,Okrouhlá,12.5,97.6,3
+Chodov,13.7,172.6,Čichalov,24.9,234.2,8
+Chyše,20.9,249.8,Hazlov,31.3,54.5,8
+Kaceřov,29.8,100.9,Štědrá,11.7,222.9,5
+Krásné Údolí,14.5,184.3,Čichalov,24.9,234.2,10
+Krásno,21.9,157.3,Prameny,10,146.6,7
+Kynšperk nad Ohří,23.8,106.1,Odrava,20.6,96.8,9
+Lázně Kynžvart,2.1,125,Teplička,29.7,170.3,6
+Libá,25.7,46.2,Lipová,7.3,89.8,6
+Lipová,7.3,89.8,Libá,25.7,46.2,6
+Milhostov,31.2,90.7,Dolní Žandov,3.6,110.2,8
+Milíkov,11.2,109.5,Prameny,10,146.6,5
+Mnichov,7.4,157.4,Bečov nad Teplou,16.7,167.7,2
+Nebanice,23.1,94.4,Františkovy Lázně,24,70,6
+Nová Ves,16.8,155.1,Lipová,7.3,89.8,3
+Odrava,20.6,96.8,Kynšperk nad Ohří,23.8,106.1,9
+Okrouhlá,12.5,97.6,Vojtanov,33.3,63.4,17
+Otročín,6.5,178.5,Lázně Kynžvart,2.1,125,4
+Pomezí nad Ohří,17.2,55.9,Lipová,7.3,89.8,5
+Prameny,10,146.6,Chodov,13.7,172.6,13
+Pšov,10.3,234.2,Bukovany,33.3,114.6,5
+Rovná,20.9,133.8,Bochov,30.2,209.1,7
+Skalná,34.1,72.3,Horní Slavkov,27.7,161.5,5
+Stanovice,33,174.8,Poustka,28.1,59.7,4
+Šabina,27.1,116.5,Čichalov,24.9,234.2,10
+Štědrá,11.7,222.9,Odrava,20.6,96.8,6
+Teplička,29.7,170.3,Krásno,21.9,157.3,6
+Toužim,12.1,197,Kaceřov,29.8,100.9,10
+Třebeň,25.7,80.1,Kaceřov,29.8,100.9,2
+Tuřany,16.8,104.4,Verušičky,28.3,234.8,4
+Útvina,14.2,191,Pšov,10.3,234.2,3
+Vojtanov,33.3,63.4,Krásné Údolí,14.5,184.3,12
+Kynšperk nad Ohří,23.8,106.1,Dolní Žandov,3.6,110.2,4
+Dolní Žandov,3.6,110.2,Milhostov,31.2,90.7,8
+Dolní Žandov,3.6,110.2,Kynšperk nad Ohří,23.8,106.1,4
+Libá,25.7,46.2,Dolní Žandov,3.6,110.2,6
+Libá,25.7,46.2,Milhostov,31.2,90.7,7
+Milhostov,31.2,90.7,Libá,25.7,46.2,7
+Lipová,7.3,89.8,Nová Ves,16.8,155.1,3
+Lipová,7.3,89.8,Pomezí nad Ohří,17.2,55.9,5
+Nová Ves,16.8,155.1,Toužim,12.1,197,6
+Pomezí nad Ohří,17.2,55.9,Poustka,28.1,59.7,8
+Toužim,12.1,197,Nová Ves,16.8,155.1,6
+Prameny,10,146.6,Toužim,12.1,197,8
+Toužim,12.1,197,Mnichov,7.4,157.4,6
+Mnichov,7.4,157.4,Toužim,12.1,197,6
+Toužim,12.1,197,Cheb,15.9,74,4
+Cheb,15.9,74,Toužim,12.1,197,4
+Cheb,15.9,74,Nebanice,23.1,94.4,10
+Okrouhlá,12.5,97.6,Cheb,15.9,74,3
+Nebanice,23.1,94.4,Cheb,15.9,74,10
+Mnichov,7.4,157.4,Kaceřov,29.8,100.9,3
+Mnichov,7.4,157.4,Prameny,10,146.6,7
+Bečov nad Teplou,16.7,167.7,Mnichov,7.4,157.4,2
+Kaceřov,29.8,100.9,Mnichov,7.4,157.4,3
+Prameny,10,146.6,Mnichov,7.4,157.4,7
+Nebanice,23.1,94.4,Horní Slavkov,27.7,161.5,15
+Nebanice,23.1,94.4,Lázně Kynžvart,2.1,125,8
+Františkovy Lázně,24,70,Nebanice,23.1,94.4,6
+Horní Slavkov,27.7,161.5,Nebanice,23.1,94.4,15
+Lázně Kynžvart,2.1,125,Nebanice,23.1,94.4,8
+Lázně Kynžvart,2.1,125,Otročín,6.5,178.5,4
+Horní Slavkov,27.7,161.5,Březová,29.2,128.7,6
+Dasnice,29.3,113.5,Horní Slavkov,27.7,161.5,7
+Březová,29.2,128.7,Horní Slavkov,27.7,161.5,6
+Chyše,20.9,249.8,Dasnice,29.3,113.5,1
+Dasnice,29.3,113.5,Březová,29.2,128.7,1
+Březová,29.2,128.7,Dasnice,29.3,113.5,1
+Chyše,20.9,249.8,Skalná,34.1,72.3,8
+Chyše,20.9,249.8,Otročín,6.5,178.5,7
+Hazlov,31.3,54.5,Chyše,20.9,249.8,8
+Skalná,34.1,72.3,Chyše,20.9,249.8,8
+Otročín,6.5,178.5,Chyše,20.9,249.8,7
+Teplička,29.7,170.3,Skalná,34.1,72.3,6
+Teplička,29.7,170.3,Lázně Kynžvart,2.1,125,6
+Krásno,21.9,157.3,Teplička,29.7,170.3,6
+Skalná,34.1,72.3,Teplička,29.7,170.3,6
+Františkovy Lázně,24,70,Milíkov,11.2,109.5,4
+Františkovy Lázně,24,70,Teplička,29.7,170.3,3
+Milíkov,11.2,109.5,Krásné Údolí,14.5,184.3,7
+Teplička,29.7,170.3,Františkovy Lázně,24,70,3
+Lázně Kynžvart,2.1,125,Františkovy Lázně,24,70,3
+Horní Slavkov,27.7,161.5,Skalná,34.1,72.3,5
+Milíkov,11.2,109.5,Čichalov,24.9,234.2,14
+Prameny,10,146.6,Milíkov,11.2,109.5,5
+Krásné Údolí,14.5,184.3,Milíkov,11.2,109.5,7
+Čichalov,24.9,234.2,Milíkov,11.2,109.5,14
+Milíkov,11.2,109.5,Františkovy Lázně,24,70,4
+Prameny,10,146.6,Krásno,21.9,157.3,7
+Chodov,13.7,172.6,Prameny,10,146.6,13
+Toužim,12.1,197,Prameny,10,146.6,8
+Vojtanov,33.3,63.4,Okrouhlá,12.5,97.6,17
+Vojtanov,33.3,63.4,Bečov nad Teplou,16.7,167.7,6
+Kaceřov,29.8,100.9,Toužim,12.1,197,10
+Štědrá,11.7,222.9,Kaceřov,29.8,100.9,5
+Odrava,20.6,96.8,Štědrá,11.7,222.9,6
+Štědrá,11.7,222.9,Stanovice,33,174.8,4
+Stanovice,33,174.8,Štědrá,11.7,222.9,4
+Kynšperk nad Ohří,23.8,106.1,Odrava,20.6,96.8,9
+Milhostov,31.2,90.7,Štědrá,11.7,222.9,6
+Štědrá,11.7,222.9,Milhostov,31.2,90.7,6
+Poustka,28.1,59.7,Pomezí nad Ohří,17.2,55.9,8
+Lipová,7.3,89.8,Štědrá,11.7,222.9,18
+Štědrá,11.7,222.9,Lipová,7.3,89.8,18
+Poustka,28.1,59.7,Stanovice,33,174.8,4
+Stanovice,33,174.8,Vojtanov,33.3,63.4,11
+Vojtanov,33.3,63.4,Stanovice,33,174.8,11
+Stanovice,33,174.8,Třebeň,25.7,80.1,8
+Třebeň,25.7,80.1,Stanovice,33,174.8,8
+Krásné Údolí,14.5,184.3,Vojtanov,33.3,63.4,12
+Čichalov,24.9,234.2,Chodov,13.7,172.6,8
+Hazlov,31.3,54.5,Útvina,14.2,191,4
+Hazlov,31.3,54.5,Citice,32.5,122.7,9
+Pšov,10.3,234.2,Hazlov,31.3,54.5,5
+Útvina,14.2,191,Hazlov,31.3,54.5,4
+Hazlov,31.3,54.5,Bukovany,33.3,114.6,7
+Bukovany,33.3,114.6,Hazlov,31.3,54.5,7
+Citice,32.5,122.7,Hazlov,31.3,54.5,9
+Pšov,10.3,234.2,Útvina,14.2,191,3
+Bukovany,33.3,114.6,Pšov,10.3,234.2,5
+Bukovany,33.3,114.6,Dolní Rychnov,32.9,129,2
+Citice,32.5,122.7,Bukovany,33.3,114.6,2
+Dolní Rychnov,32.9,129,Bukovany,33.3,114.6,2
+Dolní Rychnov,32.9,129,Rovná,20.9,133.8,5
+Dolní Rychnov,32.9,129,Šabina,27.1,116.5,6
+Citice,32.5,122.7,Dolní Rychnov,32.9,129,1
+Rovná,20.9,133.8,Dolní Rychnov,32.9,129,5
+Šabina,27.1,116.5,Dolní Rychnov,32.9,129,6
+Šabina,27.1,116.5,Citice,32.5,122.7,6
+Šabina,27.1,116.5,Březová,29.2,128.7,5
+Rovná,20.9,133.8,Bražec,34.5,209.3,7
+Bochov,30.2,209.1,Rovná,20.9,133.8,7
+Bražec,34.5,209.3,Rovná,20.9,133.8,7
+Bochov,30.2,209.1,Šabina,27.1,116.5,5
+Bochov,30.2,209.1,Tuřany,16.8,104.4,4
+Čichalov,24.9,234.2,Bochov,30.2,209.1,9
+Šabina,27.1,116.5,Bochov,30.2,209.1,5
+Tuřany,16.8,104.4,Bochov,30.2,209.1,4
+Verušičky,28.3,234.8,Bochov,30.2,209.1,5
+Bochov,30.2,209.1,Verušičky,28.3,234.8,5
+Čichalov,24.9,234.2,Krásné Údolí,14.5,184.3,10
+Verušičky,28.3,234.8,Bražec,34.5,209.3,9
+Horní Slavkov,27.7,161.5,Čichalov,24.9,234.2,9
+Čichalov,24.9,234.2,Šabina,27.1,116.5,10
+Kaceřov,29.8,100.9,Třebeň,25.7,80.1,2
+Verušičky,28.3,234.8,Tuřany,16.8,104.4,4

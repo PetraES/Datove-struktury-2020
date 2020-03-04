@@ -10,7 +10,12 @@ namespace Datove_struktury_2020.Data
         public Vrchol KonecHrany { get; set; }
         public bool JeFunkcniCesta { get; set; }
         public short DelkaHrany { get; set; }
+        public bool OznaceniHrany { get; set; }
 
+        public Hrana()
+        {
+            JeFunkcniCesta = true;
+        }
 
     }
 }

@@ -16,7 +16,7 @@ namespace Datove_struktury_2020.Data
         public List<Vrchol> vytvorVrcholy()
         {
             NacteniCSV nacteniCSV = new NacteniCSV();
-            List<string[]> objekt = nacteniCSV.NactiSoubor(@"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\vrcholy_csv2020.csv");
+            List<string[]> objekt = nacteniCSV.NactiSoubor(@"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\vrcholy2.csv");
             List<Vrchol> vseckyVrcholy = new List<Vrchol>();
             foreach (string[] radek in objekt)
             {
@@ -45,7 +45,7 @@ namespace Datove_struktury_2020.Data
         public List<Hrana> vytvorHrany()
         {
             NacteniCSV nacteniCSV = new NacteniCSV();
-            List<string[]> objekt = nacteniCSV.NactiSoubor(@"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\hrany_csv2020.csv");
+            List<string[]> objekt = nacteniCSV.NactiSoubor(@"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\hrany2.csv");
             List<Hrana> listHran = new List<Hrana>();
             foreach (string[] radek in objekt)
             {
@@ -58,12 +58,17 @@ namespace Datove_struktury_2020.Data
                 //pocatecnimu vrcholu priradime hranu
                 pocatecniVrchol.ListHran.Add(novaHrana);   
                 Vrchol konecnyVrchol = najdiVrchol(float.Parse(radek[4]), float.Parse(radek[5]));
-                novaHrana.KonecHrany = pocatecniVrchol;
+                novaHrana.KonecHrany = konecnyVrchol;
                 konecnyVrchol.ListHran.Add(novaHrana);
                 novaHrana.DelkaHrany = short.Parse(radek[6]);
                 listHran.Add(novaHrana);
             }
             return listHran;
+        }
+
+        public List<Vrchol> GetVrcholy()
+        {
+            return vsechnyVrcholy;
         }
 
     }
