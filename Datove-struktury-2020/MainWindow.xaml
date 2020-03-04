@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Datove_struktury_2020"
         mc:Ignorable="d"
-        Title="MainWindow" Height="711" Width="993">
+        Title="MainWindow" Height="711" Width="993" ResizeMode="NoResize" SizeToContent="WidthAndHeight">
     <Grid Height="700" HorizontalAlignment="Left" VerticalAlignment="Top" Width="969">
         <Grid.RowDefinitions>
             <RowDefinition Height="99*"/>
