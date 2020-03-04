@@ -36,7 +36,7 @@ namespace Datove_struktury_2020.Data
 
         private string[] RozsekejRadkyPoCarkach(string radek)
         {
-            return radek.Split(',');
+            return radek.Split(';');
         }
 
     }

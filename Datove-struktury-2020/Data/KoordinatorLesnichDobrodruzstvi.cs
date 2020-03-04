@@ -16,7 +16,7 @@ namespace Datove_struktury_2020.Data
         public List<Vrchol> vytvorVrcholy()
         {
             NacteniCSV nacteniCSV = new NacteniCSV();
-            List<string[]> objekt = nacteniCSV.NactiSoubor(@"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\vrcholy2.csv");
+            List<string[]> objekt = nacteniCSV.NactiSoubor(@"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\Obce.csv");
             List<Vrchol> vseckyVrcholy = new List<Vrchol>();
             foreach (string[] radek in objekt)
             {
@@ -24,7 +24,7 @@ namespace Datove_struktury_2020.Data
                 v.NazevVrcholu = radek[0];
                 v.XSouradniceVrcholu = float.Parse(radek[1]);
                 v.YSouradniceVrcholu = float.Parse(radek[2]);
-                v.TypVrcholu = (TypyVrcholu)int.Parse(radek[3]); //pretypovat string na typy vrcholu, vyzkouset jestli jde
+               // v.TypVrcholu = (TypyVrcholu)int.Parse(radek[3]); //pretypovat string na typy vrcholu, vyzkouset jestli jde
                 vseckyVrcholy.Add(v);
             }
             return vseckyVrcholy;
@@ -45,22 +45,22 @@ namespace Datove_struktury_2020.Data
         public List<Hrana> vytvorHrany()
         {
             NacteniCSV nacteniCSV = new NacteniCSV();
-            List<string[]> objekt = nacteniCSV.NactiSoubor(@"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\hrany2.csv");
+            List<string[]> objekt = nacteniCSV.NactiSoubor(@"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\Cesty.csv");
             List<Hrana> listHran = new List<Hrana>();
             foreach (string[] radek in objekt)
             {
                 //vytvorime novou instanci hrany
                 Hrana novaHrana = new Hrana();
                 //najdemem pocatecni vrchol hrany  v listu vrcholů jiz nactenych
-                Vrchol pocatecniVrchol = najdiVrchol(float.Parse(radek[1]), float.Parse(radek[2]));
+                Vrchol pocatecniVrchol = najdiVrchol(float.Parse(radek[0]), float.Parse(radek[1]));
                 //nalezeny vrchol nastavime jako pocatek hrany
                 novaHrana.PocatekHrany = pocatecniVrchol;
                 //pocatecnimu vrcholu priradime hranu
                 pocatecniVrchol.ListHran.Add(novaHrana);   
-                Vrchol konecnyVrchol = najdiVrchol(float.Parse(radek[4]), float.Parse(radek[5]));
+                Vrchol konecnyVrchol = najdiVrchol(float.Parse(radek[2]), float.Parse(radek[3]));
                 novaHrana.KonecHrany = konecnyVrchol;
                 konecnyVrchol.ListHran.Add(novaHrana);
-                novaHrana.DelkaHrany = short.Parse(radek[6]);
+                novaHrana.DelkaHrany = short.Parse(radek[4]);
                 listHran.Add(novaHrana);
             }
             return listHran;

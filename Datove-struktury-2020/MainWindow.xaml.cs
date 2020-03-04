@@ -21,17 +21,25 @@ namespace Datove_struktury_2020
     /// </summary>
     public partial class MainWindow : Window
     {
-        private int scaleX = 40; // Settings.Default.mapXScale;
-        private int scaleY = 3; // Settings.Default.mapYScale;
+        private int scaleX = 4; // Settings.Default.mapXScale;
+        private int scaleY = 2; // Settings.Default.mapYScale;
+
+        bool vyberPocatecni;
+        bool vyberKonecny;
+
+        Vrchol pocatek;
+        Vrchol konec;
 
         private KoordinatorLesnichDobrodruzstvi mapa;
+        private Dijkstra dijkstra;
         // private SearchHeap searchHeap;
 
         public MainWindow()
         {
             InitializeComponent();
-            
+
             //searchHeap = new SearchHeap(mapa);
+            dijkstra = new Dijkstra();
             try
             {
                 mapa = new KoordinatorLesnichDobrodruzstvi();
@@ -177,9 +185,37 @@ namespace Datove_struktury_2020
             float y = (float)(dot.Margin.Top / scaleY);
 
             Vrchol o = mapa.najdiVrchol(x, y);
-
+            
             if (o != null)
             {
+                if (vyberPocatecni)
+                {
+                    pocatek = o;
+                    vyberPocatecni = false;
+                    vyberKonecny = true;
+                    label1.Content = "Pocatecni bod je " + pocatek.ToString() + ".\nVyber cil.";
+                }
+                else if (vyberKonecny)
+                {
+                    konec = o;
+                    vyberKonecny = false;
+                    label1.Content = "Pocatecni bod je " + pocatek.ToString() + ".\n"
+                        + "Konecny bod je " + konec.ToString() + ". Hledam cestu.";
+                    dijkstra.NajdiZastavku(pocatek, konec);
+                    Cesta cesta = dijkstra.vratNejkratsiCestu();
+                    if (cesta == null)
+                    {
+                        label1.Content = "cesta nenalezena";
+                        return;
+                    }
+                    string vypisCesty = "Pocatecni bod je " + pocatek.ToString() + ".\n"
+                        + "Konecny bod je " + konec.ToString() + ". ";
+                    foreach (Hrana h in cesta.NavstiveneHrany)
+                    {
+                        vypisCesty += "(" + h.PocatekHrany.NazevVrcholu + ", " + h.KonecHrany.NazevVrcholu + "), ";
+                    }
+                    label1.Content = vypisCesty;
+                }
                 //ObecInfo info = new ObecInfo(o);
                 //info.ShowDialog();
                 //if (info.needRedraw == true)
@@ -292,16 +328,8 @@ namespace Datove_struktury_2020
 
         private void NajdiCestuButt_Click(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    searchHeap.najdiNejblizsiCentrum();
-            //}
-            //catch (HeapItemNotFoundException ex)
-            //{
-            //    MessageBox.Show(ex.Message, "Hledání se nezdařilo!", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-            //    return;
-            //}
-            //vykresliMapu();
+            vyberPocatecni = true;
+            label1.Content = "Vyber pocatecni bod.";
         }
     }
 }
