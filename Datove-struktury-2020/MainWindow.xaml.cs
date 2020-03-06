@@ -28,6 +28,7 @@ namespace Datove_struktury_2020
         bool vyberPocatecni;
         bool vyberKonecny;
         bool vytvorBodvLese;
+        bool vytvorCestuvLese;
 
         //je to struktura
         System.Windows.Point gBod;
@@ -71,29 +72,29 @@ namespace Datove_struktury_2020
 
         private void vykresliObec(Vrchol vrchol)
         {
-            Ellipse currentDot = new Ellipse();
+            Ellipse teckaNaVrcholu = new Ellipse();
             if (vrchol.TypVrcholu == TypyVrcholu.odpocivadlo)
             {
-                currentDot.Stroke = new SolidColorBrush(Colors.DarkBlue);
-                currentDot.StrokeThickness = 10;
-                currentDot.Height = 20;
-                currentDot.Width = 20;
+                teckaNaVrcholu.Stroke = new SolidColorBrush(Colors.DarkBlue);
+                teckaNaVrcholu.StrokeThickness = 10;
+                teckaNaVrcholu.Height = 20;
+                teckaNaVrcholu.Width = 20;
             }
             else if (vrchol.TypVrcholu == TypyVrcholu.zastavka)
             {
-                currentDot.Stroke = new SolidColorBrush(Colors.Yellow);
-                currentDot.StrokeThickness = 10;
-                currentDot.Height = 12;
-                currentDot.Width = 12;
+                teckaNaVrcholu.Stroke = new SolidColorBrush(Colors.Yellow);
+                teckaNaVrcholu.StrokeThickness = 10;
+                teckaNaVrcholu.Height = 12;
+                teckaNaVrcholu.Width = 12;
             }
             else if (vrchol.TypVrcholu == TypyVrcholu.None)
             {
-                currentDot.Stroke = new SolidColorBrush(Colors.Brown);
-                currentDot.StrokeThickness = 8;
-                currentDot.Height = 10;
-                currentDot.Width = 10;
+                teckaNaVrcholu.Stroke = new SolidColorBrush(Colors.Brown);
+                teckaNaVrcholu.StrokeThickness = 8;
+                teckaNaVrcholu.Height = 10;
+                teckaNaVrcholu.Width = 10;
             }
-            Canvas.SetZIndex(currentDot, 3);
+            Canvas.SetZIndex(teckaNaVrcholu, 3);
 
             //if (vrchol.VLeteckemRaiusu == true)
             //{
@@ -103,8 +104,10 @@ namespace Datove_struktury_2020
             //{
             //    currentDot.Fill = new SolidColorBrush(Colors.Green);
             //}
-            currentDot.Margin = new Thickness(vrchol.XSouradniceVrcholu * scaleX, vrchol.YSouradniceVrcholu * scaleY, 0, 0);
-            currentDot.MouseLeftButtonDown += OnEllipseMouseLeftButtonDown;
+            teckaNaVrcholu.Margin = new Thickness(vrchol.XSouradniceVrcholu * scaleX, vrchol.YSouradniceVrcholu * scaleY, 0, 0);
+            
+            //DELEGAT tu se zaregistruje funkce OnElipse.. na jako event handler na akci MouseLeft.. - DELEGAT
+            teckaNaVrcholu.MouseLeftButtonDown += OnEllipseMouseLeftButtonDown;
 
             TextBlock TB = new TextBlock();
             TB.Text = vrchol.NazevVrcholu;
@@ -114,7 +117,7 @@ namespace Datove_struktury_2020
             Canvas.SetZIndex(TB, 20);
 
             canvasElem.Children.Add(TB);
-            canvasElem.Children.Add(currentDot);
+            canvasElem.Children.Add(teckaNaVrcholu);
 
             //if (vrchol.LeteckeStredisko == true && vrchol.Radius > 0)
             //{
@@ -152,14 +155,14 @@ namespace Datove_struktury_2020
 
             Line myline = new Line
             {
-                Stroke = jeOznacena ? Brushes.Black : Brushes.Brown,
+                Stroke = jeOznacena ? Brushes.Black : Brushes.Beige,
                 StrokeThickness = 10,
                 X1 = lesniStezka.PocatekHrany.XSouradniceVrcholu * scaleX + 4,
                 Y1 = lesniStezka.PocatekHrany.YSouradniceVrcholu * scaleY + 4,
                 X2 = lesniStezka.KonecHrany.XSouradniceVrcholu * scaleX + 4,
                 Y2 = lesniStezka.KonecHrany.YSouradniceVrcholu * scaleY + 4
             };
-            myline.Opacity = 0.5;
+            myline.Opacity = 0.9;
             myline.MouseLeftButtonDown += OnLineMouseLeftButtonDown;
             canvasElem.Children.Add(myline);
 
@@ -373,6 +376,14 @@ namespace Datove_struktury_2020
             tlacitko_ANO.Visibility = Visibility.Hidden;
             tlacitko_NE.Visibility = Visibility.Hidden;
         }
+
+        private void PridejCestuButton_Click(object sender, RoutedEventArgs e)
+        {
+            vytvorCestuvLese = true;
+            label1.Content = "Dobra, nic se vkladat nebude.";
+        }
+
+
     }
 
 }

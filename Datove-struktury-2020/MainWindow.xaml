@@ -14,8 +14,7 @@
             <RowDefinition Height="76*"/>
         </Grid.RowDefinitions>
 
-        <Canvas x:Name="canvasMainElem" Height="50" Margin="14,15,37,0" 
-                VerticalAlignment="Top">
+        <Canvas x:Name="canvasMainElem" Margin="14,15,37,331">
             <Button x:Name="PridatCestuButt" Content="Přidat silnici" 
                     Height="30" Canvas.Left="90" Canvas.Top="5" Width="70" 
                     Click="PridatCestuButt_Click"/>
@@ -25,6 +24,11 @@
             <Button x:Name="VlozBodButton" Content="Vlož bod" Height="30"
                     Canvas.Left="250" Canvas.Top="5" Width="70"
                     Click="VlozBodButton_Click"/>
+            <Button x:Name="PridejCestuButton" Canvas.Left="10" Canvas.Top="5"
+                    Content="Pridej cestu" Height="30" Width="70" Click="PridejCestuButton_Click"/>
+            <Button x:Name="tlacitko_ANO" Content="ANO" Canvas.Left="410" Canvas.Top="5" Click="ANO_Button_Click" RenderTransformOrigin="0.454,-0.349" Height="30" Width="30" BorderThickness="1,1,1,1" Visibility="Visible"/>
+            <Button x:Name="tlacitko_NE" Content="NE" Canvas.Left="450" Canvas.Top="5" Click="NE_Button_Click" RenderTransformOrigin="0.454,-0.349" Height="30" Width="30"/>
+
             <Label x:Name="label1" 
                    Content="some text some text some text some text some text some textsome textsome text some text" 
                    Height="50" 
@@ -33,8 +37,6 @@
                    Width="910" 
                    FontSize="16pt" />
             <Canvas x:Name="canvasElem" Height="530" Canvas.Top="100" Width="910" Background="ForestGreen" Canvas.Left="10" MouseLeftButtonDown="canvasElem_MouseLeftButtonDown"/>
-            <Button x:Name="tlacitko_ANO" Content="ANO" Canvas.Left="410" Canvas.Top="5" Click="ANO_Button_Click" RenderTransformOrigin="0.454,-0.349" Height="30" Width="30" BorderThickness="1,1,1,1" Visibility="Visible"/>
-            <Button x:Name="tlacitko_NE" Content="NE" Canvas.Left="450" Canvas.Top="5" Click="NE_Button_Click" RenderTransformOrigin="0.454,-0.349" Height="30" Width="30"/>
         </Canvas>
     </Grid>
 </Window>
