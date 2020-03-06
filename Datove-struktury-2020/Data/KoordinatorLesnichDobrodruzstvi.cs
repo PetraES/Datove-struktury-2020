@@ -8,6 +8,8 @@ namespace Datove_struktury_2020.Data
     {
         public List<Vrchol> vsechnyVrcholy;
         public List<Hrana> vsechnyHrany;
+
+        
         public KoordinatorLesnichDobrodruzstvi()
         {
             vsechnyVrcholy = vytvorVrcholy();
@@ -16,7 +18,7 @@ namespace Datove_struktury_2020.Data
         public List<Vrchol> vytvorVrcholy()
         {
             NacteniCSV nacteniCSV = new NacteniCSV();
-            List<string[]> objekt = nacteniCSV.NactiSoubor(@"C:\Users\pavel\OneDrive\Dokumenty\Datove-struktury-2020\Datove-struktury-2020\Resources\Obce.csv");
+            List<string[]> objekt = nacteniCSV.NactiSoubor(@"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\Obce.csv");
             List<Vrchol> vseckyVrcholy = new List<Vrchol>();
             foreach (string[] radek in objekt)
             {
@@ -45,7 +47,7 @@ namespace Datove_struktury_2020.Data
         public List<Hrana> vytvorHrany()
         {
             NacteniCSV nacteniCSV = new NacteniCSV();
-            List<string[]> objekt = nacteniCSV.NactiSoubor(@"C:\Users\pavel\OneDrive\Dokumenty\Datove-struktury-2020\Datove-struktury-2020\Resources\Cesty.csv");
+            List<string[]> objekt = nacteniCSV.NactiSoubor(@"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\Cesty.csv");
             List<Hrana> listHran = new List<Hrana>();
             foreach (string[] radek in objekt)
             {
@@ -69,6 +71,15 @@ namespace Datove_struktury_2020.Data
         public List<Vrchol> GetVrcholy()
         {
             return vsechnyVrcholy;
+        }
+
+        public Vrchol vlozVrchol(int x, int y)
+        {
+            Vrchol v = new Vrchol();
+            v.XSouradniceVrcholu = x;
+            v.YSouradniceVrcholu = y;
+            vsechnyVrcholy.Add(v);
+            return v;
         }
 
     }

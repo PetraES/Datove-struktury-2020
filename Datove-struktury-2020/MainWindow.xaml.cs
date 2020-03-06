@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Datove_struktury_2020.Data;
+using System.Drawing;
 
 namespace Datove_struktury_2020
 {
@@ -26,6 +27,10 @@ namespace Datove_struktury_2020
 
         bool vyberPocatecni;
         bool vyberKonecny;
+        bool vytvorBodvLese;
+
+        //je to struktura
+        System.Windows.Point gBod;
 
         Vrchol pocatek;
         Vrchol konec;
@@ -36,7 +41,11 @@ namespace Datove_struktury_2020
 
         public MainWindow()
         {
+
             InitializeComponent();
+            //visibility tu to zelene je enum
+            tlacitko_ANO.Visibility = Visibility.Hidden;
+            tlacitko_NE.Visibility = Visibility.Hidden;
 
             //searchHeap = new SearchHeap(mapa);
             dijkstra = new Dijkstra();
@@ -77,7 +86,7 @@ namespace Datove_struktury_2020
                 currentDot.Height = 12;
                 currentDot.Width = 12;
             }
-            else if(vrchol.TypVrcholu == TypyVrcholu.None)
+            else if (vrchol.TypVrcholu == TypyVrcholu.None)
             {
                 currentDot.Stroke = new SolidColorBrush(Colors.Brown);
                 currentDot.StrokeThickness = 8;
@@ -185,7 +194,7 @@ namespace Datove_struktury_2020
             float y = (float)(dot.Margin.Top / scaleY);
 
             Vrchol o = mapa.najdiVrchol(x, y);
-            
+
             if (o != null)
             {
                 if (vyberPocatecni)
@@ -291,19 +300,6 @@ namespace Datove_struktury_2020
             }
         }
 
-        private void PridatBodButt_Click(object sender, RoutedEventArgs e)
-        {
-            //PridatObec modal = new PridatObec();
-            //modal.ShowDialog();
-
-            //if (modal.obec != null)
-            //{
-            //    mapa.vlozObec(modal.obec);
-            //    searchHeap.unMarkFinish();
-            //    vykresliMapu();
-            //}
-        }
-
         private void PridatCestuButt_Click(object sender, RoutedEventArgs e)
         {
             //PridatSilnici modal = new PridatSilnici();
@@ -337,5 +333,46 @@ namespace Datove_struktury_2020
             vyberPocatecni = true;
             label1.Content = "Vyber pocatecni bod.";
         }
+
+        private void VlozBodButton_Click(object sender, RoutedEventArgs e)
+        {
+            vytvorBodvLese = true;
+            label1.Content = "Oznacte misto na mape, kde ma vzniknout dalsi bod.";
+
+            //sem dopsat kod na zadani dalsich bodu
+        }
+
+        private void canvasElem_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (vytvorBodvLese == true)
+            {
+                var dot = (Canvas)sender;
+                System.Windows.Point g = e.GetPosition((IInputElement)sender);
+                int x = (int)(g.X / scaleX);
+                int y = (int)(g.Y / scaleY);
+                label1.Content = "Souradnice: " + x + "," + y + " Chcete tento vrchol vlozit do lesa?";
+                tlacitko_ANO.Visibility = Visibility.Visible;
+                tlacitko_NE.Visibility = Visibility.Visible;
+                gBod.X = x;
+                gBod.Y = y;
+                vytvorBodvLese = false;
+            }
+        }
+
+        private void NE_Button_Click(object sender, RoutedEventArgs e)
+        {
+            label1.Content = "Dobra, nic se vkladat nebude.";
+            tlacitko_ANO.Visibility = Visibility.Hidden;
+            tlacitko_NE.Visibility = Visibility.Hidden;
+        }
+
+        private void ANO_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Vrchol pridanyVrchol = mapa.vlozVrchol((int)gBod.X, (int)gBod.Y);
+            vykresliObec(pridanyVrchol);
+            tlacitko_ANO.Visibility = Visibility.Hidden;
+            tlacitko_NE.Visibility = Visibility.Hidden;
+        }
     }
+
 }

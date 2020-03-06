@@ -5,23 +5,36 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Datove_struktury_2020"
         mc:Ignorable="d"
-        Title="MainWindow" Height="711" Width="993" ResizeMode="NoResize" SizeToContent="WidthAndHeight">
-    <Grid Height="700" HorizontalAlignment="Left" VerticalAlignment="Top" Width="969">
+        Title="MainWindow" Height="700" Width="1000" ResizeMode="NoResize" 
+        SizeToContent="WidthAndHeight">
+    <Grid Height="700" HorizontalAlignment="Left" VerticalAlignment="Top"
+          Width="969">
         <Grid.RowDefinitions>
             <RowDefinition Height="99*"/>
             <RowDefinition Height="76*"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
 
-        </Grid.ColumnDefinitions>
-        <Canvas x:Name="canvasMainElem" Height="66" Margin="16,27,0,0" VerticalAlignment="Top" Width="938">
-            <Canvas x:Name="canvasButt" Height="44" Canvas.Left="10" Width="715" Canvas.Top="11" RenderTransformOrigin="0.499,0.444">
-                <Button x:Name="PridatBodButt" Content="Přidat obec" Canvas.Left="10" Canvas.Top="10" Width="75" RenderTransformOrigin="0.16,0.6" Click="PridatBodButt_Click"/>
-                <Button x:Name="PridatCestuButt" Content="Přidat silnici" Canvas.Left="90" Canvas.Top="10" Width="75" Click="PridatCestuButt_Click"/>
-                <Button x:Name="NajdiCestuButton" Content="Najdi cestu" Canvas.Left="170" Canvas.Top="10" Width="121" Click="NajdiCestuButt_Click"/>
-                <Label x:Name="label1" Content="" Height="60" Canvas.Left="326" Canvas.Top="6" Width="1000"/>
-            </Canvas>
-            <Canvas x:Name="canvasElem" Height="526" Canvas.Top="96" Width="916" Background="DarkGreen" Canvas.Left="-4"/>
+        <Canvas x:Name="canvasMainElem" Height="50" Margin="14,15,37,0" 
+                VerticalAlignment="Top">
+            <Button x:Name="PridatCestuButt" Content="Přidat silnici" 
+                    Height="30" Canvas.Left="90" Canvas.Top="5" Width="70" 
+                    Click="PridatCestuButt_Click"/>
+            <Button x:Name="NajdiCestuButton" Content="Najdi cestu" Height="30"
+                    Canvas.Left="170" Canvas.Top="5" Width="70" 
+                    Click="NajdiCestuButt_Click"/>
+            <Button x:Name="VlozBodButton" Content="Vlož bod" Height="30"
+                    Canvas.Left="250" Canvas.Top="5" Width="70"
+                    Click="VlozBodButton_Click"/>
+            <Label x:Name="label1" 
+                   Content="some text some text some text some text some text some textsome textsome text some text" 
+                   Height="50" 
+                   Canvas.Left="10" 
+                   Canvas.Top="40" 
+                   Width="910" 
+                   FontSize="16pt" />
+            <Canvas x:Name="canvasElem" Height="530" Canvas.Top="100" Width="910" Background="ForestGreen" Canvas.Left="10" MouseLeftButtonDown="canvasElem_MouseLeftButtonDown"/>
+            <Button x:Name="tlacitko_ANO" Content="ANO" Canvas.Left="410" Canvas.Top="5" Click="ANO_Button_Click" RenderTransformOrigin="0.454,-0.349" Height="30" Width="30" BorderThickness="1,1,1,1" Visibility="Visible"/>
+            <Button x:Name="tlacitko_NE" Content="NE" Canvas.Left="450" Canvas.Top="5" Click="NE_Button_Click" RenderTransformOrigin="0.454,-0.349" Height="30" Width="30"/>
         </Canvas>
     </Grid>
 </Window>
