@@ -196,13 +196,14 @@ namespace Datove_struktury_2020
             float x = (float)(dot.Margin.Left / scaleX);
             float y = (float)(dot.Margin.Top / scaleY);
 
-            Vrchol o = mapa.najdiVrchol(x, y);
+            Vrchol hledanyVrcholvMape = mapa.najdiVrchol(x, y);
 
-            if (o != null)
+
+            if (hledanyVrcholvMape != null)
             {
                 if (vyberPocatecni)
                 {
-                    pocatek = o;
+                    pocatek = hledanyVrcholvMape;
                     vyberPocatecni = false;
                     vyberKonecny = true;
                     label1.Content = "Pocatecni bod je " + pocatek.ToString() + ".\nVyber cil.";
@@ -213,7 +214,7 @@ namespace Datove_struktury_2020
                     {
                         h.OznaceniHrany = false;
                     }
-                    konec = o;
+                    konec = hledanyVrcholvMape;
                     vyberKonecny = false;
                     label1.Content = "Pocatecni bod je " + pocatek.ToString() + ".\n"
                         + "Konecny bod je " + konec.ToString() + ". Hledam cestu.";
@@ -234,6 +235,40 @@ namespace Datove_struktury_2020
                     vykresliMapu();
                     label1.Content = vypisCesty;
                 }
+                // pro ulozeni pocatecniho vrcholu cesty, vytvoreni a vykresleni hrany
+                else if (vytvorCestuvLese)
+                {
+                    if (pocatek == null)
+                        pocatek = hledanyVrcholvMape;
+                    else
+                    {
+                        konec = hledanyVrcholvMape;
+                        Hrana novaHrana = new Hrana();
+                        novaHrana.PocatekHrany = pocatek;
+                        novaHrana.KonecHrany = konec;
+                        // novaHrana.KonecHrany = hledanyVrcholvMape;
+
+                        novaHrana.DelkaHrany = (int)Math.Round(Sqrt)
+                    }
+
+                }
+
+
+            }
+
+        }
+
+        public double spocitejDelkuHrany(Vrchol zacatekHrany, Vrchol konecHrany)
+        {
+            double delkaHrany = 0;
+            zacatekHrany = pocatek;
+            konecHrany = konec;
+            double xa, ya, xb, yb;
+            Abs(delkaHrany) = Sqrt (((xb - xa)*(xb - xa)) + ((yb-ya)*(yb-ya)),2)
+
+
+            return delkaHrany;
+        }
                 //ObecInfo info = new ObecInfo(o);
                 //info.ShowDialog();
                 //if (info.needRedraw == true)
@@ -265,6 +300,8 @@ namespace Datove_struktury_2020
             }
         }
 
+        
+            
         void OnLineMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var line = (Line)sender;

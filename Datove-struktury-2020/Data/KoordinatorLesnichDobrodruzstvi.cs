@@ -15,6 +15,7 @@ namespace Datove_struktury_2020.Data
             vsechnyVrcholy = vytvorVrcholy();
             vsechnyHrany = vytvorHrany();
         }
+
         public List<Vrchol> vytvorVrcholy()
         {
             NacteniCSV nacteniCSV = new NacteniCSV();
