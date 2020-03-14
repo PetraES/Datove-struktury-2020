@@ -210,7 +210,8 @@ namespace Datove_struktury_2020
                     pocatek = hledanyVrcholvMape;
                     urcenPocatecniBod = false;
                     urcenKonecnyBod = true;
-                    label1.Content = "Pocatecni bod je " + pocatek.ToString() + ".\nVyber cil.";
+                    //sdelim ye obsah v Label1 je typu textblock a tim dosahnu zalamovani textu  vLabel1
+                    ((TextBlock)label1.Content).Text = "Pocatecni bod je " + pocatek.ToString() + ".\nVyber cil.";
                 }
                 else if (urcenKonecnyBod)
                 {
@@ -220,24 +221,24 @@ namespace Datove_struktury_2020
                     }
                     konec = hledanyVrcholvMape;
                     urcenKonecnyBod = false;
-                    label1.Content = "Pocatecni bod je " + pocatek.ToString() + ".\n"
+                    ((TextBlock)label1.Content).Text = "Pocatecni bod je " + pocatek.ToString() + ".\n"
                         + "Konecny bod je " + konec.ToString() + ". Hledam cestu.";
                     dijkstra.NajdiZastavku(pocatek, konec);
                     Cesta cesta = dijkstra.vratNejkratsiCestu();
                     if (cesta == null)
                     {
-                        label1.Content = "cesta nenalezena";
+                        ((TextBlock)label1.Content).Text = "cesta nenalezena";
                         return;
                     }
                     string vypisCesty = "Pocatecni bod je " + pocatek.ToString() + ".\n"
-                        + "Konecny bod je " + konec.ToString() + ". ";
+                        + "Konecny bod je " + konec.ToString() + ". \n";
                     foreach (Hrana h in cesta.NavstiveneHrany)
                     {
                         h.OznaceniHrany = true;
                         vypisCesty += "(" + h.PocatekHrany.NazevVrcholu + ", " + h.KonecHrany.NazevVrcholu + "), ";
                     }
                     vykresliMapu();
-                    label1.Content = vypisCesty;
+                    ((TextBlock)label1.Content).Text = vypisCesty;
                 }
                 //  pro ulozeni pocatecniho vrcholu cesty, vytvoreni a vykresleni hrany
                 else if (stisknutoVytvorCestu)
@@ -245,7 +246,7 @@ namespace Datove_struktury_2020
                     if (pocatek == null)
                     {
                         pocatek = hledanyVrcholvMape;
-                        label1.Content = "Vyberte konečný bod.";
+                        ((TextBlock)label1.Content).Text = "Vyberte konečný bod.";
                     }
                     else
                     {
@@ -261,7 +262,7 @@ namespace Datove_struktury_2020
                         mapa.vsechnyHrany.Add(novaHrana);
                         KresliSilnici(novaHrana);
                         stisknutoVytvorCestu = false;
-                        label1.Content = "Cesta byla vytvořena.";
+                        ((TextBlock)label1.Content).Text = "Cesta byla vytvořena.";
                     }
                 }
             }
@@ -376,13 +377,13 @@ namespace Datove_struktury_2020
         private void NajdiCestuButt_Click(object sender, RoutedEventArgs e)
         {
             urcenPocatecniBod = true;
-            label1.Content = "Vyberte počáteční bod.";
+            ((TextBlock)label1.Content).Text = "Vyberte počáteční bod.";
         }
 
         private void VlozBodButton_Click(object sender, RoutedEventArgs e)
         {
             stisknutoVytvorVrchol = true;
-            label1.Content = "Oznacte misto na mape, kde ma vzniknout dalsi bod.";
+            ((TextBlock)label1.Content).Text = "Oznacte misto na mape, kde ma vzniknout dalsi bod.";
 
             //sem dopsat kod na zadani dalsich bodu
         }
@@ -395,7 +396,7 @@ namespace Datove_struktury_2020
                 System.Windows.Point g = e.GetPosition((IInputElement)sender);
                 int x = (int)(g.X / scaleX);
                 int y = (int)(g.Y / scaleY);
-                label1.Content = "Souradnice: " + x + "," + y + " Chcete tento vrchol vlozit do lesa?";
+                ((TextBlock)label1.Content).Text = "Souradnice: " + x + "," + y + " Chcete tento vrchol vlozit do lesa?";
                 tlacitko_ANO.Visibility = Visibility.Visible;
                 tlacitko_NE.Visibility = Visibility.Visible;
                 gBod.X = x;
@@ -406,7 +407,7 @@ namespace Datove_struktury_2020
 
         private void NE_Button_Click(object sender, RoutedEventArgs e)
         {
-            label1.Content = "Dobra, nic se vkladat nebude.";
+            ((TextBlock)label1.Content).Text = "Dobra, nic se vkladat nebude.";
             tlacitko_ANO.Visibility = Visibility.Hidden;
             tlacitko_NE.Visibility = Visibility.Hidden;
         }
@@ -424,7 +425,7 @@ namespace Datove_struktury_2020
 
             // nastaveni pomocne promene na true v if else v metode OnEllipseMouseLeftButtonDow
             stisknutoVytvorCestu = true;
-            label1.Content = "Vyberte počáteční bod.";
+            ((TextBlock)label1.Content).Text = "Vyberte počáteční bod.";
 
         }
 
