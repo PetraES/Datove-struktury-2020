@@ -25,10 +25,10 @@ namespace Datove_struktury_2020
         private int scaleX = 4; // Settings.Default.mapXScale;
         private int scaleY = 2; // Settings.Default.mapYScale;
 
-        bool vyberPocatecni;
-        bool vyberKonecny;
-        bool vytvorBodvLese;
-        bool vytvorCestuvLese;
+        bool urcenPocatecniBod; // true pokud stisknu tlacitko vyhledej cestu
+        bool urcenKonecnyBod; // je-li vybran/urcen pocatecni bod pak se nastavi na true
+        bool stisknutoVytvorVrchol; //pokud dojde ke stsknuti tlacitka, nastavi se na true
+        bool stisknutoVytvorCestu; //pokud dojde ke stsknuti tlacitka, nastavi se na true
 
         //je to struktura
         System.Windows.Point gBod;
@@ -105,7 +105,7 @@ namespace Datove_struktury_2020
             //    currentDot.Fill = new SolidColorBrush(Colors.Green);
             //}
             teckaNaVrcholu.Margin = new Thickness(vrchol.XSouradniceVrcholu * scaleX, vrchol.YSouradniceVrcholu * scaleY, 0, 0);
-            
+
             //DELEGAT tu se zaregistruje funkce OnElipse.. na jako event handler na akci MouseLeft.. - DELEGAT
             teckaNaVrcholu.MouseLeftButtonDown += OnEllipseMouseLeftButtonDown;
 
@@ -189,7 +189,12 @@ namespace Datove_struktury_2020
                 canvasElem.Children.Add(currentDot);
             }
         }
-
+        /// <summary>
+        /// Obsluhuje udalost kliku na bod v mape (zastavka, odpocivadlo nebo krizovatka).
+        /// Vyuziva se na urceni pocatecniho a koncoveho vrcholu pro vyhledavani nejkratsi trasy v mape nebo pro pridani nove cesty do mapy.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void OnEllipseMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var dot = (Ellipse)sender;
@@ -198,24 +203,23 @@ namespace Datove_struktury_2020
 
             Vrchol hledanyVrcholvMape = mapa.najdiVrchol(x, y);
 
-
             if (hledanyVrcholvMape != null)
             {
-                if (vyberPocatecni)
+                if (urcenPocatecniBod)
                 {
                     pocatek = hledanyVrcholvMape;
-                    vyberPocatecni = false;
-                    vyberKonecny = true;
+                    urcenPocatecniBod = false;
+                    urcenKonecnyBod = true;
                     label1.Content = "Pocatecni bod je " + pocatek.ToString() + ".\nVyber cil.";
                 }
-                else if (vyberKonecny)
+                else if (urcenKonecnyBod)
                 {
                     foreach (Hrana h in mapa.vsechnyHrany)
                     {
                         h.OznaceniHrany = false;
                     }
                     konec = hledanyVrcholvMape;
-                    vyberKonecny = false;
+                    urcenKonecnyBod = false;
                     label1.Content = "Pocatecni bod je " + pocatek.ToString() + ".\n"
                         + "Konecny bod je " + konec.ToString() + ". Hledam cestu.";
                     dijkstra.NajdiZastavku(pocatek, konec);
@@ -235,11 +239,14 @@ namespace Datove_struktury_2020
                     vykresliMapu();
                     label1.Content = vypisCesty;
                 }
-                // pro ulozeni pocatecniho vrcholu cesty, vytvoreni a vykresleni hrany
-                else if (vytvorCestuvLese)
+                //  pro ulozeni pocatecniho vrcholu cesty, vytvoreni a vykresleni hrany
+                else if (stisknutoVytvorCestu)
                 {
                     if (pocatek == null)
+                    {
                         pocatek = hledanyVrcholvMape;
+                        label1.Content = "Vyberte konečný bod.";
+                    }
                     else
                     {
                         konec = hledanyVrcholvMape;
@@ -247,61 +254,59 @@ namespace Datove_struktury_2020
                         novaHrana.PocatekHrany = pocatek;
                         novaHrana.KonecHrany = konec;
                         // novaHrana.KonecHrany = hledanyVrcholvMape;
-
-                        novaHrana.DelkaHrany = (int)Math.Round(Sqrt)
+                        novaHrana.DelkaHrany = (short)spocitejDelkuHrany(pocatek, konec);
+                        pocatek.ListHran.Add(novaHrana);
+                        konec.ListHran.Add(novaHrana);
+                        // Pridani nove hrany do listu vsech hran v mape.
+                        mapa.vsechnyHrany.Add(novaHrana);
+                        KresliSilnici(novaHrana);
+                        stisknutoVytvorCestu = false;
+                        label1.Content = "Cesta byla vytvořena.";
                     }
-
                 }
-
-
             }
-
         }
 
-        public double spocitejDelkuHrany(Vrchol zacatekHrany, Vrchol konecHrany)
+        private double spocitejDelkuHrany(Vrchol zacatekHrany, Vrchol konecHrany)
         {
             double delkaHrany = 0;
-            zacatekHrany = pocatek;
-            konecHrany = konec;
-            double xa, ya, xb, yb;
-            Abs(delkaHrany) = Sqrt (((xb - xa)*(xb - xa)) + ((yb-ya)*(yb-ya)),2)
-
-
+            double xa = zacatekHrany.XSouradniceVrcholu;
+            double ya = zacatekHrany.YSouradniceVrcholu;
+            double xb = konecHrany.XSouradniceVrcholu;
+            double yb = konecHrany.YSouradniceVrcholu;
+            //(int)Math.Round(Sqrt)
+            delkaHrany = Math.Abs(Math.Sqrt(((xb - xa) * (xb - xa)) + ((yb - ya) * (yb - ya))));
             return delkaHrany;
         }
-                //ObecInfo info = new ObecInfo(o);
-                //info.ShowDialog();
-                //if (info.needRedraw == true)
-                //{
-                //    searchHeap.unMarkFinish();
-                //    if (info.obec.LeteckeStredisko == true && info.obec.Radius > 0)
-                //    {
-                //        mapa.najdiObceVRadiusu(info.obec);
-                //        vykresliMapu();
-                //    }
-                //    else
-                //    {
-                //        if (info.obec.LeteckyObsluzne != null)
-                //        {
-                //            mapa.zrusLeteckouObsluhu(info.obec);
-                //        }
-                //    }
-                //    vykresliMapu();
 
-                //}
+        //ObecInfo info = new ObecInfo(o);
+        //info.ShowDialog();
+        //if (info.needRedraw == true)
+        //{
+        //    searchHeap.unMarkFinish();
+        //    if (info.obec.LeteckeStredisko == true && info.obec.Radius > 0)
+        //    {
+        //        mapa.najdiObceVRadiusu(info.obec);
+        //        vykresliMapu();
+        //    }
+        //    else
+        //    {
+        //        if (info.obec.LeteckyObsluzne != null)
+        //        {
+        //            mapa.zrusLeteckouObsluhu(info.obec);
+        //        }
+        //    }
+        //    vykresliMapu();
 
-                //if (info.smazatObec == true)
-                //{
-                //    mapa.odeberObec(o);
-                //    searchHeap.unMarkFinish();
-                //    vykresliMapu();
-                //}
+        //}
 
-            }
-        }
+        //if (info.smazatObec == true)
+        //{
+        //    mapa.odeberObec(o);
+        //    searchHeap.unMarkFinish();
+        //    vykresliMapu();
+        //}
 
-        
-            
         void OnLineMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var line = (Line)sender;
@@ -370,13 +375,13 @@ namespace Datove_struktury_2020
 
         private void NajdiCestuButt_Click(object sender, RoutedEventArgs e)
         {
-            vyberPocatecni = true;
-            label1.Content = "Vyber pocatecni bod.";
+            urcenPocatecniBod = true;
+            label1.Content = "Vyberte počáteční bod.";
         }
 
         private void VlozBodButton_Click(object sender, RoutedEventArgs e)
         {
-            vytvorBodvLese = true;
+            stisknutoVytvorVrchol = true;
             label1.Content = "Oznacte misto na mape, kde ma vzniknout dalsi bod.";
 
             //sem dopsat kod na zadani dalsich bodu
@@ -384,7 +389,7 @@ namespace Datove_struktury_2020
 
         private void canvasElem_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (vytvorBodvLese == true)
+            if (stisknutoVytvorVrchol == true)
             {
                 var dot = (Canvas)sender;
                 System.Windows.Point g = e.GetPosition((IInputElement)sender);
@@ -395,7 +400,7 @@ namespace Datove_struktury_2020
                 tlacitko_NE.Visibility = Visibility.Visible;
                 gBod.X = x;
                 gBod.Y = y;
-                vytvorBodvLese = false;
+                stisknutoVytvorVrchol = false;
             }
         }
 
@@ -416,8 +421,11 @@ namespace Datove_struktury_2020
 
         private void PridejCestuButton_Click(object sender, RoutedEventArgs e)
         {
-            vytvorCestuvLese = true;
-            label1.Content = "Dobra, nic se vkladat nebude.";
+
+            // nastaveni pomocne promene na true v if else v metode OnEllipseMouseLeftButtonDow
+            stisknutoVytvorCestu = true;
+            label1.Content = "Vyberte počáteční bod.";
+
         }
 
 
