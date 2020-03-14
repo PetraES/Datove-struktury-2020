@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Datove_struktury_2020.Data
 {
-    class NacteniCSV
+    class EditaceCSV
     {
-        //vrati roytrhane stringy oddelene carkama
+        //vrati roztrhane stringy oddelene carkama
         public List<string[]> NactiSoubor(string cestaKSouboru)
         {
             List<string[]> result = new List<string[]>();
@@ -39,5 +39,11 @@ namespace Datove_struktury_2020.Data
             return radek.Split(';');
         }
 
+        public void ZapisDoCSV(string cestaKSouboru, string data) 
+        {
+            StreamWriter sw = new StreamWriter(cestaKSouboru);
+            sw.Write(data);
+            sw.Close();
+        }
     }
 }

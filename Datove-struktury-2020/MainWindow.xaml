@@ -6,7 +6,10 @@
         xmlns:local="clr-namespace:Datove_struktury_2020"
         mc:Ignorable="d"
         Title="MainWindow" Height="700" Width="1000" ResizeMode="NoResize" 
-        SizeToContent="WidthAndHeight">
+        SizeToContent="WidthAndHeight" Closing="Window_Closing_1"
+        
+        >
+    
     <Grid Height="700" HorizontalAlignment="Left" VerticalAlignment="Top"
           Width="969">
         <Grid.RowDefinitions>

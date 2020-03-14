@@ -428,7 +428,21 @@ namespace Datove_struktury_2020
 
         }
 
-
+        private void Window_Closing_1(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            string msg = "Než se zavře okno, mají se změny uložit?";
+            MessageBoxResult result =
+              MessageBox.Show(
+                msg,
+                "Název okna",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
+            {
+                // kdyz se zmackne Yes tak se ulozi nova podoba mapy do .csv souboru
+                mapa.ulozMapu();
+            }
+        }
     }
 
 }
