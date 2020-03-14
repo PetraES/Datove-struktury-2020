@@ -77,12 +77,12 @@ namespace Datove_struktury_2020
             {
                 teckaNaVrcholu.Stroke = new SolidColorBrush(Colors.DarkBlue);
                 teckaNaVrcholu.StrokeThickness = 10;
-                teckaNaVrcholu.Height = 20;
+                teckaNaVrcholu.Height = 15;
                 teckaNaVrcholu.Width = 20;
             }
             else if (vrchol.TypVrcholu == TypyVrcholu.zastavka)
             {
-                teckaNaVrcholu.Stroke = new SolidColorBrush(Colors.Yellow);
+                teckaNaVrcholu.Stroke = new SolidColorBrush(Colors.Cyan);
                 teckaNaVrcholu.StrokeThickness = 10;
                 teckaNaVrcholu.Height = 12;
                 teckaNaVrcholu.Width = 12;

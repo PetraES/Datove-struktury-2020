@@ -39,7 +39,7 @@ namespace Datove_struktury_2020.Data
                 v.NazevVrcholu = radek[0];
                 v.XSouradniceVrcholu = float.Parse(radek[1]);
                 v.YSouradniceVrcholu = float.Parse(radek[2]);
-                // v.TypVrcholu = (TypyVrcholu)int.Parse(radek[3]); //pretypovat string na typy vrcholu, vyzkouset jestli jde
+                v.TypVrcholu = (TypyVrcholu)int.Parse(radek[3]); //pretypovat string na typy vrcholu, vyzkouset jestli jde
                 vseckyVrcholy.Add(v);
             }
             return vseckyVrcholy;
@@ -108,10 +108,12 @@ namespace Datove_struktury_2020.Data
             string vrcholy = "nazevVrcholu;Xsouradnice;Ysouradnice\n";
             foreach (Vrchol v in vsechnyVrcholy)
             {
-                vrcholy += string.Format("{0};{1};{2}\n",
+                vrcholy += string.Format("{0};{1};{2};{3}\n",
                     v.NazevVrcholu,
                     v.XSouradniceVrcholu,
-                    v.YSouradniceVrcholu);
+                    v.YSouradniceVrcholu,
+                    (int)v.TypVrcholu);
+                    
 
             }
             editujCSV.ZapisDoCSV(cestaKsouboruObce, vrcholy);

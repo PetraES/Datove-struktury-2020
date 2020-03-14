@@ -1,63 +1,63 @@
-﻿nazevVrcholu;Xsouradnice;Ysouradnice
-Havlíčkův Brod;10;10
-Nová ves;48;8
-Jihlávka;15;20
-Uhřínovice;2;95
-Batňovice;46;104
-Babice;27;66;1
-Bavory;17;44
-Barchovice;69;45
-Zloves;95;20
-Babice u Rosic;88;43
-Batelov;66;72
-Arnolec;101;87
-Bačkov;77;101
-Bačkovice;57;50
-Adamov;56;25
-Bor;8;177
-Albrechtice v Jizerských horách;36;135
-Bakov nad Jizerou;11;145
-Chotěboř;30;220
-Adršpach;38;190
-Bařice-Velké Těšany;35;197
-Barchov;29;186
-Bánov;65;147
-Archlebov;87;139
-Dolín;60;235
-Alojzov;74;196
-Arneštovice;72;161;1
-Balkova Lhota;104;144
-Bácovice;49;159
-Bačice;100;113
-Babylon;125;29
-Baliny;167;52
-Eš;140;8
-Bašnice;127;120
-Albrechtičky;154;125
-Bavorov;143;81
-Bartošovice v Orlických horách;144;63;1
-Aš;177;38
-Cibotín;222;5
-Albrechtice nad Orlicí;188;32
-Babice nad Svitavou;176;83
-Hustopeče;213;77
-Bačalky;194;98
-Bdín;196;55
-Bantice;168;25
-Abertamy;117;174
-Bavoryně;147;147
-Andělská Hora;124;162
-Žižkovo Pole;120;200
-Dubí;170;219
-Jakubov;130;210
-Anenská Studánka;142;199
-Bašť;175;174
-Arnoltice;222;145
-Polná;190;139
-Dobrohostov;189;230
-Samotín;220;220
-Karlovy Vary;200;200;1
-Baška;181;192
-Teplice;171;225
-Bartošovice;135;139
-Aš;111;228
+nazevVrcholu;Xsouradnice;Ysouradnice
+Havlíčkův Brod;10;10;0
+Nová ves;48;8;0
+Jihlávka;15;20;0
+Uhřínovice;2;95;2
+Batňovice;46;104;0
+Babice;27;66;0
+Bavory;17;44;1
+Barchovice;69;45;0
+Zloves;95;20;1
+Babice u Rosic;88;43;1
+Batelov;66;72;1
+Arnolec;101;87;0
+Bačkov;77;101;0
+Bačkovice;57;50;0
+Adamov;56;25;0
+Bor;8;177;2
+Albrechtice v Jizerských horách;36;135;0
+Bakov nad Jizerou;11;145;1
+Chotěboř;30;220;2
+Adršpach;38;180;0
+Bařice-Velké Těšany;35;197;0
+Barchov;20;186;0
+Bánov;65;147;1
+Archlebov;87;139;1
+Dolín;60;235;2
+Alojzov;74;196;0
+Arneštovice;72;161;0
+Balikova Lhota;104;144;1
+Bácovice;49;159;0
+Bačice;100;113;0
+Babylon;125;29;1
+Baliny;167;52;0
+Eš;140;8;2
+Bašnice;127;120;0
+Albrechtičky;154;125;1
+Bavorov;143;81;0
+Bartošovice v Orlických horách;144;63;0
+Aš;177;38;0
+Cibotín;222;5;2
+Albrechtice nad Orlicí;188;32;0
+Babice nad Svitavou;176;83;0
+Hustopeče;213;77;2
+Bačalky;194;98;1
+Bdín;196;55;0
+Bantice;168;25;2
+Abertamy;117;174;0
+Bavoryně;147;147;1
+Andělská Hora;124;162;0
+Žižkovo Pole;120;200;0
+Dubí;170;219;0
+Jakubov;130;210;1
+Anenská Studánka;142;199;0
+Bašť;175;174;1
+Arnoltice;222;145;2
+Polná;190;139;1
+Dobrohostov;189;230;2
+Samotín;220;220;2
+Karlovy Vary;200;200;0
+Baška;181;192;0
+Teplice;171;225;0
+Bartošovice;135;139;0
+Aš;111;228;2

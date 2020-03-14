@@ -39,7 +39,7 @@
                    Canvas.Top="40" 
                    Width="910" 
                    FontSize="16pt" />
-            <Canvas x:Name="canvasElem" Height="530" Canvas.Top="100" Width="910" Background="ForestGreen" Canvas.Left="10" MouseLeftButtonDown="canvasElem_MouseLeftButtonDown"/>
+            <Canvas x:Name="canvasElem" Height="530" Canvas.Top="100" Width="910" Background="LightSeaGreen" Canvas.Left="10" MouseLeftButtonDown="canvasElem_MouseLeftButtonDown"/>
         </Canvas>
     </Grid>
 </Window>
