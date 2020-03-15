@@ -118,14 +118,12 @@ namespace Datove_struktury_2020.Data
             }
             editujCSV.ZapisDoCSV(cestaKsouboruObce, vrcholy);
 
-            string hrany = "pocatekX;pocatekY;konecX;konecY;delkaCesty\n";
+            string hrany = "klicPocatek;klicKonec;delkaCesty\n";
             foreach (DataHrany h in vsechnyHrany)
             {
-                hrany += string.Format("{0};{1};{2};{3};{4}\n",
-                    h.PocatekHrany.XSouradniceVrcholu,
-                    h.PocatekHrany.YSouradniceVrcholu,
-                    h.KonecHrany.XSouradniceVrcholu,
-                    h.KonecHrany.YSouradniceVrcholu,
+                hrany += string.Format("{0};{1};{2}\n",
+                    h.PocatekHrany.NazevVrcholu,
+                    h.KonecHrany.NazevVrcholu,
                     h.DelkaHrany);
             }
             editujCSV.ZapisDoCSV(cestaKsouboruCesty, hrany);
