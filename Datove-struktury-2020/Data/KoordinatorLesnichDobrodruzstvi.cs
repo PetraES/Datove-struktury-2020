@@ -83,14 +83,22 @@ namespace Datove_struktury_2020.Data
             return AG.VratSeznamVrcholu();
         }
 
-        public DataVrcholu vlozVrchol(int x, int y)
+        public DataVrcholu vlozVrchol(int x, int y, TypyVrcholu typyVrcholu, string nazevVrcholu)
         {
-            Random z = new Random();
+            if (nazevVrcholu == "")
+            {
+                throw new Exception("Neplatny nazev bodu.");
+            }
+            else if(najdiVrchol(nazevVrcholu) != null)
+            {
+                throw new Exception("Bod jiz exitsuje.");
+            }
 
             DataVrcholu v = new DataVrcholu();
             v.XSouradniceVrcholu = x;
             v.YSouradniceVrcholu = y;
-            v.NazevVrcholu = "x" + z.Next(100,10000);
+            v.TypVrcholu = typyVrcholu;
+            v.NazevVrcholu = nazevVrcholu;
             AG.PridejVrchol(v.NazevVrcholu, v);
             return v;
         }

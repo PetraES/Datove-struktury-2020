@@ -44,12 +44,9 @@ namespace Datove_struktury_2020
         {
 
             InitializeComponent();
-            //visibility tu to zelene je enum
-            tlacitko_ANO.Visibility = Visibility.Hidden;
-            tlacitko_NE.Visibility = Visibility.Hidden;
-
-            //searchHeap = new SearchHeap(mapa);
             
+            SkrytPrvkyVytvorBod();
+
             try
             {
                 mapa = new KoordinatorLesnichDobrodruzstvi();
@@ -59,6 +56,26 @@ namespace Datove_struktury_2020
                 MessageBox.Show(e.Message, "Nepodařilo se načíst les!", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
             vykresliMapu();
+        }
+
+        public void SkrytPrvkyVytvorBod()
+        {
+            //visibility tu to zelene je enum
+            tlacitko_ANO.Visibility = Visibility.Hidden;
+            tlacitko_NE.Visibility = Visibility.Hidden;
+            TypVrcholu_comboBox.Visibility = Visibility.Hidden;
+            nazevVrcholuLabel.Visibility = Visibility.Hidden;
+            nazevVrcholuTextBox.Visibility = Visibility.Hidden;
+        }
+
+        public void ZobrazitPrvkyVytvorBod()
+        {
+            //visibility tu to zelene je enum
+            tlacitko_ANO.Visibility = Visibility.Visible;
+            tlacitko_NE.Visibility = Visibility.Visible;
+            TypVrcholu_comboBox.Visibility = Visibility.Visible;
+            nazevVrcholuLabel.Visibility = Visibility.Visible;
+            nazevVrcholuTextBox.Visibility = Visibility.Visible;
         }
 
         public void vykresliMapu()
@@ -339,26 +356,6 @@ namespace Datove_struktury_2020
             }
         }
 
-        private void PridatCestuButt_Click(object sender, RoutedEventArgs e)
-        {
-            //PridatSilnici modal = new PridatSilnici();
-            //modal.ShowDialog();
-
-            //if (modal.zObce != null)
-            //{
-            //    try
-            //    {
-            //        mapa.vlozSilnici(modal.zObce, modal.doObce, modal.cena);
-            //    }
-            //    catch (NotFoundException ex)
-            //    {
-            //        MessageBox.Show(ex.Message);
-            //    }
-            //    searchHeap.unMarkFinish();
-            //    vykresliMapu();
-            //}
-        }
-
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (MessageBox.Show("Chcete uložit změny před ukončením?", "Uložit?", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
@@ -373,13 +370,13 @@ namespace Datove_struktury_2020
             ((TextBlock)label1.Content).Text = "Vyberte počáteční bod.";
         }
 
+        
         private void VlozBodButton_Click(object sender, RoutedEventArgs e)
         {
             stisknutoVytvorVrchol = true;
             ((TextBlock)label1.Content).Text = "Oznacte misto na mape, kde ma vzniknout dalsi bod.";
-
-            //sem dopsat kod na zadani dalsich bodu
-        }
+            // bod se vytvari pri kliknuti do canvasu metoda canvasElem_MouseLeftButtonDown
+            }
 
         private void canvasElem_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -389,9 +386,12 @@ namespace Datove_struktury_2020
                 System.Windows.Point g = e.GetPosition((IInputElement)sender);
                 int x = (int)(g.X / scaleX);
                 int y = (int)(g.Y / scaleY);
-                ((TextBlock)label1.Content).Text = "Souradnice: " + x + "," + y + " Chcete tento vrchol vlozit do lesa?";
-                tlacitko_ANO.Visibility = Visibility.Visible;
-                tlacitko_NE.Visibility = Visibility.Visible;
+                ((TextBlock)label1.Content).Text = "Vytvářený bod má souřadnice: " + x + "," + y + ".";
+
+
+                ((TextBlock)label1.Content).Text += " Chcete tento vrchol vlozit do lesa?";
+
+                ZobrazitPrvkyVytvorBod();
                 gBod.X = x;
                 gBod.Y = y;
                 stisknutoVytvorVrchol = false;
@@ -401,16 +401,23 @@ namespace Datove_struktury_2020
         private void NE_Button_Click(object sender, RoutedEventArgs e)
         {
             ((TextBlock)label1.Content).Text = "Dobra, nic se vkladat nebude.";
-            tlacitko_ANO.Visibility = Visibility.Hidden;
-            tlacitko_NE.Visibility = Visibility.Hidden;
+            SkrytPrvkyVytvorBod();
         }
 
         private void ANO_Button_Click(object sender, RoutedEventArgs e)
         {
-            DataVrcholu pridanyVrchol = mapa.vlozVrchol((int)gBod.X, (int)gBod.Y);
-            vykresliObec(pridanyVrchol);
-            tlacitko_ANO.Visibility = Visibility.Hidden;
-            tlacitko_NE.Visibility = Visibility.Hidden;
+            try
+            {
+                TypyVrcholu typVrcholu = (TypyVrcholu)TypVrcholu_comboBox.SelectedIndex;
+                string nazevVrcholu = nazevVrcholuTextBox.Text;
+                DataVrcholu pridanyVrchol = mapa.vlozVrchol((int)gBod.X, (int)gBod.Y, typVrcholu, nazevVrcholu);
+                vykresliObec(pridanyVrchol);
+                SkrytPrvkyVytvorBod();
+                ((TextBlock)label1.Content).Text = "Hotovo";
+            } catch(Exception ex)
+            {
+                ((TextBlock)label1.Content).Text = "Nastala chyba: " + ex.Message;
+            }
         }
 
         private void PridejCestuButton_Click(object sender, RoutedEventArgs e)

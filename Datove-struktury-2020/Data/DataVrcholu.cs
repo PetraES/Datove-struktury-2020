@@ -10,12 +10,7 @@ namespace Datove_struktury_2020.Data
         public float XSouradniceVrcholu { get; set; } //property
         public float YSouradniceVrcholu { get; set; } //property
         public TypyVrcholu TypVrcholu { get; set; } //property
-        public List<DataHran> ListHran { get; set; } //property proto je to velkym pismenem
-
-        public DataVrcholu()
-        {
-            ListHran = new List<DataHran>();
-        }
+        
 
         public override string ToString()
         {
