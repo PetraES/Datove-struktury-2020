@@ -6,13 +6,13 @@ namespace Datove_struktury_2020.Data
 {
     class Cesta
     {
-        public Vrchol AktualniVrchol { get; set; }
-        public List<Hrana> NavstiveneHrany { get; set; }
+        public DataVrcholu AktualniVrchol { get; set; }
+        public List<DataHrany> NavstiveneHrany { get; set; }
         public float CenaCeleCesty { get; set; }
 
         public Cesta()
         {
-            NavstiveneHrany = new List<Hrana>();
+            NavstiveneHrany = new List<DataHrany>();
         }
     }
 
@@ -21,11 +21,11 @@ namespace Datove_struktury_2020.Data
         PrioritniFronta<Cesta> D = new PrioritniFronta<Cesta>();
         Cesta NejkratsiNalezenaCesta;
 
-        List<Vrchol> VrcholyUzVyresene = new List<Vrchol>();
+        List<DataVrcholu> VrcholyUzVyresene = new List<DataVrcholu>();
 
-        Vrchol konec;
+        DataVrcholu konec;
 
-        public void NajdiZastavku(Vrchol zacatek, Vrchol konec)
+        public void NajdiZastavku(DataVrcholu zacatek, DataVrcholu konec)
         {
             D = new PrioritniFronta<Cesta>();
             NejkratsiNalezenaCesta = null;
@@ -44,7 +44,7 @@ namespace Datove_struktury_2020.Data
             ProjdiGraf();
         }
 
-        public void VlozCestuDoFronty(Vrchol novyVrchol, Hrana novyUsek, float cena, Cesta dosavadniCesta = null)
+        public void VlozCestuDoFronty(DataVrcholu novyVrchol, DataHrany novyUsek, float cena, Cesta dosavadniCesta = null)
         {
             // jestli objekt vubec existuje a cena doposud nalezene cesty je mensi nez vkladana tak se nic nemeni 
             if (NejkratsiNalezenaCesta != null && NejkratsiNalezenaCesta.CenaCeleCesty <= cena)
@@ -61,7 +61,7 @@ namespace Datove_struktury_2020.Data
                 Cesta cestaSNovymUsekem = new Cesta();
                 if (dosavadniCesta != null)
                 {
-                    foreach (Hrana dosavadniHrana in dosavadniCesta.NavstiveneHrany)
+                    foreach (DataHrany dosavadniHrana in dosavadniCesta.NavstiveneHrany)
                     {
                         cestaSNovymUsekem.NavstiveneHrany.Add(dosavadniHrana);
                     }
@@ -112,8 +112,8 @@ namespace Datove_struktury_2020.Data
 
             //v hranate zavorce je x-ty prvek listu - tady je to ten posledni, posledni projita cesta, tady h
 
-            Hrana h = dosavadniProjitaCesta.Informace.NavstiveneHrany.Count == 0 ? null : dosavadniProjitaCesta.Informace.NavstiveneHrany[dosavadniProjitaCesta.Informace.NavstiveneHrany.Count - 1];
-            foreach (Hrana obecnaHrana in dosavadniProjitaCesta.Informace.AktualniVrchol.ListHran)
+            DataHrany h = dosavadniProjitaCesta.Informace.NavstiveneHrany.Count == 0 ? null : dosavadniProjitaCesta.Informace.NavstiveneHrany[dosavadniProjitaCesta.Informace.NavstiveneHrany.Count - 1];
+            foreach (DataHrany obecnaHrana in dosavadniProjitaCesta.Informace.AktualniVrchol.ListHran)
             {
                 // preskoci cestu po ktere jsme prisli
                 if (obecnaHrana == h)

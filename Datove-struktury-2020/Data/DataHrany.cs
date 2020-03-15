@@ -4,15 +4,15 @@ using System.Text;
 
 namespace Datove_struktury_2020.Data
 {
-    class Hrana
+    class DataHrany
     {
-        public Vrchol PocatekHrany { get; set; }
-        public Vrchol KonecHrany { get; set; }
+        public DataVrcholu PocatekHrany { get; set; }
+        public DataVrcholu KonecHrany { get; set; }
         public bool JeFunkcniCesta { get; set; }
         public short DelkaHrany { get; set; }
         public bool OznaceniHrany { get; set; }
 
-        public Hrana()
+        public DataHrany()
         {
             JeFunkcniCesta = true;
             OznaceniHrany = false;

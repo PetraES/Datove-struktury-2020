@@ -4,17 +4,17 @@ using System.Text;
 
 namespace Datove_struktury_2020.Data
 {
-    class Vrchol
+    class DataVrcholu
     {
         public string NazevVrcholu { get; set; } //property
         public float XSouradniceVrcholu { get; set; } //property
         public float YSouradniceVrcholu { get; set; } //property
         public TypyVrcholu TypVrcholu { get; set; } //property
-        public List<Hrana> ListHran { get; set; } //property proto je to velkym pismenem
+        public List<DataHrany> ListHran { get; set; } //property proto je to velkym pismenem
 
-        public Vrchol()
+        public DataVrcholu()
         {
-            ListHran = new List<Hrana>();
+            ListHran = new List<DataHrany>();
         }
 
         public override string ToString()

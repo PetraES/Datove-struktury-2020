@@ -33,8 +33,8 @@ namespace Datove_struktury_2020
         //je to struktura
         System.Windows.Point gBod;
 
-        Vrchol pocatek;
-        Vrchol konec;
+        DataVrcholu pocatek;
+        DataVrcholu konec;
 
         private KoordinatorLesnichDobrodruzstvi mapa;
         private Dijkstra dijkstra;
@@ -64,13 +64,13 @@ namespace Datove_struktury_2020
         public void vykresliMapu()
         {
             canvasElem.Children.Clear();
-            foreach (Vrchol vrchol in mapa.GetVrcholy())
+            foreach (DataVrcholu vrchol in mapa.GetVrcholy())
             {
                 vykresliObec(vrchol);
             }
         }
 
-        private void vykresliObec(Vrchol vrchol)
+        private void vykresliObec(DataVrcholu vrchol)
         {
             Ellipse teckaNaVrcholu = new Ellipse();
             if (vrchol.TypVrcholu == TypyVrcholu.odpocivadlo)
@@ -135,7 +135,7 @@ namespace Datove_struktury_2020
             //    canvasElem.Children.Add(e);
             //}
 
-            foreach (Hrana lesniCesta in vrchol.ListHran)
+            foreach (DataHrany lesniCesta in vrchol.ListHran)
             {
                 // Kreslíme to jakoby jenom od vrcholu 1 každé hrany - to nám zajistí, že nebudou silnice vykresleny 2x
                 if (lesniCesta.PocatekHrany.XSouradniceVrcholu == vrchol.XSouradniceVrcholu && lesniCesta.PocatekHrany.YSouradniceVrcholu == vrchol.YSouradniceVrcholu)
@@ -145,7 +145,7 @@ namespace Datove_struktury_2020
             }
         }
 
-        private void KresliSilnici(Hrana lesniStezka)
+        private void KresliSilnici(DataHrany lesniStezka)
         {
             bool jeOznacena = false;
             if (lesniStezka.OznaceniHrany)
@@ -201,7 +201,7 @@ namespace Datove_struktury_2020
             float x = (float)(dot.Margin.Left / scaleX);
             float y = (float)(dot.Margin.Top / scaleY);
 
-            Vrchol hledanyVrcholvMape = mapa.najdiVrchol(x, y);
+            DataVrcholu hledanyVrcholvMape = mapa.najdiVrchol(x, y);
 
             if (hledanyVrcholvMape != null)
             {
@@ -215,7 +215,7 @@ namespace Datove_struktury_2020
                 }
                 else if (urcenKonecnyBod)
                 {
-                    foreach (Hrana h in mapa.vsechnyHrany)
+                    foreach (DataHrany h in mapa.vsechnyHrany)
                     {
                         h.OznaceniHrany = false;
                     }
@@ -232,7 +232,7 @@ namespace Datove_struktury_2020
                     }
                     string vypisCesty = "Pocatecni bod je " + pocatek.ToString() + ".\n"
                         + "Konecny bod je " + konec.ToString() + ". \n";
-                    foreach (Hrana h in cesta.NavstiveneHrany)
+                    foreach (DataHrany h in cesta.NavstiveneHrany)
                     {
                         h.OznaceniHrany = true;
                         vypisCesty += "(" + h.PocatekHrany.NazevVrcholu + ", " + h.KonecHrany.NazevVrcholu + "), ";
@@ -251,7 +251,7 @@ namespace Datove_struktury_2020
                     else
                     {
                         konec = hledanyVrcholvMape;
-                        Hrana novaHrana = new Hrana();
+                        DataHrany novaHrana = new DataHrany();
                         novaHrana.PocatekHrany = pocatek;
                         novaHrana.KonecHrany = konec;
                         // novaHrana.KonecHrany = hledanyVrcholvMape;
@@ -268,7 +268,7 @@ namespace Datove_struktury_2020
             }
         }
 
-        private double spocitejDelkuHrany(Vrchol zacatekHrany, Vrchol konecHrany)
+        private double spocitejDelkuHrany(DataVrcholu zacatekHrany, DataVrcholu konecHrany)
         {
             double delkaHrany = 0;
             double xa = zacatekHrany.XSouradniceVrcholu;
@@ -317,10 +317,10 @@ namespace Datove_struktury_2020
             float yDo = (float)((line.Y2 - 4) / scaleY);
 
             // vrchol Z jako zacatek
-            Vrchol vrhcholZ = mapa.najdiVrchol(xZ, yZ);
+            DataVrcholu vrhcholZ = mapa.najdiVrchol(xZ, yZ);
             if (vrhcholZ != null)
             {
-                Hrana silnice = (Hrana)(from item in vrhcholZ.ListHran where item.KonecHrany.XSouradniceVrcholu.Equals(xDo) && item.KonecHrany.YSouradniceVrcholu.Equals(yDo) select item).First();
+                DataHrany silnice = (DataHrany)(from item in vrhcholZ.ListHran where item.KonecHrany.XSouradniceVrcholu.Equals(xDo) && item.KonecHrany.YSouradniceVrcholu.Equals(yDo) select item).First();
                 //SilniceInfo info = new SilniceInfo(silnice);
                 //info.ShowDialog();
 
@@ -414,7 +414,7 @@ namespace Datove_struktury_2020
 
         private void ANO_Button_Click(object sender, RoutedEventArgs e)
         {
-            Vrchol pridanyVrchol = mapa.vlozVrchol((int)gBod.X, (int)gBod.Y);
+            DataVrcholu pridanyVrchol = mapa.vlozVrchol((int)gBod.X, (int)gBod.Y);
             vykresliObec(pridanyVrchol);
             tlacitko_ANO.Visibility = Visibility.Hidden;
             tlacitko_NE.Visibility = Visibility.Hidden;

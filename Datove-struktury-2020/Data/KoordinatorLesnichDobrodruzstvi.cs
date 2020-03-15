@@ -6,8 +6,8 @@ namespace Datove_struktury_2020.Data
 {
     class KoordinatorLesnichDobrodruzstvi
     {
-        public List<Vrchol> vsechnyVrcholy;
-        public List<Hrana> vsechnyHrany;
+        public List<DataVrcholu> vsechnyVrcholy;
+        public List<DataHrany> vsechnyHrany;
         private EditaceCSV editujCSV = new EditaceCSV();
         // vrcholy jsou obce
         private string cestaKsouboruObce = @"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\Obce.csv";
@@ -20,11 +20,11 @@ namespace Datove_struktury_2020.Data
             vsechnyHrany = vytvorHrany();
         }
 
-        public List<Vrchol> vytvorVrcholy()
+        public List<DataVrcholu> vytvorVrcholy()
         {
             EditaceCSV nacteniCSV = new EditaceCSV();
             List<string[]> objekt = nacteniCSV.NactiSoubor(cestaKsouboruObce);
-            List<Vrchol> vseckyVrcholy = new List<Vrchol>();
+            List<DataVrcholu> vseckyVrcholy = new List<DataVrcholu>();
 
             //ukladani poradi radku do int, aby se pak dala vynechat hlavicka souboru Cesty
             int poradiRadku = 0;
@@ -35,7 +35,7 @@ namespace Datove_struktury_2020.Data
                 {
                     continue;
                 }
-                Vrchol v = new Vrchol();
+                DataVrcholu v = new DataVrcholu();
                 v.NazevVrcholu = radek[0];
                 v.XSouradniceVrcholu = float.Parse(radek[1]);
                 v.YSouradniceVrcholu = float.Parse(radek[2]);
@@ -45,9 +45,9 @@ namespace Datove_struktury_2020.Data
             return vseckyVrcholy;
         }
 
-        public Vrchol najdiVrchol(float x, float y)
+        public DataVrcholu najdiVrchol(float x, float y)
         {
-            foreach (Vrchol w in vsechnyVrcholy)
+            foreach (DataVrcholu w in vsechnyVrcholy)
             {
                 if (w.XSouradniceVrcholu == x && w.YSouradniceVrcholu == y)
                 {
@@ -57,11 +57,11 @@ namespace Datove_struktury_2020.Data
             throw new Exception("vrchol nenalezen");
         }
 
-        public List<Hrana> vytvorHrany()
+        public List<DataHrany> vytvorHrany()
         {
             EditaceCSV nacteniCSV = new EditaceCSV();
             List<string[]> objekt = nacteniCSV.NactiSoubor(cestaKsouboruCesty);
-            List<Hrana> listHran = new List<Hrana>();
+            List<DataHrany> listHran = new List<DataHrany>();
 
             //ukladani poradi radku do int, aby se pak dala vynechat hlavicka souboru Cesty
             int poradiRadku = 0;
@@ -73,14 +73,14 @@ namespace Datove_struktury_2020.Data
                     continue;
                 }
                 //vytvorime novou instanci hrany
-                Hrana novaHrana = new Hrana();
+                DataHrany novaHrana = new DataHrany();
                 //najdemem pocatecni vrchol hrany  v listu vrcholů jiz nactenych
-                Vrchol pocatecniVrchol = najdiVrchol(float.Parse(radek[0]), float.Parse(radek[1]));
+                DataVrcholu pocatecniVrchol = najdiVrchol(float.Parse(radek[0]), float.Parse(radek[1]));
                 //nalezeny vrchol nastavime jako pocatek hrany
                 novaHrana.PocatekHrany = pocatecniVrchol;
                 //pocatecnimu vrcholu priradime hranu
                 pocatecniVrchol.ListHran.Add(novaHrana);
-                Vrchol konecnyVrchol = najdiVrchol(float.Parse(radek[2]), float.Parse(radek[3]));
+                DataVrcholu konecnyVrchol = najdiVrchol(float.Parse(radek[2]), float.Parse(radek[3]));
                 novaHrana.KonecHrany = konecnyVrchol;
                 konecnyVrchol.ListHran.Add(novaHrana);
                 novaHrana.DelkaHrany = short.Parse(radek[4]);
@@ -89,14 +89,14 @@ namespace Datove_struktury_2020.Data
             return listHran;
         }
 
-        public List<Vrchol> GetVrcholy()
+        public List<DataVrcholu> GetVrcholy()
         {
             return vsechnyVrcholy;
         }
 
-        public Vrchol vlozVrchol(int x, int y)
+        public DataVrcholu vlozVrchol(int x, int y)
         {
-            Vrchol v = new Vrchol();
+            DataVrcholu v = new DataVrcholu();
             v.XSouradniceVrcholu = x;
             v.YSouradniceVrcholu = y;
             vsechnyVrcholy.Add(v);
@@ -106,7 +106,7 @@ namespace Datove_struktury_2020.Data
         public void ulozMapu()
         {
             string vrcholy = "nazevVrcholu;Xsouradnice;Ysouradnice\n";
-            foreach (Vrchol v in vsechnyVrcholy)
+            foreach (DataVrcholu v in vsechnyVrcholy)
             {
                 vrcholy += string.Format("{0};{1};{2};{3}\n",
                     v.NazevVrcholu,
@@ -119,7 +119,7 @@ namespace Datove_struktury_2020.Data
             editujCSV.ZapisDoCSV(cestaKsouboruObce, vrcholy);
 
             string hrany = "pocatekX;pocatekY;konecX;konecY;delkaCesty\n";
-            foreach (Hrana h in vsechnyHrany)
+            foreach (DataHrany h in vsechnyHrany)
             {
                 hrany += string.Format("{0};{1};{2};{3};{4}\n",
                     h.PocatekHrany.XSouradniceVrcholu,
