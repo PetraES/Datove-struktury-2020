@@ -1,63 +1,63 @@
 nazevVrcholu;Xsouradnice;Ysouradnice
-Havlíčkův Brod;10;10;0
-Nová ves;48;8;0
-Jihlávka;15;20;0
-Uhřínovice;2;95;2
-Batňovice;46;104;0
-Babice;27;66;0
-Bavory;17;44;1
-Barchovice;69;45;0
-Zloves;95;20;1
-Babice u Rosic;88;43;1
-Batelov;66;72;1
-Arnolec;101;87;0
-Bačkov;77;101;0
-Bačkovice;57;50;0
-Adamov;56;25;0
-Bor;8;177;2
-Albrechtice v Jizerských horách;36;135;0
-Bakov nad Jizerou;11;145;1
-Chotěboř;30;220;2
-Adršpach;38;180;0
-Bařice-Velké Těšany;35;197;0
-Barchov;20;186;0
-Bánov;65;147;1
-Archlebov;87;139;1
-Dolín;60;235;2
-Alojzov;74;196;0
-Arneštovice;72;161;0
-Balikova Lhota;104;144;1
-Bácovice;49;159;0
-Bačice;100;113;0
-Babylon;125;29;1
-Baliny;167;52;0
-Eš;140;8;2
-Bašnice;127;120;0
-Albrechtičky;154;125;1
-Bavorov;143;81;0
-Bartošovice v Orlických horách;144;63;0
+K1;10;10;0
+K2;48;8;0
+K3;15;20;0
+Ovčákova;2;95;2
+K5;46;104;0
+K6;27;66;0
+O15;17;44;1
+K8;69;45;0
+O14;95;20;1
+O13;88;43;1
+O12;66;72;1
+K9;101;87;0
+K10;77;101;0
+K11;57;50;0
+K12;56;25;0
+U ovara;8;177;2
+K13;36;135;0
+O11;11;145;1
+Jelení obora;30;220;2
+K14;38;180;0
+K15;35;197;0
+K16;20;186;0
+O10;65;147;1
+O9;87;139;1
+U třech smrtihlavů;60;235;2
+K17;74;196;0
+K18;72;161;0
+O8;104;144;1
+K19;49;159;0
+K20;100;113;0
+O7;125;29;1
+K21;167;52;0
+Krmelec;140;8;2
+K22;127;120;0
+O6;154;125;1
+K23;143;81;0
+K24;144;63;0
 Aš;177;38;0
-Cibotín;222;5;2
-Albrechtice nad Orlicí;188;32;0
-Babice nad Svitavou;176;83;0
-Hustopeče;213;77;2
-Bačalky;194;98;1
-Bdín;196;55;0
-Bantice;168;25;2
-Abertamy;117;174;0
-Bavoryně;147;147;1
-Andělská Hora;124;162;0
-Žižkovo Pole;120;200;0
-Dubí;170;219;0
-Jakubov;130;210;1
-Anenská Studánka;142;199;0
-Bašť;175;174;1
-Arnoltice;222;145;2
-Polná;190;139;1
-Dobrohostov;189;230;2
-Samotín;220;220;2
-Karlovy Vary;200;200;0
-Baška;181;192;0
-Teplice;171;225;0
-Bartošovice;135;139;0
-Aš;111;228;2
+Na Hejtmance;222;5;2
+K25;188;32;0
+K26;176;83;0
+U svaté trojice;213;77;2
+O5;194;98;1
+K27;196;55;0
+Za sedmero horama;168;25;2
+K28;117;174;0
+O4;147;147;1
+K29;124;162;0
+K30;120;200;0
+K31;170;219;0
+O2;130;210;1
+K32;142;199;0
+O3;175;174;1
+Pod skalou;222;145;2
+O1;190;139;1
+U hejkala;189;230;2
+U popelářa;220;220;2
+K33;200;200;0
+K34;181;192;0
+K4;171;225;0
+K7;135;139;0
+Pod topolem;111;228;2
