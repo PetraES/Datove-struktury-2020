@@ -47,6 +47,20 @@ namespace Datove_struktury_2020.Data
             }
         }
 
+        public V VratVrchol(K klic)
+        {
+            // pokusime se najit vrchol ve slovniku
+            // pokud vrchol neexistuje vratime "null"
+            if (vsechnyVrcholy.TryGetValue(klic, out Vrchol hledanyVrchol))
+            {
+                return hledanyVrchol.Data;
+            }
+            else
+            {
+                return default(V);
+            }
+        }
+
         public IEnumerable<V> VratSeznamVrcholu()
         {
             foreach (Vrchol w in vsechnyVrcholy.Values)

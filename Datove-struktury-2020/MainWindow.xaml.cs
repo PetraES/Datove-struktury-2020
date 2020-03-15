@@ -37,7 +37,7 @@ namespace Datove_struktury_2020
         DataVrcholu konec;
 
         private KoordinatorLesnichDobrodruzstvi mapa;
-        private Dijkstra dijkstra;
+        
         // private SearchHeap searchHeap;
 
         public MainWindow()
@@ -49,7 +49,7 @@ namespace Datove_struktury_2020
             tlacitko_NE.Visibility = Visibility.Hidden;
 
             //searchHeap = new SearchHeap(mapa);
-            dijkstra = new Dijkstra();
+            
             try
             {
                 mapa = new KoordinatorLesnichDobrodruzstvi();
@@ -68,11 +68,16 @@ namespace Datove_struktury_2020
             {
                 vykresliObec(vrchol);
             }
+            foreach (DataHran hrana in mapa.VratHrany())
+            {
+                KresliSilnici(hrana);
+            }
         }
 
         private void vykresliObec(DataVrcholu vrchol)
         {
             Ellipse teckaNaVrcholu = new Ellipse();
+            teckaNaVrcholu.Name = vrchol.NazevVrcholu.Replace(" ", "_");
             if (vrchol.TypVrcholu == TypyVrcholu.odpocivadlo)
             {
                 teckaNaVrcholu.Stroke = new SolidColorBrush(Colors.DarkBlue);
@@ -135,17 +140,9 @@ namespace Datove_struktury_2020
             //    canvasElem.Children.Add(e);
             //}
 
-            foreach (DataHrany lesniCesta in vrchol.ListHran)
-            {
-                // Kreslíme to jakoby jenom od vrcholu 1 každé hrany - to nám zajistí, že nebudou silnice vykresleny 2x
-                if (lesniCesta.PocatekHrany.XSouradniceVrcholu == vrchol.XSouradniceVrcholu && lesniCesta.PocatekHrany.YSouradniceVrcholu == vrchol.YSouradniceVrcholu)
-                {
-                    KresliSilnici(lesniCesta);
-                }
-            }
         }
 
-        private void KresliSilnici(DataHrany lesniStezka)
+        private void KresliSilnici(DataHran lesniStezka)
         {
             bool jeOznacena = false;
             if (lesniStezka.OznaceniHrany)
@@ -153,21 +150,25 @@ namespace Datove_struktury_2020
                 jeOznacena = true;
             }
 
+            DataVrcholu pocatekHrany = mapa.najdiVrchol(lesniStezka.PocatekHrany);
+            DataVrcholu konecHrany = mapa.najdiVrchol(lesniStezka.KonecHrany);
+
             Line myline = new Line
             {
+                // Name = String.Format("{0}__{1}", lesniStezka.PocatekHrany, lesniStezka.KonecHrany),
                 Stroke = jeOznacena ? Brushes.Black : Brushes.Beige,
                 StrokeThickness = 10,
-                X1 = lesniStezka.PocatekHrany.XSouradniceVrcholu * scaleX + 4,
-                Y1 = lesniStezka.PocatekHrany.YSouradniceVrcholu * scaleY + 4,
-                X2 = lesniStezka.KonecHrany.XSouradniceVrcholu * scaleX + 4,
-                Y2 = lesniStezka.KonecHrany.YSouradniceVrcholu * scaleY + 4
+                X1 = pocatekHrany.XSouradniceVrcholu * scaleX + 4,
+                Y1 = pocatekHrany.YSouradniceVrcholu * scaleY + 4,
+                X2 = konecHrany.XSouradniceVrcholu * scaleX + 4,
+                Y2 = konecHrany.YSouradniceVrcholu * scaleY + 4
             };
             myline.Opacity = 0.9;
             myline.MouseLeftButtonDown += OnLineMouseLeftButtonDown;
             canvasElem.Children.Add(myline);
 
-            float xLabel = lesniStezka.PocatekHrany.XSouradniceVrcholu + (lesniStezka.KonecHrany.XSouradniceVrcholu - lesniStezka.PocatekHrany.XSouradniceVrcholu) * 1 / 2;
-            float yLabel = lesniStezka.PocatekHrany.YSouradniceVrcholu + (lesniStezka.KonecHrany.YSouradniceVrcholu - lesniStezka.PocatekHrany.YSouradniceVrcholu) * 1 / 2;
+            float xLabel = pocatekHrany.XSouradniceVrcholu + (konecHrany.XSouradniceVrcholu - pocatekHrany.XSouradniceVrcholu) * 1 / 2;
+            float yLabel = pocatekHrany.YSouradniceVrcholu + (konecHrany.YSouradniceVrcholu - pocatekHrany.YSouradniceVrcholu) * 1 / 2;
             TextBlock TB = new TextBlock();
             TB.Text = $"{lesniStezka.DelkaHrany} min";
             BitmapCacheBrush bcb = new BitmapCacheBrush(TB);
@@ -198,10 +199,9 @@ namespace Datove_struktury_2020
         void OnEllipseMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var dot = (Ellipse)sender;
-            float x = (float)(dot.Margin.Left / scaleX);
-            float y = (float)(dot.Margin.Top / scaleY);
+            string klicVrcholu = dot.Name.Replace("_", " ");
 
-            DataVrcholu hledanyVrcholvMape = mapa.najdiVrchol(x, y);
+            DataVrcholu hledanyVrcholvMape = mapa.najdiVrchol(klicVrcholu);
 
             if (hledanyVrcholvMape != null)
             {
@@ -215,7 +215,7 @@ namespace Datove_struktury_2020
                 }
                 else if (urcenKonecnyBod)
                 {
-                    foreach (DataHrany h in mapa.vsechnyHrany)
+                    foreach (DataHran h in mapa.VratHrany())
                     {
                         h.OznaceniHrany = false;
                     }
@@ -223,8 +223,8 @@ namespace Datove_struktury_2020
                     urcenKonecnyBod = false;
                     ((TextBlock)label1.Content).Text = "Pocatecni bod je " + pocatek.ToString() + ".\n"
                         + "Konecny bod je " + konec.ToString() + ". Hledam cestu.";
-                    dijkstra.NajdiZastavku(pocatek, konec);
-                    Cesta cesta = dijkstra.vratNejkratsiCestu();
+                    
+                    Cesta cesta = mapa.najdiCestu(pocatek.NazevVrcholu, konec.NazevVrcholu);
                     if (cesta == null)
                     {
                         ((TextBlock)label1.Content).Text = "cesta nenalezena";
@@ -232,10 +232,10 @@ namespace Datove_struktury_2020
                     }
                     string vypisCesty = "Pocatecni bod je " + pocatek.ToString() + ".\n"
                         + "Konecny bod je " + konec.ToString() + ". \n";
-                    foreach (DataHrany h in cesta.NavstiveneHrany)
+                    foreach (DataHran h in cesta.NavstiveneHrany)
                     {
                         h.OznaceniHrany = true;
-                        vypisCesty += "(" + h.PocatekHrany.NazevVrcholu + ", " + h.KonecHrany.NazevVrcholu + "), ";
+                        vypisCesty += "(" + h.PocatekHrany + ", " + h.KonecHrany + "), ";
                     }
                     vykresliMapu();
                     ((TextBlock)label1.Content).Text = vypisCesty;
@@ -251,15 +251,7 @@ namespace Datove_struktury_2020
                     else
                     {
                         konec = hledanyVrcholvMape;
-                        DataHrany novaHrana = new DataHrany();
-                        novaHrana.PocatekHrany = pocatek;
-                        novaHrana.KonecHrany = konec;
-                        // novaHrana.KonecHrany = hledanyVrcholvMape;
-                        novaHrana.DelkaHrany = (short)spocitejDelkuHrany(pocatek, konec);
-                        pocatek.ListHran.Add(novaHrana);
-                        konec.ListHran.Add(novaHrana);
-                        // Pridani nove hrany do listu vsech hran v mape.
-                        mapa.vsechnyHrany.Add(novaHrana);
+                        DataHran novaHrana = mapa.vytvorHranu(pocatek.NazevVrcholu, konec.NazevVrcholu, (short)spocitejDelkuHrany(pocatek, konec));
                         KresliSilnici(novaHrana);
                         stisknutoVytvorCestu = false;
                         ((TextBlock)label1.Content).Text = "Cesta byla vytvořena.";
@@ -311,16 +303,17 @@ namespace Datove_struktury_2020
         void OnLineMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var line = (Line)sender;
+            string[] kliceVrcholu = line.Name.Split("|");
             float xZ = (float)((line.X1 - 4) / scaleX);
             float yZ = (float)((line.Y1 - 4) / scaleY);
             float xDo = (float)((line.X2 - 4) / scaleX);
             float yDo = (float)((line.Y2 - 4) / scaleY);
 
             // vrchol Z jako zacatek
-            DataVrcholu vrhcholZ = mapa.najdiVrchol(xZ, yZ);
+            DataVrcholu vrhcholZ = mapa.najdiVrchol(kliceVrcholu[0]);
             if (vrhcholZ != null)
             {
-                DataHrany silnice = (DataHrany)(from item in vrhcholZ.ListHran where item.KonecHrany.XSouradniceVrcholu.Equals(xDo) && item.KonecHrany.YSouradniceVrcholu.Equals(yDo) select item).First();
+                // DataHran silnice = (DataHran)(from item in vrhcholZ.ListHran where item.KonecHrany.XSouradniceVrcholu.Equals(xDo) && item.KonecHrany.YSouradniceVrcholu.Equals(yDo) select item).First();
                 //SilniceInfo info = new SilniceInfo(silnice);
                 //info.ShowDialog();
 
@@ -425,6 +418,8 @@ namespace Datove_struktury_2020
 
             // nastaveni pomocne promene na true v if else v metode OnEllipseMouseLeftButtonDow
             stisknutoVytvorCestu = true;
+            pocatek = null;
+            konec = null;
             ((TextBlock)label1.Content).Text = "Vyberte počáteční bod.";
 
         }
