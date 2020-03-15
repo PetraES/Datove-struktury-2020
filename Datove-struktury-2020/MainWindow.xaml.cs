@@ -37,14 +37,14 @@ namespace Datove_struktury_2020
         DataVrcholu konec;
 
         private KoordinatorLesnichDobrodruzstvi mapa;
-        
+
         // private SearchHeap searchHeap;
 
         public MainWindow()
         {
 
             InitializeComponent();
-            
+
             SkrytPrvkyVytvorBod();
 
             try
@@ -117,15 +117,7 @@ namespace Datove_struktury_2020
                 teckaNaVrcholu.Width = 10;
             }
             Canvas.SetZIndex(teckaNaVrcholu, 3);
-
-            //if (vrchol.VLeteckemRaiusu == true)
-            //{
-            //    currentDot.Fill = new SolidColorBrush(Colors.Aqua);
-            //}
-            //else
-            //{
-            //    currentDot.Fill = new SolidColorBrush(Colors.Green);
-            //}
+   
             teckaNaVrcholu.Margin = new Thickness(vrchol.XSouradniceVrcholu * scaleX, vrchol.YSouradniceVrcholu * scaleY, 0, 0);
 
             //DELEGAT tu se zaregistruje funkce OnElipse.. na jako event handler na akci MouseLeft.. - DELEGAT
@@ -140,23 +132,6 @@ namespace Datove_struktury_2020
 
             canvasElem.Children.Add(TB);
             canvasElem.Children.Add(teckaNaVrcholu);
-
-            //if (vrchol.LeteckeStredisko == true && vrchol.Radius > 0)
-            //{
-            //    Ellipse e = new Ellipse();
-            //    e.Stroke = new SolidColorBrush(Colors.DarkCyan);
-            //    e.StrokeThickness = 1;
-            //    Canvas.SetZIndex(e, 3);
-            //    e.Opacity = 0.4;
-            //    float xL = vrchol.getX() * scaleX - (vrchol.Radius * scaleX);
-            //    float yL = vrchol.getY() * scaleY - (vrchol.Radius * scaleY);
-
-            //    e.Height = (vrchol.Radius * scaleX * 2);
-            //    e.Width = (vrchol.Radius * scaleY * 2);
-            //    e.Margin = new Thickness(xL, yL, 0, 0);
-            //    canvasElem.Children.Add(e);
-            //}
-
         }
 
         private void KresliSilnici(DataHran lesniStezka)
@@ -240,7 +215,7 @@ namespace Datove_struktury_2020
                     urcenKonecnyBod = false;
                     ((TextBlock)label1.Content).Text = "Pocatecni bod je " + pocatek.ToString() + ".\n"
                         + "Konecny bod je " + konec.ToString() + ". Hledam cestu.";
-                    
+
                     Cesta cesta = mapa.najdiCestu(pocatek.NazevVrcholu, konec.NazevVrcholu);
                     if (cesta == null)
                     {
@@ -289,33 +264,6 @@ namespace Datove_struktury_2020
             return delkaHrany;
         }
 
-        //ObecInfo info = new ObecInfo(o);
-        //info.ShowDialog();
-        //if (info.needRedraw == true)
-        //{
-        //    searchHeap.unMarkFinish();
-        //    if (info.obec.LeteckeStredisko == true && info.obec.Radius > 0)
-        //    {
-        //        mapa.najdiObceVRadiusu(info.obec);
-        //        vykresliMapu();
-        //    }
-        //    else
-        //    {
-        //        if (info.obec.LeteckyObsluzne != null)
-        //        {
-        //            mapa.zrusLeteckouObsluhu(info.obec);
-        //        }
-        //    }
-        //    vykresliMapu();
-
-        //}
-
-        //if (info.smazatObec == true)
-        //{
-        //    mapa.odeberObec(o);
-        //    searchHeap.unMarkFinish();
-        //    vykresliMapu();
-        //}
 
         void OnLineMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -331,28 +279,7 @@ namespace Datove_struktury_2020
             if (vrhcholZ != null)
             {
                 // DataHran silnice = (DataHran)(from item in vrhcholZ.ListHran where item.KonecHrany.XSouradniceVrcholu.Equals(xDo) && item.KonecHrany.YSouradniceVrcholu.Equals(yDo) select item).First();
-                //SilniceInfo info = new SilniceInfo(silnice);
-                //info.ShowDialog();
 
-                //if (info.needRedraw == true)
-                //{
-                //    // searchHeap.unMarkFinish();
-                //    vykresliMapu();
-                //}
-
-                //if (info.smazatSilnici == true)
-                //{
-                //    mapa.odeberSilnici(info.silnice);
-                //    searchHeap.unMarkFinish();
-                //    vykresliMapu();
-                //}
-
-                //if (info.silnice.Nehoda == true)
-                //{
-                //    mapa.setNehoda(info.silnice);
-                //    searchHeap.unMarkFinish();
-                //    vykresliMapu();
-                //}
             }
         }
 
@@ -370,13 +297,13 @@ namespace Datove_struktury_2020
             ((TextBlock)label1.Content).Text = "Vyberte počáteční bod.";
         }
 
-        
+
         private void VlozBodButton_Click(object sender, RoutedEventArgs e)
         {
             stisknutoVytvorVrchol = true;
             ((TextBlock)label1.Content).Text = "Oznacte misto na mape, kde ma vzniknout dalsi bod.";
             // bod se vytvari pri kliknuti do canvasu metoda canvasElem_MouseLeftButtonDown
-            }
+        }
 
         private void canvasElem_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -414,7 +341,8 @@ namespace Datove_struktury_2020
                 vykresliObec(pridanyVrchol);
                 SkrytPrvkyVytvorBod();
                 ((TextBlock)label1.Content).Text = "Hotovo";
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 ((TextBlock)label1.Content).Text = "Nastala chyba: " + ex.Message;
             }
