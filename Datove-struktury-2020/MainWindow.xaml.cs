@@ -104,7 +104,7 @@ namespace Datove_struktury_2020
         }
 
         /// <summary>
-        /// Vykresluje vrcholy/body/mista na mapě, aby došlo k jejich visuálnímu rozlišení.
+        /// Vykresluje vrcholy/body/mista na mapě.
         /// </summary>
         /// <param name="vrchol"></param>
         private void vykresliObec(DataVrcholu vrchol)
@@ -151,7 +151,7 @@ namespace Datove_struktury_2020
         }
 
         /// <summary>
-        /// Vykresluje cestu na mapě. 
+        /// Vykresluje 1 cestu na mapě. 
         /// </summary>
         /// <param name="lesniStezka">nese <c>DataHran<c> potřebné k vytvoření hrany</param>
         private void KresliSilnici(DataHran lesniStezka)
@@ -214,6 +214,34 @@ namespace Datove_struktury_2020
         }
 
         /// <summary>
+        /// Smaze cestu kdyz dojde ke stisku dalsi moznosti z vyberu.
+        /// </summary>
+        private void smazNalezenouCestu()
+        {
+            foreach (DataHran h in mapa.VratHrany())
+            {
+                h.OznaceniHrany = false;
+            }
+            vykresliMapu();
+        }
+
+        /// <summary>
+        /// Vyresetuje uzivatelske rozhrani do zakladniho stavu.
+        /// </summary>
+        private void resetAkci()
+        {
+            smazNalezenouCestu();
+            SkrytPrvkyVytvorBod();
+            urcenPocatecniBod = false;
+            urcenKonecnyBod = false;
+            stisknutoVytvorVrchol = false;
+            stisknutoVytvorCestu = false;
+
+            pocatek = null;
+            konec = null;
+        }
+
+        /// <summary>
         /// Obsluhuje udalost kliku na bod v mape (zastavka, odpocivadlo nebo krizovatka).
         /// Vyuziva se na urceni pocatecniho a koncoveho vrcholu pro vyhledavani nejkratsi trasy v mape 
         /// nebo pro pridani nove cesty do mapy.
@@ -239,10 +267,6 @@ namespace Datove_struktury_2020
                 }
                 else if (urcenKonecnyBod)
                 {
-                    foreach (DataHran h in mapa.VratHrany())
-                    {
-                        h.OznaceniHrany = false;
-                    }
                     konec = hledanyVrcholvMape;
                     urcenKonecnyBod = false;
                     nastavTextLabelu("Pocatecni bod je: " + pocatek.ToString() + ".\n"
@@ -343,6 +367,7 @@ namespace Datove_struktury_2020
         /// <param name="e"></param>
         private void NajdiCestuButt_Click(object sender, RoutedEventArgs e)
         {
+            resetAkci();
             urcenPocatecniBod = true;
             nastavTextLabelu("Vyberte počáteční bod.");
         }
@@ -354,6 +379,7 @@ namespace Datove_struktury_2020
         /// <param name="e"></param>
         private void VlozBodButton_Click(object sender, RoutedEventArgs e)
         {
+            resetAkci();
             stisknutoVytvorVrchol = true;
             nastavTextLabelu("Označte prosím místo na mapě, kde má vzniknout další bod.");
             // bod se vytvari pri kliknuti do canvasu metoda canvasElem_MouseLeftButtonDown
@@ -418,6 +444,7 @@ namespace Datove_struktury_2020
         /// <param name="e"></param>
         private void PridejCestuButton_Click(object sender, RoutedEventArgs e)
         {
+            resetAkci();
             // nastaveni pomocne promene na true v if else v metode OnEllipseMouseLeftButtonDow
             stisknutoVytvorCestu = true;
             pocatek = null;
