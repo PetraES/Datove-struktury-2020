@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Datove_struktury_2020.Data
 {
+    /// <summary>
+    /// Uchovává strukturu cesty. Cesta je složená z několikáti hran, nepř jednoho bodu do druhého.
+    /// </summary>
     class Cesta
     {
         public string AktualniVrchol { get; set; }
@@ -16,25 +19,34 @@ namespace Datove_struktury_2020.Data
         }
     }
 
+    /// <summary>
+    /// Algoritmus hledající nejkratší cestu v grafu. Využívá prioritní fronty.
+    /// </summary>
     class Dijkstra
     {
         AbstraktniGraf<string, DataVrcholu, DataHran> ag;
+        PrioritniFronta<Cesta> prioritniFronta = new PrioritniFronta<Cesta>();
+        Cesta NejkratsiNalezenaCesta;
+        List<string> VrcholyUzVyresene = new List<string>();
+        string klicKonce;
 
+        /// <summary>
+        /// Konstruktor třídy Dijkstra.
+        /// </summary>
+        /// <param name="ag">Instance abstraktního grafu.</param>
         public Dijkstra(AbstraktniGraf<string, DataVrcholu, DataHran> ag)
         {
             this.ag = ag;
         }
-
-        PrioritniFronta<Cesta> D = new PrioritniFronta<Cesta>();
-        Cesta NejkratsiNalezenaCesta;
-
-        List<string> VrcholyUzVyresene = new List<string>();
-
-        string klicKonce;
-
-        public void NajdiZastavku(string zacatek, string konec)
+        
+        /// <summary>
+        /// Metoda hledá nejkratší cestu z počátečního ke zvolenému cílovému bodu.
+        /// </summary>
+        /// <param name="zacatek">Počáteční bod, ze kterého vychází sběrač hub, neboli houbař.</param>
+        /// <param name="konec">Cílový bod, který hledač hub hledá.</param>
+        public void NajdiNejkratsiCestu(string zacatek, string konec)
         {
-            D = new PrioritniFronta<Cesta>();
+            prioritniFronta = new PrioritniFronta<Cesta>();
             NejkratsiNalezenaCesta = null;
             VrcholyUzVyresene.Clear();
             this.klicKonce = konec;
@@ -47,11 +59,18 @@ namespace Datove_struktury_2020.Data
             obecnyPrvek.Informace = c;
             obecnyPrvek.Priorita = 0;
 
-            D.VlozPrvek(obecnyPrvek);
+            prioritniFronta.VlozPrvek(obecnyPrvek);
             ProjdiGraf();
         }
 
-        public void VlozCestuDoFronty(string novyVrchol, DataHran novyUsek, float cena, Cesta dosavadniCesta = null)
+        /// <summary>
+        /// Vkládá nově vygenerovanou cestu do prioritní fronty.
+        /// </summary>
+        /// <param name="novyVrchol">Koncový vrchol nové cesty.</param>
+        /// <param name="novyUsek">Přidávaná hrana do cesty.</param>
+        /// <param name="cena">Ohodnocení cesty.</param>
+        /// <param name="dosavadniCesta">Původní cesta bez přidávané hrany.</param>
+        private void VlozCestuDoFronty(string novyVrchol, DataHran novyUsek, float cena, Cesta dosavadniCesta = null)
         {
             // jestli objekt vubec existuje a cena doposud nalezene cesty je mensi nez vkladana tak se nic nemeni 
             if (NejkratsiNalezenaCesta != null && NejkratsiNalezenaCesta.CenaCeleCesty <= cena)
@@ -88,37 +107,38 @@ namespace Datove_struktury_2020.Data
                 }
 
                 //v prioritni fronte hledam cestu, ktera konci v aktualnim vrcholu
-                for (int i = 0; i < D.gertruda.Count; i++)
+                for (int i = 0; i < prioritniFronta.haldaEma.Count; i++)
                 {
-                    if (D.gertruda[i].Informace.AktualniVrchol.Equals(novyVrchol))
+                    if (prioritniFronta.haldaEma[i].Informace.AktualniVrchol.Equals(novyVrchol))
                     {
                         //jestlize ma aktualne nalezena cesta mensi cenu, nahradi dosavadni
-                        if (D.gertruda[i].Priorita > cena)
+                        if (prioritniFronta.haldaEma[i].Priorita > cena)
                         {
-                            D.gertruda[i] = obecnyPrvek;
-                            D.PrerovnejHypu();
+                            prioritniFronta.haldaEma[i] = obecnyPrvek;
+                            prioritniFronta.PrerovnejHypu();
                             return;
                         }
                     }
                 }
-                D.VlozPrvek(obecnyPrvek);
+                prioritniFronta.VlozPrvek(obecnyPrvek);
             }
         }
 
+        /// <summary>
+        /// Rekurzivní prohledávání haldy (procházení grafu/lesa apod). Cílem je nalezení nejratší cesty v daném grafu. 
+        /// </summary>
         //rekurzivni prohledani haldy aby to spojilo cesty s naslednyma,
         //aby to prochazelo prioritni frontu dokad je co prochazet
         public void ProjdiGraf()
 
         {
-            PrvekHaldy<Cesta> dosavadniProjitaCesta = D.OdeberPrvek();
-
+            PrvekHaldy<Cesta> dosavadniProjitaCesta = prioritniFronta.OdeberPrvek();
             if (dosavadniProjitaCesta == null)
             {
                 return;
             }
 
             //v hranate zavorce je x-ty prvek listu - tady je to ten posledni, posledni projita cesta, tady h
-
             DataHran h = dosavadniProjitaCesta.Informace.NavstiveneHrany.Count == 0 ? null : dosavadniProjitaCesta.Informace.NavstiveneHrany[dosavadniProjitaCesta.Informace.NavstiveneHrany.Count - 1];
             
             foreach (DataHran obecnaHrana in ag.VratIncidentniHrany(dosavadniProjitaCesta.Informace.AktualniVrchol))
@@ -154,6 +174,10 @@ namespace Datove_struktury_2020.Data
             ProjdiGraf();
         }
 
+        /// <summary>
+        /// Vrací nejkratší cestu.
+        /// </summary>
+        /// <returns>Vrací nejkratší cestu.</returns>
         // mozna metoda, kera vrati nejkratsi cestu? 
         public Cesta vratNejkratsiCestu()
         {

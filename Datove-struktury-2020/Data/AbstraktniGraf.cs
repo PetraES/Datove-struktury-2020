@@ -17,6 +17,7 @@ namespace Datove_struktury_2020.Data
             vsechnyVrcholy.Add(klic, w);
         }
 
+
         public void PridejHranu(K klicPocatecnihoVrcholu, K klicKoncovehoVrcholu, H pridavanaHrana)
         {
             if (vsechnyVrcholy.TryGetValue(klicPocatecnihoVrcholu, out Vrchol pocatecniVrchol)

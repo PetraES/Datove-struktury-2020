@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Datove_struktury_2020.Data
 {
+    /// <summary>
+    /// Třída obsluhuje práci s CSV soborem.
+    /// </summary>
     class EditaceCSV
     {
         //vrati roztrhane stringy oddelene carkama
@@ -18,6 +21,11 @@ namespace Datove_struktury_2020.Data
             return result;
         }
 
+        /// <summary>
+        /// Nacita data ze CSV souboru a rozseka je na radky.
+        /// </summary>
+        /// <param name="cestakSouboru">Cesta k souboru.</param>
+        /// <returns>List řádků souboru.</returns>
         private List<string> NactiRadky(string cestakSouboru)
         {
             List<string> radkySouboru = new List<string>();
@@ -34,6 +42,11 @@ namespace Datove_struktury_2020.Data
             return radkySouboru;
         }
 
+        /// <summary>
+        /// Rozseka radek v CSV podle carky.
+        /// </summary>
+        /// <param name="radek">Řádek v soboru.</param>
+        /// <returns>Vrací jednotlivé sloupce.</returns>
         private string[] RozsekejRadkyPoCarkach(string radek)
         {
             return radek.Split(';');

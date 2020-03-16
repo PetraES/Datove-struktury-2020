@@ -38,15 +38,14 @@ namespace Datove_struktury_2020
 
         private KoordinatorLesnichDobrodruzstvi mapa;
 
-        // private SearchHeap searchHeap;
-
+        /// <summary>
+        /// Hlavní okno aplikace, hlavní vstup.
+        /// <exception> Vyhodí výjimku v případě, že se nepodaří načíst data grafu. </exception>
+        /// </summary>
         public MainWindow()
         {
-
             InitializeComponent();
-
             SkrytPrvkyVytvorBod();
-
             try
             {
                 mapa = new KoordinatorLesnichDobrodruzstvi();
@@ -58,6 +57,9 @@ namespace Datove_struktury_2020
             vykresliMapu();
         }
 
+        /// <summary>
+        /// Nastavení viditelnosti prvků funkce vytvoř bod. Na neviditelné.
+        /// </summary>
         public void SkrytPrvkyVytvorBod()
         {
             //visibility tu to zelene je enum
@@ -70,6 +72,9 @@ namespace Datove_struktury_2020
             ANO_NEVrcholuLabel.Visibility = Visibility.Hidden;
         }
 
+        /// <summary>
+        /// Nastaveni viditelnosti prvků funkce vytvoř bod. Na viditelné.
+        /// </summary>
         public void ZobrazitPrvkyVytvorBod()
         {
             //visibility tu to zelene je enum
@@ -82,6 +87,9 @@ namespace Datove_struktury_2020
             ANO_NEVrcholuLabel.Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// Postupně prochází body a hrany grafu a vykresluje je.
+        /// </summary>
         public void vykresliMapu()
         {
             canvasElem.Children.Clear();
@@ -95,6 +103,10 @@ namespace Datove_struktury_2020
             }
         }
 
+        /// <summary>
+        /// Vykresluje vrcholy/body/mista na mapě, aby došlo k jejich visuálnímu rozlišení.
+        /// </summary>
+        /// <param name="vrchol"></param>
         private void vykresliObec(DataVrcholu vrchol)
         {
             Ellipse teckaNaVrcholu = new Ellipse();
@@ -138,6 +150,10 @@ namespace Datove_struktury_2020
             canvasElem.Children.Add(teckaNaVrcholu);
         }
 
+        /// <summary>
+        /// Vykresluje cestu na mapě. 
+        /// </summary>
+        /// <param name="lesniStezka">nese <c>DataHran<c> potřebné k vytvoření hrany</param>
         private void KresliSilnici(DataHran lesniStezka)
         {
             bool jeOznacena = false;
@@ -187,6 +203,10 @@ namespace Datove_struktury_2020
             }
         }
 
+        /// <summary>
+        /// Modifikuje text z label1 na TexBlock formát, hromadné využití.
+        /// </summary>
+        /// <param name="text"></param>
         private void nastavTextLabelu(string text)
         {
             // label1.Content = text;
@@ -264,17 +284,24 @@ namespace Datove_struktury_2020
             }
         }
 
-        //private double spocitejDelkuHrany(DataVrcholu zacatekHrany, DataVrcholu konecHrany)
-        //{
-        //    double delkaHrany = 0;
-        //    double xa = zacatekHrany.XSouradniceVrcholu;
-        //    double ya = zacatekHrany.YSouradniceVrcholu;
-        //    double xb = konecHrany.XSouradniceVrcholu;
-        //    double yb = konecHrany.YSouradniceVrcholu;
-        //    //(int)Math.Round(Sqrt)
-        //    delkaHrany = Math.Abs(Math.Sqrt(((xb - xa) * (xb - xa)) + ((yb - ya) * (yb - ya))));
-        //    return delkaHrany;
-        //}
+        /// <summary>
+        /// Vypočítá vzdálenost bodů dvou vrcholů.
+        /// </summary>
+        /// <param name="zacatekHrany">Počátecní bod hrany</param>
+        /// <param name="konecHrany">Konečný bod hrany</param>
+        /// <returns>Délku hrany ve formátu double.</returns>
+        private double spocitejDelkuHrany(DataVrcholu zacatekHrany, DataVrcholu konecHrany)
+        {
+            double delkaHrany = 0;
+            double xa = zacatekHrany.XSouradniceVrcholu;
+            double ya = zacatekHrany.YSouradniceVrcholu;
+            double xb = konecHrany.XSouradniceVrcholu;
+            double yb = konecHrany.YSouradniceVrcholu;
+            //(int)Math.Round(Sqrt)
+            delkaHrany = Math.Abs(Math.Sqrt(((xb - xa) * (xb - xa)) + ((yb - ya) * (yb - ya))));
+            return delkaHrany;
+        }
+
 
         void OnLineMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -332,7 +359,12 @@ namespace Datove_struktury_2020
             // bod se vytvari pri kliknuti do canvasu metoda canvasElem_MouseLeftButtonDown
         }
 
-
+        /// <summary>
+        /// Obsluhuje akci, když uživatel v oblati <c>canvasElem_MouseLeftButtonDown<c> zmáčkne levé tlačítko myši.
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void canvasElem_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (stisknutoVytvorVrchol == true)
@@ -341,7 +373,7 @@ namespace Datove_struktury_2020
                 System.Windows.Point g = e.GetPosition((IInputElement)sender);
                 int x = (int)(g.X / scaleX);
                 int y = (int)(g.Y / scaleY);
-                string textdoLabelu = "Vytvářený bod má souřadnice: " + x + "," + y + ". " + 
+                string textdoLabelu = "Vytvářený bod má souřadnice: " + x + "," + y + ". " +
                     "Můžete zvolit název a druh bodu. \nPoté stiknutím tlačítka ANO/NE zvolit jeho umístění do mapy.";
                 nastavTextLabelu(textdoLabelu);
                 ZobrazitPrvkyVytvorBod();
@@ -357,6 +389,11 @@ namespace Datove_struktury_2020
             SkrytPrvkyVytvorBod();
         }
 
+        /// <summary>
+        /// Obsluhuje tlačítko ANO. V případě zadání všech potřebných parametrů vykreslí daný bod a oznámí hototvo.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ANO_Button_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -374,6 +411,11 @@ namespace Datove_struktury_2020
             }
         }
 
+        /// <summary>
+        /// Zahajuje přidávání nové cesty
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PridejCestuButton_Click(object sender, RoutedEventArgs e)
         {
             // nastaveni pomocne promene na true v if else v metode OnEllipseMouseLeftButtonDow
@@ -384,6 +426,11 @@ namespace Datove_struktury_2020
             // ((TextBlock)label1.Content).Text = "Vyberte počáteční bod.";
         }
 
+        /// <summary>
+        /// Obsluhuje ukládání změn při zavírání hlavního okna programu.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Window_Closing_1(object sender, System.ComponentModel.CancelEventArgs e)
         {
             string msg = "Než se zavře okno, mají se změny uložit?";

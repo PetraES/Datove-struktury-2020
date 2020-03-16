@@ -10,11 +10,14 @@ namespace Datove_struktury_2020.Data
         private Dijkstra dijkstra;
         private EditaceCSV editujCSV = new EditaceCSV();
 
-        // vrcholy jsou obce
+        // vrcholy jsou body v mapě
         private string cestaKsouboruObce = @"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\Obce.csv";
-        //hrany jsou cesty
+        //hrany jsou cesty v lese
         private string cestaKsouboruCesty = @"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\Cesty.csv";
 
+        /// <summary>
+        /// Konstruktor. Při konstrukci třídy načte data ze souborů.
+        /// </summary>
         public KoordinatorLesnichDobrodruzstvi()
         {
             dijkstra = new Dijkstra(AG);
@@ -22,11 +25,12 @@ namespace Datove_struktury_2020.Data
             nactiHranyZCSV();
         }
 
+        /// <summary>
+        /// Načítání vrcholů ze souboru, vynechání hlavičky souboru.
+        /// </summary>
         public void nactiVrcholyZCSV()
         {
-
             List<string[]> objekt = editujCSV.NactiSoubor(cestaKsouboruObce);
-
 
             //ukladani poradi radku do int, aby se pak dala vynechat hlavicka souboru Cesty
             int poradiRadku = 0;
@@ -44,15 +48,21 @@ namespace Datove_struktury_2020.Data
                 v.TypVrcholu = (TypyVrcholu)int.Parse(radek[3]);
                 AG.PridejVrchol(v.NazevVrcholu, v);
             }
-
         }
 
-        // mazat nebo prepsat
+        /// <summary>
+        /// Vrátí data vrcholu na základě zadaného klíče. Slouží pro nakreslení bodu.
+        /// </summary>
+        /// <param name="klicVrcholu"></param>
+        /// <returns></returns>
         public DataVrcholu najdiVrchol(string klicVrcholu)
         {
             return AG.VratVrchol(klicVrcholu);
         }
 
+        /// <summary>
+        /// Načítání hran/cest ze souboru csv.
+        /// </summary>
         public void nactiHranyZCSV()
         {
             List<string[]> objekt = editujCSV.NactiSoubor(cestaKsouboruCesty);
@@ -73,16 +83,32 @@ namespace Datove_struktury_2020.Data
             }
         }
 
+        /// <summary>
+        /// Zpřístupní kolekci hran pro vykreslení.
+        /// </summary>
+        /// <returns>Vrací to iterátor hran.</returns>
         public IEnumerable<DataHran> VratHrany()
         {
             return AG.VratSeznamHran();
         }
 
+        /// <summary>
+        /// Zpřístupní kolekci vrcholů pro vykreslení.
+        /// </summary>
+        /// <returns>Vrací to iterátor vrcholů.</returns>
         public IEnumerable<DataVrcholu> GetVrcholy()
         {
             return AG.VratSeznamVrcholu();
         }
 
+        /// <summary>
+        /// Vkládání vrcholu do mapy.
+        /// </summary>
+        /// <param name="x">x-ová souřadnice vrcholu</param>
+        /// <param name="y">z-souřadnice vrcholu</param>
+        /// <param name="typyVrcholu"> typ vrcholů z výčtu</param>
+        /// <param name="nazevVrcholu">název vrcholu, řetězec</param>
+        /// <returns>vrací přidáváný vrchol</returns>
         public DataVrcholu vlozVrchol(int x, int y, TypyVrcholu typyVrcholu, string nazevVrcholu)
         {
             if (nazevVrcholu == "")
@@ -103,6 +129,9 @@ namespace Datove_struktury_2020.Data
             return v;
         }
 
+        /// <summary>
+        /// Ukládá nové nastavení mapy do souboru.
+        /// </summary>
         public void ulozMapu()
         {
             string vrcholy = "nazevVrcholu;Xsouradnice;Ysouradnice\n";
@@ -127,12 +156,25 @@ namespace Datove_struktury_2020.Data
             editujCSV.ZapisDoCSV(cestaKsouboruCesty, hrany);
         }
 
+        /// <summary>
+        /// Hledá nejkratší turistovu cestu.
+        /// </summary>
+        /// <param name="pocatek">Počáteční bod, na němž se nachází turista.</param>
+        /// <param name="konec">Cílový bod, kam chce turista dojít.</param>
+        /// <returns>Vrací výsledek algoritmu Dijkstra pro hledání nejkratší cesty.</returns>
         public Cesta najdiCestu(string pocatek, string konec)
         {
-            dijkstra.NajdiZastavku(pocatek, konec);
+            dijkstra.NajdiNejkratsiCestu(pocatek, konec);
             return dijkstra.vratNejkratsiCestu();
         }
 
+        /// <summary>
+        /// Vytváří novou hranu, dle zadání uživatele a přidává ji do grafu. 
+        /// </summary>
+        /// <param name="klicPocatecnihoVrcholu">Klíč počátečního vrcholu</param>
+        /// <param name="klicKonecnehoVrcholu">Klíč konečného vrcholu</param>
+        /// <param name="delkaHrany">Délka hrany</param>
+        /// <returns>Novou hranu.</returns>
         public DataHran vytvorHranu(string klicPocatecnihoVrcholu, string klicKonecnehoVrcholu, short delkaHrany)
         {
             DataHran novaHrana = new DataHran(); //vytvorime novou instanci hrany

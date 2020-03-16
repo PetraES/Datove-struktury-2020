@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Datove_struktury_2020.Data
 {
+    /// <summary>
+    /// Třída repezentující datovou strukturu hrany.
+    /// </summary>
     class DataHran
     {
         public string PocatekHrany { get; set; }

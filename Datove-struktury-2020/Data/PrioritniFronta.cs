@@ -4,46 +4,60 @@ using System.Text;
 
 namespace Datove_struktury_2020.Data
 {
+    /// <summary>
+    /// Pomocná třída reprezentuje prvek haldy.
+    /// </summary>
+    /// <typeparam name="TInformace">Data uchovávané v prvku haldy.</typeparam>
     class PrvekHaldy<TInformace>
     {
         public int Priorita { set; get; }
         public TInformace Informace { set; get; }
     }
 
-    //implementace prioritni fronty haldou 
+    /// <summary>
+    /// Implementace prioritná fronty haldou.
+    /// </summary>
+    /// <typeparam name="TData"></typeparam>
     class PrioritniFronta<TData>
     {
-        public List<PrvekHaldy<TData>> gertruda = new List<PrvekHaldy<TData>>();
+        public List<PrvekHaldy<TData>> haldaEma = new List<PrvekHaldy<TData>>();
 
+        /// <summary>
+        /// Vkládá prvek do haldy.
+        /// </summary>
+        /// <param name="vkladanyPrvek">Prvek, který se bude vkládat do haldy.</param>
         public void VlozPrvek(PrvekHaldy<TData> vkladanyPrvek)
         {
-            gertruda.Add(vkladanyPrvek);
+            haldaEma.Add(vkladanyPrvek);
 
-            int indexDitete = gertruda.Count - 1;
+            int indexDitete = haldaEma.Count - 1;
             int indexOtce = (indexDitete - 1) / 2;
 
-            while (gertruda[indexOtce].Priorita > gertruda[indexDitete].Priorita)
+            while (haldaEma[indexOtce].Priorita > haldaEma[indexDitete].Priorita)
             {
-                PrvekHaldy<TData> docasnyPrvek = gertruda[indexDitete];
-                gertruda[indexDitete] = gertruda[indexOtce];
-                gertruda[indexOtce] = docasnyPrvek;
-
+                PrvekHaldy<TData> docasnyPrvek = haldaEma[indexDitete];
+                haldaEma[indexDitete] = haldaEma[indexOtce];
+                haldaEma[indexOtce] = docasnyPrvek;
                 indexDitete = indexOtce;
                 indexOtce = (indexDitete - 1) / 2;
             }
         }
 
+        /// <summary>
+        /// Odebere prvek z haldy.
+        /// </summary>
+        /// <returns>Vrací odebraný prvek.</returns>
         public PrvekHaldy<TData> OdeberPrvek()
         {
-            if (gertruda.Count == 0)
+            if (haldaEma.Count == 0)
             {
                 return default;
             }
-            PrvekHaldy<TData> a = gertruda[0];
-            int pocetPrvkuVgertrude = gertruda.Count;
+            PrvekHaldy<TData> a = haldaEma[0];
+            int pocetPrvkuVgertrude = haldaEma.Count;
             int posledniPrvekVgertrude = pocetPrvkuVgertrude - 1;
-            gertruda[0] = gertruda[posledniPrvekVgertrude];
-            gertruda.RemoveAt(posledniPrvekVgertrude);
+            haldaEma[0] = haldaEma[posledniPrvekVgertrude];
+            haldaEma.RemoveAt(posledniPrvekVgertrude);
 
             int indexOtce = 0;
             int indexmensihoZPotomku;
@@ -51,12 +65,12 @@ namespace Datove_struktury_2020.Data
             {
                 int indexLevehoPotomka = 2 * indexOtce + 1;
                 int indexPravehoPotomka = 2 * indexOtce + 2;
-                bool existujeLevyPotomek = indexLevehoPotomka < gertruda.Count;
-                bool existujePravyPotomek = indexPravehoPotomka < gertruda.Count;
+                bool existujeLevyPotomek = indexLevehoPotomka < haldaEma.Count;
+                bool existujePravyPotomek = indexPravehoPotomka < haldaEma.Count;
 
                 indexmensihoZPotomku = -1;
              
-                if (existujeLevyPotomek && existujePravyPotomek && gertruda[indexLevehoPotomka].Priorita < gertruda[indexPravehoPotomka].Priorita)
+                if (existujeLevyPotomek && existujePravyPotomek && haldaEma[indexLevehoPotomka].Priorita < haldaEma[indexPravehoPotomka].Priorita)
                 {
                     indexmensihoZPotomku = 2 * indexOtce + 1;
                 }
@@ -69,11 +83,11 @@ namespace Datove_struktury_2020.Data
                     indexmensihoZPotomku = 2 * indexOtce + 2;
                 }
 
-                if (indexmensihoZPotomku > -1 && gertruda[indexmensihoZPotomku].Priorita < gertruda[indexOtce].Priorita)
+                if (indexmensihoZPotomku > -1 && haldaEma[indexmensihoZPotomku].Priorita < haldaEma[indexOtce].Priorita)
                 {
-                    PrvekHaldy<TData> c = gertruda[indexmensihoZPotomku];
-                    gertruda[indexmensihoZPotomku] = gertruda[indexOtce];
-                    gertruda[indexOtce] = c;
+                    PrvekHaldy<TData> c = haldaEma[indexmensihoZPotomku];
+                    haldaEma[indexmensihoZPotomku] = haldaEma[indexOtce];
+                    haldaEma[indexOtce] = c;
                     indexOtce = indexmensihoZPotomku;
                 }
                 else
@@ -84,10 +98,13 @@ namespace Datove_struktury_2020.Data
             return a;
         }
 
+        /// <summary>
+        /// Přerovnání haldy  znovusestavením haldy.
+        /// </summary>
         public void PrerovnejHypu()
         {
-            List<PrvekHaldy<TData>> provizorniList = gertruda;
-            gertruda = new List<PrvekHaldy<TData>>();
+            List<PrvekHaldy<TData>> provizorniList = haldaEma;
+            haldaEma = new List<PrvekHaldy<TData>>();
             foreach (PrvekHaldy<TData> i in provizorniList)
             {
                 VlozPrvek(i);

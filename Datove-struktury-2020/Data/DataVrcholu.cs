@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Datove_struktury_2020.Data
 {
+    /// <summary>
+    /// Třída reprezentující datovou strukturu vrcholu/bodu na mapě.
+    /// </summary>
     class DataVrcholu
     {
         public string NazevVrcholu { get; set; } //property
@@ -11,14 +14,12 @@ namespace Datove_struktury_2020.Data
         public float YSouradniceVrcholu { get; set; } //property
         public TypyVrcholu TypVrcholu { get; set; } //property
         
-
         public override string ToString()
         {
             return NazevVrcholu + " (" + XSouradniceVrcholu + ";" + YSouradniceVrcholu + ")";
         }
     }
-
-    
+  
     public enum TypyVrcholu
     {
         None = 0,
