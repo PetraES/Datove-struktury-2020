@@ -6,56 +6,64 @@
         xmlns:local="clr-namespace:Datove_struktury_2020"
         mc:Ignorable="d"
         Title="MainWindow" Height="825" Width="1000" ResizeMode="NoResize" 
-        SizeToContent="WidthAndHeight" Closing="Window_Closing_1"
-        
-        >
+        SizeToContent="WidthAndHeight" Closing="Window_Closing_1">
+    <Window.Background>
+        <SolidColorBrush Color="White" Opacity="0.6"/>
+    </Window.Background>
 
     <Grid Height="794" HorizontalAlignment="Left" VerticalAlignment="Top"
           Width="969">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="409*"/>
+            <ColumnDefinition Width="76*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="99*"/>
             <RowDefinition Height="76*"/>
         </Grid.RowDefinitions>
 
-        <Canvas x:Name="canvasMainElem" Margin="14,15,37,370">
-            <Button x:Name="PridejCestuButton" Canvas.Left="90" Canvas.Top="5"
-                    Content="Pridej cestu" Height="30" Width="70" Click="PridejCestuButton_Click"/>
-            <Button x:Name="NajdiCestuButton" Content="Najdi cestu" Height="30"
-                    Canvas.Left="170" Canvas.Top="5" Width="70" 
-                    Click="NajdiCestuButt_Click"/>
+        <Canvas x:Name="canvasMainElem" Margin="14,15,37,224" Grid.ColumnSpan="2">
+            <Button x:Name="PridejCestuButton" Canvas.Left="370" Canvas.Top="28"
+                    Content="Přidej cestu" Height="30" Width="120" Click="PridejCestuButton_Click" FontSize="18" RenderTransformOrigin="-15,0"/>
+            <Button x:Name="NajdiCestuButton" Content="Najdi nejkratší cestu" Height="30"
+                    Canvas.Left="585" Canvas.Top="28" Width="120" 
+                    Click="NajdiCestuButt_Click" FontSize="18" RenderTransformOrigin="-15,0"
+                    />
             <Button x:Name="VlozBodButton" Content="Vlož bod" Height="30"
-                    Canvas.Left="250" Canvas.Top="5" Width="70"
-                    Click="VlozBodButton_Click"/>
-            <Button x:Name="tlacitko_ANO" Content="ANO" Canvas.Left="733" Canvas.Top="10" Click="ANO_Button_Click" RenderTransformOrigin="0.454,-0.349" Height="30" Width="30" BorderThickness="1,1,1,1" Visibility="Visible"/>
-            <Button x:Name="tlacitko_NE" Content="NE" Canvas.Left="773" Canvas.Top="10" Click="NE_Button_Click" RenderTransformOrigin="0.454,-0.349" Height="30" Width="30"/>
-
+                    Canvas.Left="800" Canvas.Top="28" Width="120"
+                    Click="VlozBodButton_Click" FontSize="18" RenderTransformOrigin="-15,0"/>
+            <Button x:Name="tlacitko_ANO" Content="ANO,souhlasím" Canvas.Left="229" Canvas.Top="168" 
+                    Click="ANO_Button_Click" RenderTransformOrigin="0.454,-0.349" Height="30" Width="30" 
+                    BorderThickness="1,1,1,1" Visibility="Visible"/>
+            <Button x:Name="tlacitko_NE" Content="NE" Canvas.Left="269" Canvas.Top="168" Click="NE_Button_Click" 
+                    RenderTransformOrigin="0.454,-0.349" Height="30" Width="30"/>
             <Label 
                 x:Name="label1" 
-                Height="157" 
-                Canvas.Left="10" 
-                Canvas.Top="61" 
-                Width="910" 
-                FontSize="14pt" 
-            >
-
-                <TextBlock TextWrapping="WrapWithOverflow" Height="147">
-
-                </TextBlock>
-
-
+                Height="100" Width="550"
+                Canvas.Left="370" Canvas.Top="85" 
+                FontSize="14"
+                Background="WhiteSmoke">
+                <TextBlock TextWrapping="WrapWithOverflow"></TextBlock>
             </Label>
 
-            <Canvas x:Name="canvasElem" Height="529" Canvas.Top="223" Width="910" Background="LightSeaGreen" Canvas.Left="10" MouseLeftButtonDown="canvasElem_MouseLeftButtonDown"/>
-
-
-            <ComboBox x:Name="TypVrcholu_comboBox" Canvas.Left="345" Canvas.Top="5" Width="120" Height="30" SelectedIndex="0">
+            <Canvas x:Name="canvasElem" Height="529" Canvas.Top="223" Width="910" Background="LightSeaGreen"
+                    Canvas.Left="10" MouseLeftButtonDown="canvasElem_MouseLeftButtonDown"/>
+            <ComboBox x:Name="TypVrcholu_comboBox" Canvas.Left="220" Canvas.Top="120" 
+                      Width="100" Height="30" SelectedIndex="0">
                 <ListBoxItem Content="Křižovatka"/>
                 <ListBoxItem Content="Odpočívadlo"/>
                 <ListBoxItem Content="Zastávka"/>
             </ComboBox>
-            <TextBox x:Name="nazevVrcholuTextBox" Canvas.Left="484" Canvas.Top="32" TextWrapping="Wrap" Width="228" Height="22"/>
-            <Label x:Name="nazevVrcholuLabel" Content="Nazev bodu:" Canvas.Left="484" Canvas.Top="6"/>
-
+            <TextBox x:Name="nazevVrcholuTextBox" Canvas.Left="220" Canvas.Top="80" TextWrapping="Wrap" 
+                     Width="100" Height="30" BorderThickness="5,5,5,1"/>
+            <Label x:Name="nazevVrcholuLabel" 
+                   Content="Prosím zadejte název nového bodu:" Canvas.Left="10" Canvas.Top="80"/>
+            <Label x:Name="druhVrcholuLabel" 
+                Content="Prosím zadejte název nového bodu:" Canvas.Left="10" Canvas.Top="120"/>
+            <Label x:Name="ANO_NEVrcholuLabel" 
+                Content="Prosím potvrďte vaši volbu" Canvas.Left="10" Canvas.Top="160"/>
         </Canvas>
+
+
     </Grid>
 </Window>

@@ -87,11 +87,11 @@ namespace Datove_struktury_2020.Data
         {
             if (nazevVrcholu == "")
             {
-                throw new Exception("Neplatny nazev bodu.");
+                throw new Exception("Neplatný název bodu.");
             }
             else if(najdiVrchol(nazevVrcholu) != null)
             {
-                throw new Exception("Bod jiz exitsuje.");
+                throw new Exception("Bod již exitsuje. Prosím zvolte jiný.");
             }
 
             DataVrcholu v = new DataVrcholu();
@@ -113,8 +113,6 @@ namespace Datove_struktury_2020.Data
                     v.XSouradniceVrcholu,
                     v.YSouradniceVrcholu,
                     (int)v.TypVrcholu);
-
-
             }
             editujCSV.ZapisDoCSV(cestaKsouboruObce, vrcholy);
 
