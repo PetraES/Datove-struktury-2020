@@ -12,6 +12,10 @@ namespace Datove_struktury_2020.Data
         int pocetUrovniStromu;
         //delegát porovnani - reseno CompareTo
 
+        static int compX(T a, T b)
+        {
+            return 0;
+        }
        
         public void Vybuduj(List<T> seznamPrvku) 
         {
@@ -45,8 +49,9 @@ namespace Datove_struktury_2020.Data
             if (seznamPrvku.Count >= 2)
             {
                 if (dimenzeX == true)
-                {  
-                    // seznamPrvku.Sort(Comparison<in T ())
+                {
+                    //prejmenovat metodu, a implementovat razeni podle X
+                    seznamPrvku.Sort(compX);
                 }
             }
 
