@@ -7,4 +7,18 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="53083.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="53083.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Resources\53083.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Datove_struktury_2020"
         mc:Ignorable="d"
-        Title="MainWindow" Height="825" Width="1000" ResizeMode="NoResize" 
+        Title="Houbařovo vesmírná dobrodružství" Height="825" Width="1000" ResizeMode="NoResize" 
         SizeToContent="WidthAndHeight" Closing="Window_Closing_1">
     <Window.Background>
-        <SolidColorBrush Color="White" Opacity="0.6"/>
+        <ImageBrush ImageSource="53083.jpg" Stretch="UniformToFill"/>
     </Window.Background>
 
     <Grid Height="794" HorizontalAlignment="Left" VerticalAlignment="Top"
@@ -46,7 +46,7 @@
                 <TextBlock TextWrapping="WrapWithOverflow"></TextBlock>
             </Label>
 
-            <Canvas x:Name="canvasElem" Height="529" Canvas.Top="223" Width="910" Background="LightSeaGreen"
+            <Canvas x:Name="canvasElem" Height="529" Canvas.Top="223" Width="910" Background="#7F20B2AA"
                     Canvas.Left="10" MouseLeftButtonDown="canvasElem_MouseLeftButtonDown"/>
             <ComboBox x:Name="TypVrcholu_comboBox" Canvas.Left="220" Canvas.Top="120" 
                       Width="100" Height="30" SelectedIndex="0">
@@ -55,13 +55,19 @@
                 <ListBoxItem Content="Zastávka"/>
             </ComboBox>
             <TextBox x:Name="nazevVrcholuTextBox" Canvas.Left="220" Canvas.Top="80" TextWrapping="Wrap" 
-                     Width="100" Height="30" BorderThickness="5,5,5,1"/>
+                     Width="100" Height="30" BorderThickness="1,1,1,1"/>
             <Label x:Name="nazevVrcholuLabel" 
-                   Content="Prosím zadejte název nového bodu:" Canvas.Left="10" Canvas.Top="80"/>
+                   Content="Prosím zadejte název nového bodu:" 
+                   Canvas.Left="10" Canvas.Top="80"
+                   Background="WhiteSmoke"/>
             <Label x:Name="druhVrcholuLabel" 
-                Content="Prosím zadejte název nového bodu:" Canvas.Left="10" Canvas.Top="120"/>
+                Content="Prosím zadejte název nového bodu:" 
+                   Canvas.Left="10" Canvas.Top="120"
+                   Background="WhiteSmoke"/>
             <Label x:Name="ANO_NEVrcholuLabel" 
-                Content="Prosím potvrďte vaši volbu" Canvas.Left="10" Canvas.Top="160"/>
+                Content="Prosím potvrďte vaši volbu" 
+                   Canvas.Left="10" Canvas.Top="160"
+                   Background="WhiteSmoke"/>
         </Canvas>
 
 

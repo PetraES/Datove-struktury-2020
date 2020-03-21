@@ -6,6 +6,7 @@ namespace Datove_struktury_2020.Data
 {
     class KoordinatorLesnichDobrodruzstvi
     {
+        // Abstraktni graf ma K,V,H 
         public AbstraktniGraf<string, DataVrcholu, DataHran> AG = new AbstraktniGraf<string, DataVrcholu, DataHran>();
         private Dijkstra dijkstra;
         private EditaceCSV editujCSV = new EditaceCSV();
