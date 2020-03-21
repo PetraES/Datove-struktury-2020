@@ -15,7 +15,6 @@ namespace Datove_struktury_2020.Data
             this.druhaKlicovaHodnota = druha;
         }
 
-
         public int CompareTo(object obj)
         {
             //kontrola, jestli vkladany objekt je spravneho/stejneho datoveho typu
@@ -27,8 +26,7 @@ namespace Datove_struktury_2020.Data
                     return 0;
                 }
                 // jestlize je porovnavany vrchol mensi nebo vetsi nez obj nas nezajima, tak neresim
-                return -1;
-                
+                return -1;               
             }
             else 
             {

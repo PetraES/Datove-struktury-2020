@@ -31,7 +31,21 @@ namespace Datove_struktury_2020.Data
 
         public int CompareTo(object obj)
         {
-            throw new NotImplementedException();
+            //kontrola, jestli vkladany objekt je spravneho/stejneho datoveho typu
+            if (obj != null && obj is ISouradnice)
+            {
+                //vrcholy jsou stejne
+                if (XSouradniceVrcholu == ((ISouradnice)obj).vratX() && YSouradniceVrcholu == ((ISouradnice)obj).vratY())
+                {
+                    return 0;
+                }
+                // jestlize je porovnavany vrchol mensi nebo vetsi nez obj nas nezajima, tak neresim
+                return -1;
+            }
+            else
+            {
+                throw new ArgumentException("Porovnavany objekt neni stejneho datoveho typu!");
+            }
         }
     }
   
