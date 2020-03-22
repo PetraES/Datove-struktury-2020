@@ -12,12 +12,33 @@ namespace Datove_struktury_2020.Data
         int pocetUrovniStromu;
         //delegát porovnani - reseno CompareTo
 
-        static int compX(T a, T b)
+        // podle List<T>.Sort Method, Comparison<T> Delegate
+        static int porovnejPodleX(T a, T b)
         {
-            return 0;
+            return porovnejCisla(a.vratX(), b.vratX());
         }
-       
-        public void Vybuduj(List<T> seznamPrvku) 
+        static int porovnejPodleY(T a, T b)
+        {
+            return porovnejCisla(a.vratY(), b.vratY());
+        }
+
+        static int porovnejCisla(int hodnotaA, int hodnotaB)
+        {
+            if (hodnotaA == hodnotaB)
+            {
+                return 0;
+            }
+            else if (hodnotaA > hodnotaB)
+            {
+                return 1;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        public void Vybuduj(List<T> seznamPrvku)
         {
             if (seznamPrvku == null || seznamPrvku.Count == 0)
             {
@@ -32,7 +53,7 @@ namespace Datove_struktury_2020.Data
         }
         // dimenzeX - aby bylo zřejmé, jestli se bude budovat od dimenze X nebo Y
         // prvekDruheDimenze - asi aby se odkazal Y interval do Xoveho intervalu
-        private PrvekRozsahovehoStromu VybudujStrom(List<T> seznamPrvku, PrvekRozsahovehoStromu prvekDruheDimenze, bool dimenzeX) 
+        private PrvekRozsahovehoStromu VybudujStrom(List<T> seznamPrvku, PrvekRozsahovehoStromu prvekDruheDimenze, bool dimenzeX)
         {
             PrvekRozsahovehoStromu pomocny = VybudujPodstrom(seznamPrvku, null, null, dimenzeX);
             //případné spojení vrcholu podstromu s prvkem opačné dimenze
@@ -44,24 +65,46 @@ namespace Datove_struktury_2020.Data
         }
         private PrvekRozsahovehoStromu VybudujPodstrom(List<T> seznamPrvku, PrvekRozsahovehoStromu predek,
             PrvekRozsahovehoStromu predchoziZListu, bool dimenzeX)
-        {  
+        {
             PrvekRozsahovehoStromu pomocny;
             if (seznamPrvku.Count >= 2)
             {
+                // nastaveni intervalu pro navigacni prvek (ten ktery rika jake prvky jsou pod nim)
                 if (dimenzeX == true)
                 {
-                    //prejmenovat metodu, a implementovat razeni podle X
-                    seznamPrvku.Sort(compX);
+
+                    // sort vraci void nikoli serazenou kolekci, tzn ze zmeni zdrojova data
+                    seznamPrvku.Sort(porovnejPodleX);
+                    // utridit seznam vrcholu, vzit prvni vrchol a jeho x ovou souradnici 
+                    // pouzit jako (zacatek intervalu) navigacniho vrcholu a jeho dalsi souradnici 
+                    // pouzit jako (konec intervalu) navigacniho vrcholu, tim vytvorit navigacni vrchol
+                    int zacatekIntervalu = seznamPrvku[0].vratX();
+                    int konecIntervalu = seznamPrvku[seznamPrvku.Count - 1].vratX();
+                    Data2Dim soruradniceNavigacnihoVrcholu = new Data2Dim(zacatekIntervalu, konecIntervalu);
+                    // vytvorit instanci prvku pomocneho rozsahoveho stromu do ktereho prijde interval a false
+                    // je to vlastne navigacni vrchol - soude podle hodnoty false pri volani konstruktoru
+                    pomocny = new PrvekRozsahovehoStromu(soruradniceNavigacnihoVrcholu, false);
                 }
+                else
+                {
+                    seznamPrvku.Sort(porovnejPodleY);
+                    int zacatekIntervalu = seznamPrvku[0].vratY();
+                    int konecIntervalu = seznamPrvku[seznamPrvku.Count - 1].vratY();
+                    Data2Dim soruradniceNavigacnihoVrcholu = new Data2Dim(zacatekIntervalu, konecIntervalu);
+                    pomocny = new PrvekRozsahovehoStromu(soruradniceNavigacnihoVrcholu, false);
+                }
+                //vytvoreni seznamů prvků pro levý a pravý podstrom, do nichž se prvky rozdělí
+                
+               
             }
 
             //dodelat!
             return predek;
         }
-        public T Najdi(ISouradnice obeSouradnice) 
+        public T Najdi(ISouradnice obeSouradnice)
         {
 
-            return default(T); 
+            return default(T);
         }
         /// <summary>
         /// VErejna implementace pro Intervalove vyhledavani. Vola privatni metodu NajdiInterval, kde je implementovano vyledavani.
@@ -69,10 +112,10 @@ namespace Datove_struktury_2020.Data
         /// <param name="levyHorniBod">Levý horní roh v oblasti intervalového vyhledávání.</param>
         /// <param name="pravyDolniBod">Pravý horní roh v oblasti intervalového vyhledávání.</param>
         /// <returns>Vracé seznam vrcholů ve vybraném intervalu. </returns>
-        public List<T> NajdiInterval(ISouradnice levyHorniBod, ISouradnice pravyDolniBod) 
+        public List<T> NajdiInterval(ISouradnice levyHorniBod, ISouradnice pravyDolniBod)
         {
             //dle diplomky se pri prvnim volani nastavi vrchol jako koren a dimenzeX na true
-            return NajdiInterval(levyHorniBod, pravyDolniBod,koren,true);    
+            return NajdiInterval(levyHorniBod, pravyDolniBod, koren, true);
         }
 
         private List<T> NajdiInterval(ISouradnice levyHorniBod, ISouradnice pravyDolniBod, PrvekRozsahovehoStromu vrchol, bool dimenzeX)
@@ -88,15 +131,19 @@ namespace Datove_struktury_2020.Data
         {
             public PrvekRozsahovehoStromu levyPotomek, pravyPotomek, otec, druhaDimenze;
             public PrvekRozsahovehoStromu predchozi, dalsi;
+
+            // proměnná platný určuje, zda se jedná o plnohodnotný nebo navigační vrchol
+            // je-li prvek platný (true), nese finální data 
+            // je-li prvek platný (false), nenese
             public bool platny = false;
+
             public ISouradnice data;
 
-            public PrvekRozsahovehoStromu()
+            // pro prvek prvek rozsahoveho stromu - "list"
+            // vynucuje znalost dat(souradnic) pri vytvareni instance
+            public PrvekRozsahovehoStromu(ISouradnice s, bool platny)
             {
-            }
-
-            public PrvekRozsahovehoStromu(ISouradnice s) 
-            {
+                this.platny = platny;
                 data = s;
             }
         }
