@@ -104,11 +104,11 @@ namespace Datove_struktury_2020.Data
             // byl-li pro budování předán jediný prvek, stane se plnohodnotným prvkem
             else
             {   // pokud je pocet prvku je jedna >?< - neni v Diplomce reseno
-                    pomocny = new PrvekRozsahovehoStromu (seznamPrvku[0], true);
+                pomocny = new PrvekRozsahovehoStromu(seznamPrvku[0], true);
 
                 // TODO: oveřít podmínku u if - pomocny != null?
                 // zřetězení prvků na úrovni listů (plnohodnotné prvky)  
-                if (predchoziZListu != null) 
+                if (predchoziZListu != null)
                 {
                     predchoziZListu.dalsiPrvekRozsahovehoStromu = pomocny;
                     pomocny.predchoziPrvekzRozsahovehoStromu = predchoziZListu;
@@ -117,18 +117,81 @@ namespace Datove_struktury_2020.Data
             // pro navig. vrchol ve stromu první dimenze je vybudován strom druhé dimenze
             if (dimenzeX == true && pomocny.platny == false)
             {
-                pomocny.druhaDimenze = VybudujStrom(seznamPrvku, pomocny, false);                
+                pomocny.druhaDimenze = VybudujStrom(seznamPrvku, pomocny, false);
             }
-            pomocny.otec = predek;          
+            pomocny.otec = predek;
             return pomocny;
         }
         public T Najdi(ISouradnice obeSouradnice)
         {
+            // je-li kořen platným vrcholem, porovnají se souřadnice a hledání skončí
+            if (koren != null && koren.platny == true)
+            {
+                if (koren.data.vratX() == obeSouradnice.vratX() && koren.data.vratY() == obeSouradnice.vratY())
+                {
+                    return (T)koren.data;
+                }
+                else
+                {
+                    return default(T);
+                }
+            }
+            else
+            {
+                // v opačném případě je strom prohledáván traverzováním směrem k listům
+                PrvekRozsahovehoStromu pomocny = koren;
+                while (true)
+                {
+                    if (pomocny == null)
+                    {
+                        return default;
+                    }
+                    // je-li levý syn platným vrcholem, porovnají se jeho souřadnice  
+                    if (pomocny.levyPotomek != null
+                            && pomocny.levyPotomek.platny == true
+                            && pomocny.levyPotomek.data.vratX() == obeSouradnice.vratX()
+                            && pomocny.levyPotomek.data.vratY() == obeSouradnice.vratY())
+                    {
+                        return (T)pomocny.levyPotomek.data;
+                    }
+                    // je-li pravý syn platným vrcholem, porovnají se jeho souřadnice
+                    if (pomocny.pravyPotomek != null
+                            && pomocny.pravyPotomek.platny == true
+                            && pomocny.pravyPotomek.data.vratX() == obeSouradnice.vratX()
+                            && pomocny.pravyPotomek.data.vratY() == obeSouradnice.vratY())
+                    {
+                        return (T)pomocny.pravyPotomek.data;
+                    }
+                    // jinak se rozhodne, kterým směrem pokračovat
+                    // TODO: projit vetsi mensi jestli je spravne nakodovano
+                    if (pomocny.levyPotomek != null
+                        && pomocny.levyPotomek.platny == false
+                        && pomocny.levyPotomek.data.vratX() <= obeSouradnice.vratX()
+                        && pomocny.levyPotomek.data.vratY() >= obeSouradnice.vratX())
+                    {
+                        return (T)pomocny.levyPotomek.data;
+                    }
+                    else if (pomocny.pravyPotomek != null
+                        && pomocny.pravyPotomek.platny == false
+                        && pomocny.pravyPotomek.data.vratX() <= obeSouradnice.vratX()
+                        && pomocny.pravyPotomek.data.vratY() >= obeSouradnice.vratX())
 
-            return default(T);
+                    {
+                        return (T)pomocny.pravyPotomek.data;
+                    }
+                    else
+                    {
+                        return default(T);
+                    }
+                }
+            }
+
+
+            // v opačném případě je strom prohledáván traverzováním směrem k listům
+
         }
         /// <summary>
-        /// VErejna implementace pro Intervalove vyhledavani. Vola privatni metodu NajdiInterval, kde je implementovano vyledavani.
+        /// Verejna implementace pro Intervalove vyhledavani. Vola privatni metodu NajdiInterval, kde je implementovano vyledavani.
         /// </summary>
         /// <param name="levyHorniBod">Levý horní roh v oblasti intervalového vyhledávání.</param>
         /// <param name="pravyDolniBod">Pravý horní roh v oblasti intervalového vyhledávání.</param>

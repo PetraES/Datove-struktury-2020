@@ -5,96 +5,96 @@ K1;Ovčákova;6
 K2;K1;3
 K2;O15;12
 K2;K6;5
+K12;K2;2
 K3;O15;2
 Ovčákova;O15;6
 Ovčákova;O11;7
 Ovčákova;U ovara;18
+K6;K5;8
+O12;K5;3
+K13;K5;2
 K6;O11;9
 K6;O15;1
-K6;K5;8
+O12;K6;4
+K11;K6;5
 O15;O11;10
 K8;O14;8
+K12;K8;3
 O14;O13;5
 O14;O7;4
+K12;O14;15
+Krmelec;O14;3
 O13;K24;12
-O12;K6;4
-O12;K5;3
 O12;O13;3
+K9;O13;5
+O7;O13;3
 O12;K9;4
 K9;K10;3
-K9;O13;5
 K9;K22;9
-K11;K6;5
-K12;K2;2
+K20;K9;2
 K12;K11;4
-K12;K8;3
-K12;O14;15
 U ovara;Jelení obora;10
-K13;K5;2
+O11;U ovara;3
 K13;K19;6
 K13;O10;5
-O11;U ovara;3
+K16;Jelení obora;5
+U třech smrtihlavů;Jelení obora;8
+K16;K14;2
 K15;K16;2
 K15;K18;6
 K16;K19;3
-K16;K14;2
-K16;Jelení obora;5
 O10;K20;6
 O9;O10;2
-U třech smrtihlavů;Jelení obora;8
 U třech smrtihlavů;K17;3
 U třech smrtihlavů;Pod topolem;2
-K17;K18;3
 K18;U třech smrtihlavů;7
-O8;K28;30
+K17;K18;3
+Pod topolem;K17;10
 K19;K18;3
-K20;K9;2
+O8;K28;30
 K20;O8;4
-O7;O13;3
+K22;O8;5
 O7;Krmelec;2
 K21;Aš;3
-Krmelec;O14;3
+K24;K21;3
 Krmelec;K24;6
 K22;K23;5
-K22;O8;5
 K22;O6;9
 O6;O5;7
+K26;O6;4
+O1;O6;7
+K7;O6;4
 K23;K26;5
 K24;K23;2
-K24;K21;3
 K24;Za sedmero horama;7
 Aš;Za sedmero horama;2
 Na Hejtmance;K25;7
+Za sedmero horama;Na Hejtmance;25
 K25;Za sedmero horama;4
+U svaté trojice;K25;7
+K27;K25;3
 K26;O5;3
 K26;K27;7
-K26;O6;4
-U svaté trojice;K25;7
+Pod skalou;U svaté trojice;10
 O5;Pod skalou;8
-K27;K25;3
-Za sedmero horama;Na Hejtmance;25
 K28;K30;4
+K32;K28;15
 O4;K29;8
+K7;O4;1
+O3;K29;12
+O2;K30;1
 K31;O2;6
 K31;U hejkala;6
 K31;O3;4
-O2;K30;1
 K32;O2;3
-K32;K28;15
 O3;K33;5
 O3;O1;6
-O3;K29;12
+K34;O3;2
 Pod skalou;K33;15
-Pod skalou;U svaté trojice;10
 O1;K33;8
-O1;O6;7
 U hejkala;K33;5
 U hejkala;K34;3
+K4;U hejkala;2
 U popelářa;K33;5
 K34;K33;2
-K34;O3;2
 K4;Pod topolem;12
-K4;U hejkala;2
-K7;O6;4
-K7;O4;1
-Pod topolem;K17;10
