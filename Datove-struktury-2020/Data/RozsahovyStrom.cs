@@ -6,7 +6,6 @@ namespace Datove_struktury_2020.Data
 {
     class RozsahovyStrom<T> where T : ISouradnice
     {
-
         PrvekRozsahovehoStromu koren;
         int pocetPrvkuVeStrukture;
         int pocetUrovniStromu;
@@ -72,7 +71,6 @@ namespace Datove_struktury_2020.Data
                 // nastaveni intervalu pro navigacni prvek (ten ktery rika jake prvky jsou pod nim)
                 if (dimenzeX == true)
                 {
-
                     // sort vraci void nikoli serazenou kolekci, tzn ze zmeni zdrojova data
                     seznamPrvku.Sort(porovnejPodleX);
                     // utridit seznam vrcholu, vzit prvni vrchol a jeho x ovou souradnici 
@@ -94,12 +92,35 @@ namespace Datove_struktury_2020.Data
                     pomocny = new PrvekRozsahovehoStromu(soruradniceNavigacnihoVrcholu, false);
                 }
                 //vytvoreni seznamů prvků pro levý a pravý podstrom, do nichž se prvky rozdělí
-                
-               
+                //diky teto skvele metode dost pravdepodobne pri lichem poctu bude v pravem podstromu o jeden prvek vice 
+                int x = seznamPrvku.Count; //pocet prvku v seznamu
+                int y = x / 2; //deleni int odsekava desetiny
+                List<T> prvkyLevehoPodstromu = new List<T>(seznamPrvku.GetRange(0, y)); //getRange chce start index a pocetPrvku
+                List<T> prvkyPravyhoPodstromu = new List<T>(seznamPrvku.GetRange(y, (x - y)));
+                // vybudovani podstromů z rozdělených prvků, rekurze
+                pomocny.levyPotomek = VybudujPodstrom(prvkyLevehoPodstromu, pomocny, predchoziZListu, dimenzeX);
+                pomocny.pravyPotomek = VybudujPodstrom(prvkyPravyhoPodstromu, pomocny, predchoziZListu, dimenzeX);
             }
+            // byl-li pro budování předán jediný prvek, stane se plnohodnotným prvkem
+            else
+            {   // pokud je pocet prvku je jedna >?< - neni v Diplomce reseno
+                    pomocny = new PrvekRozsahovehoStromu (seznamPrvku[0], true);
 
-            //dodelat!
-            return predek;
+                // TODO: oveřít podmínku u if - pomocny != null?
+                // zřetězení prvků na úrovni listů (plnohodnotné prvky)  
+                if (predchoziZListu != null) 
+                {
+                    predchoziZListu.dalsiPrvekRozsahovehoStromu = pomocny;
+                    pomocny.predchoziPrvekzRozsahovehoStromu = predchoziZListu;
+                }
+            }
+            // pro navig. vrchol ve stromu první dimenze je vybudován strom druhé dimenze
+            if (dimenzeX == true && pomocny.platny == false)
+            {
+                pomocny.druhaDimenze = VybudujStrom(seznamPrvku, pomocny, false);                
+            }
+            pomocny.otec = predek;          
+            return pomocny;
         }
         public T Najdi(ISouradnice obeSouradnice)
         {
@@ -120,7 +141,6 @@ namespace Datove_struktury_2020.Data
 
         private List<T> NajdiInterval(ISouradnice levyHorniBod, ISouradnice pravyDolniBod, PrvekRozsahovehoStromu vrchol, bool dimenzeX)
         {
-
             return new List<T>();
         }
 
@@ -129,8 +149,8 @@ namespace Datove_struktury_2020.Data
         /// </summary>
         private class PrvekRozsahovehoStromu
         {
-            public PrvekRozsahovehoStromu levyPotomek, pravyPotomek, otec, druhaDimenze;
-            public PrvekRozsahovehoStromu predchozi, dalsi;
+            public PrvekRozsahovehoStromu levyPotomek, pravyPotomek, otec, druhaDimenze,
+                predchoziPrvekzRozsahovehoStromu, dalsiPrvekRozsahovehoStromu;
 
             // proměnná platný určuje, zda se jedná o plnohodnotný nebo navigační vrchol
             // je-li prvek platný (true), nese finální data 
