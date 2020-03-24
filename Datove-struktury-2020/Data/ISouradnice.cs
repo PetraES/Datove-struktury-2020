@@ -6,7 +6,7 @@ namespace Datove_struktury_2020.Data
 {
     interface ISouradnice : IComparable
     {
-        // jakokoliv trida implementuje-li rozhrani, stava se soucasne i datovym typem Interfacu
+        // jakakoliv trida implementuje-li rozhrani, stava se soucasne i datovym typem Interfacu
         //
         int vratX(); //get
         int vratY(); //get

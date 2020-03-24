@@ -15,13 +15,12 @@ namespace Datove_struktury_2020.Data
     {
         PrvekRozsahovehoStromu koren;
         int pocetPrvkuVeStrukture;
-        int pocetUrovniStromu;
+        int pocetUrovniStromu;    
+
+        //vždy, když se zavolá inervalové hledání tak se vytvoří nová instance 
+        List<T> vysledekIntervalovehoHledani;
 
         //delegát porovnani - reseno CompareTo
-
-
-
-       
 
         /// <summary>
         /// Porovnání součadnic v navigačním vrcholu podle X.
@@ -138,18 +137,15 @@ namespace Datove_struktury_2020.Data
                     // pouzit jako (konec intervalu) navigacniho vrcholu, tim vytvorit navigacni vrchol
                     int zacatekIntervalu = seznamPrvku[0].vratX();
                     int konecIntervalu = seznamPrvku[seznamPrvku.Count - 1].vratX();
-                    Data2Dim soruradniceNavigacnihoVrcholu = new Data2Dim(zacatekIntervalu, konecIntervalu);
-                    // vytvorit instanci prvku pomocneho rozsahoveho stromu do ktereho prijde interval a false
-                    // je to vlastne navigacni vrchol - soude podle hodnoty false pri volani konstruktoru
-                    pomocny = new PrvekRozsahovehoStromu(soruradniceNavigacnihoVrcholu, false);
+                    // vytvorit instanci prvku pomocneho rozsahoveho stromu - navigacniho vrcholu                  
+                    pomocny = new PrvekRozsahovehoStromu(zacatekIntervalu, konecIntervalu);
                 }
                 else
                 {
                     seznamPrvku.Sort(porovnejPodleY);
                     int zacatekIntervalu = seznamPrvku[0].vratY();
                     int konecIntervalu = seznamPrvku[seznamPrvku.Count - 1].vratY();
-                    Data2Dim soruradniceNavigacnihoVrcholu = new Data2Dim(zacatekIntervalu, konecIntervalu);
-                    pomocny = new PrvekRozsahovehoStromu(soruradniceNavigacnihoVrcholu, false);
+                    pomocny = new PrvekRozsahovehoStromu(zacatekIntervalu, konecIntervalu);
                 }
                 //vytvoreni seznamů prvků pro levý a pravý podstrom, do nichž se prvky rozdělí
                 //diky teto skvele metode dost pravdepodobne pri lichem poctu bude v pravem podstromu o jeden prvek vice 
@@ -164,7 +160,7 @@ namespace Datove_struktury_2020.Data
             // byl-li pro budování předán jediný prvek, stane se plnohodnotným prvkem
             else
             {   // pokud je pocet prvku je jedna >?< - neni v Diplomce reseno
-                pomocny = new PrvekRozsahovehoStromu(seznamPrvku[0], true);
+                pomocny = new PrvekRozsahovehoStromu(seznamPrvku[0]);
 
                 // TODO: oveřít podmínku u if - pomocny != null?
                 // zřetězení prvků na úrovni listů (plnohodnotné prvky)  
@@ -196,12 +192,13 @@ namespace Datove_struktury_2020.Data
         /// <returns>Prvek Rozsahového stromu </returns>
         public T Najdi(ISouradnice obeSouradnice)
         {
+            // TODO: chybi traverzovani
             // je-li kořen platným vrcholem, porovnají se souřadnice a hledání skončí
             if (koren != null && koren.platny == true)
             {
-                if (koren.data.vratX() == obeSouradnice.vratX() && koren.data.vratY() == obeSouradnice.vratY())
+                if (koren.nositelDat.vratX() == obeSouradnice.vratX() && koren.nositelDat.vratY() == obeSouradnice.vratY())
                 {
-                    return (T)koren.data;
+                    return koren.nositelDat;
                 }
                 else
                 {
@@ -216,40 +213,39 @@ namespace Datove_struktury_2020.Data
                 {
                     if (pomocny == null)
                     {
-                        return default;
+                        return default(T);
                     }
                     // je-li levý syn platným vrcholem, porovnají se jeho souřadnice  
                     if (pomocny.levyPotomek != null
                             && pomocny.levyPotomek.platny == true
-                            && pomocny.levyPotomek.data.vratX() == obeSouradnice.vratX()
-                            && pomocny.levyPotomek.data.vratY() == obeSouradnice.vratY())
+                            && pomocny.levyPotomek.nositelDat.vratX() == obeSouradnice.vratX()
+                            && pomocny.levyPotomek.nositelDat.vratY() == obeSouradnice.vratY())
                     {
-                        return (T)pomocny.levyPotomek.data;
+                        return pomocny.levyPotomek.nositelDat;
                     }
                     // je-li pravý syn platným vrcholem, porovnají se jeho souřadnice
                     if (pomocny.pravyPotomek != null
                             && pomocny.pravyPotomek.platny == true
-                            && pomocny.pravyPotomek.data.vratX() == obeSouradnice.vratX()
-                            && pomocny.pravyPotomek.data.vratY() == obeSouradnice.vratY())
+                            && pomocny.pravyPotomek.nositelDat.vratX() == obeSouradnice.vratX()
+                            && pomocny.pravyPotomek.nositelDat.vratY() == obeSouradnice.vratY())
                     {
-                        return (T)pomocny.pravyPotomek.data;
+                        return pomocny.pravyPotomek.nositelDat;
                     }
                     // jinak se rozhodne, kterým směrem pokračovat
                     // TODO: projit vetsi mensi jestli je spravne nakodovano
                     if (pomocny.levyPotomek != null
                         && pomocny.levyPotomek.platny == false
-                        && pomocny.levyPotomek.data.vratX() <= obeSouradnice.vratX()
-                        && pomocny.levyPotomek.data.vratY() >= obeSouradnice.vratX())
+                        && pomocny.levyPotomek.zacatekIntervalu <= obeSouradnice.vratX()
+                        && pomocny.levyPotomek.konecIntervalu >= obeSouradnice.vratX())
                     {
-                        return (T)pomocny.levyPotomek.data;
+                        return pomocny.levyPotomek.nositelDat;
                     }
                     else if (pomocny.pravyPotomek != null
                         && pomocny.pravyPotomek.platny == false
-                        && pomocny.pravyPotomek.data.vratX() <= obeSouradnice.vratX()
-                        && pomocny.pravyPotomek.data.vratY() >= obeSouradnice.vratX())
-
+                        && pomocny.pravyPotomek.zacatekIntervalu <= obeSouradnice.vratX()
+                        && pomocny.pravyPotomek.konecIntervalu >= obeSouradnice.vratX())
                     {
-                        return (T)pomocny.pravyPotomek.data;
+                        return pomocny.pravyPotomek.nositelDat;
                     }
                     else
                     {
@@ -267,8 +263,10 @@ namespace Datove_struktury_2020.Data
         /// <returns>Vracé seznam vrcholů ve vybraném intervalu. </returns>
         public List<T> NajdiInterval(ISouradnice levyHorniBod, ISouradnice pravyDolniBod)
         {
-            //dle diplomky se pri prvnim volani nastavi vrchol jako koren a dimenzeX na true
-            return NajdiInterval(levyHorniBod, pravyDolniBod, koren, true);
+            vysledekIntervalovehoHledani = new List<T>();
+            //pri prvnim volani se nastavi vrchol jako koren a dimenzeX na true
+            NajdiInterval(levyHorniBod, pravyDolniBod, koren, true);
+            return vysledekIntervalovehoHledani;
         }
 
         /// <summary>
@@ -283,9 +281,57 @@ namespace Datove_struktury_2020.Data
         /// <param name="vrchol"></param>
         /// <param name="dimenzeX"></param>
         /// <returns></returns>
-        private List<T> NajdiInterval(ISouradnice levyHorniBod, ISouradnice pravyDolniBod, PrvekRozsahovehoStromu vrchol, bool dimenzeX)
+        private void NajdiInterval(ISouradnice levyHorniRohIntervalu, ISouradnice pravyDolniRohIntervalu, 
+            PrvekRozsahovehoStromu vrchol, bool dimenzeX)
         {
-            return new List<T>();
+            if (vrchol != null)
+            {
+                // při dosažení plnohodnotného prvku se zkontrolují jeho souřadnice
+                if (vrchol.platny == true)
+                {
+                    if (vrchol.nositelDat.vratX() >= levyHorniRohIntervalu.vratX()
+                        && vrchol.nositelDat.vratX() <= pravyDolniRohIntervalu.vratX()
+                        && vrchol.nositelDat.vratY() <= levyHorniRohIntervalu.vratY()
+                        && vrchol.nositelDat.vratY() >= pravyDolniRohIntervalu.vratY())
+                    {
+                        vysledekIntervalovehoHledani.Add(vrchol.nositelDat);
+                    }
+                }
+                else {
+                    if (dimenzeX == true)
+                    {
+                        // patří-li celý interval do hledaného rozsahu, hledá se ve druhé dimenzi
+                        if (levyHorniRohIntervalu.vratX() <= vrchol.zacatekIntervalu
+                            && pravyDolniRohIntervalu.vratX() >= vrchol.konecIntervalu)
+                        {
+                            NajdiInterval(levyHorniRohIntervalu, pravyDolniRohIntervalu, vrchol.druhaDimenze, !dimenzeX);
+                        }
+                        // patří-li část intervalu do hledaného rozsahu, pokračuje se oběma syny
+                        else if (levyHorniRohIntervalu.vratX() >= vrchol.zacatekIntervalu
+                            || pravyDolniRohIntervalu.vratX() <= vrchol.konecIntervalu)
+                        {
+                            NajdiInterval(levyHorniRohIntervalu, pravyDolniRohIntervalu, vrchol.levyPotomek, dimenzeX);
+                            NajdiInterval(levyHorniRohIntervalu, pravyDolniRohIntervalu, vrchol.pravyPotomek, dimenzeX);
+                        }
+                    }
+                    else
+                    // patří-li celý interval do hledaného rozsahu, provede se prohlídka podstromu
+                    {
+                        if (vrchol.zacatekIntervalu >= levyHorniRohIntervalu.vratY()
+                            && vrchol.konecIntervalu <= pravyDolniRohIntervalu.vratY())
+                        {
+                            // TODO funkce prohlidka (vsechny listy podstromu a ulozi je do listu)
+                        }
+                        else if (vrchol.zacatekIntervalu <= levyHorniRohIntervalu.vratY()
+                            || vrchol.konecIntervalu >= pravyDolniRohIntervalu.vratY()) 
+                        {
+                            NajdiInterval(levyHorniRohIntervalu, pravyDolniRohIntervalu, vrchol.levyPotomek, dimenzeX);
+                            NajdiInterval(levyHorniRohIntervalu, pravyDolniRohIntervalu, vrchol.pravyPotomek, dimenzeX);
+                        }
+                    }
+
+                }
+            }   
         }
 
         /// <summary>
@@ -298,18 +344,28 @@ namespace Datove_struktury_2020.Data
 
             // proměnná platný určuje, zda se jedná o plnohodnotný nebo navigační vrchol
             // je-li prvek platný (true), nese finální data 
-            // je-li prvek platný (false), nenese
+            // je-li prvek platný (false), nenese finalni data
             public bool platny = false;
 
-            public ISouradnice data;
+            public T nositelDat;
+
+            public int zacatekIntervalu, konecIntervalu;
 
             // pro prvek prvek rozsahoveho stromu - "list"
-            // vynucuje znalost dat(souradnic) pri vytvareni instance
-            public PrvekRozsahovehoStromu(ISouradnice s, bool platny)
+            public PrvekRozsahovehoStromu(T s)
             {
-                this.platny = platny;
-                data = s;
+                this.platny = true; //datovym typem T zabezpeceno nastaveni
+                nositelDat = s;
             }
+
+            // pro prvek prvek rozsahoveho stromu - "navigacni vrchol"
+            public PrvekRozsahovehoStromu(int navigacniVrcholX, int navigacnivrcholY)
+            {
+                this.zacatekIntervalu = navigacniVrcholX;
+                this.konecIntervalu = navigacnivrcholY;
+                platny = false;  
+            }
+
         }
 
     }
