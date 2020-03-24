@@ -191,8 +191,7 @@ namespace Datove_struktury_2020.Data
         /// <param name="obeSouradnice">Proměnná uchovávající obě souřadnice.</param>
         /// <returns>Prvek Rozsahového stromu </returns>
         public T Najdi(ISouradnice obeSouradnice)
-        {
-            // TODO: chybi traverzovani
+        {           
             // je-li kořen platným vrcholem, porovnají se souřadnice a hledání skončí
             if (koren != null && koren.platny == true)
             {
@@ -238,14 +237,14 @@ namespace Datove_struktury_2020.Data
                         && pomocny.levyPotomek.zacatekIntervalu <= obeSouradnice.vratX()
                         && pomocny.levyPotomek.konecIntervalu >= obeSouradnice.vratX())
                     {
-                        return pomocny.levyPotomek.nositelDat;
+                        pomocny = pomocny.levyPotomek;
                     }
                     else if (pomocny.pravyPotomek != null
                         && pomocny.pravyPotomek.platny == false
                         && pomocny.pravyPotomek.zacatekIntervalu <= obeSouradnice.vratX()
                         && pomocny.pravyPotomek.konecIntervalu >= obeSouradnice.vratX())
                     {
-                        return pomocny.pravyPotomek.nositelDat;
+                        pomocny = pomocny.pravyPotomek;
                     }
                     else
                     {
