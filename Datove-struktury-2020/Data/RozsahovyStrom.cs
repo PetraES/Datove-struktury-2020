@@ -15,7 +15,7 @@ namespace Datove_struktury_2020.Data
     {
         PrvekRozsahovehoStromu koren;
         int pocetPrvkuVeStrukture;
-        int pocetUrovniStromu;    
+        int pocetUrovniStromu;
 
         //vždy, když se zavolá inervalové hledání tak se vytvoří nová instance 
         List<T> vysledekIntervalovehoHledani;
@@ -191,7 +191,7 @@ namespace Datove_struktury_2020.Data
         /// <param name="obeSouradnice">Proměnná uchovávající obě souřadnice.</param>
         /// <returns>Prvek Rozsahového stromu </returns>
         public T Najdi(ISouradnice obeSouradnice)
-        {           
+        {
             // je-li kořen platným vrcholem, porovnají se souřadnice a hledání skončí
             if (koren != null && koren.platny == true)
             {
@@ -280,7 +280,7 @@ namespace Datove_struktury_2020.Data
         /// <param name="vrchol"></param>
         /// <param name="dimenzeX"></param>
         /// <returns></returns>
-        private void NajdiInterval(ISouradnice levyHorniRohIntervalu, ISouradnice pravyDolniRohIntervalu, 
+        private void NajdiInterval(ISouradnice levyHorniRohIntervalu, ISouradnice pravyDolniRohIntervalu,
             PrvekRozsahovehoStromu vrchol, bool dimenzeX)
         {
             if (vrchol != null)
@@ -296,7 +296,8 @@ namespace Datove_struktury_2020.Data
                         vysledekIntervalovehoHledani.Add(vrchol.nositelDat);
                     }
                 }
-                else {
+                else
+                {
                     if (dimenzeX == true)
                     {
                         // patří-li celý interval do hledaného rozsahu, hledá se ve druhé dimenzi
@@ -320,9 +321,10 @@ namespace Datove_struktury_2020.Data
                             && vrchol.konecIntervalu <= pravyDolniRohIntervalu.vratY())
                         {
                             // TODO funkce prohlidka (vsechny listy podstromu a ulozi je do listu)
+                            
                         }
                         else if (vrchol.zacatekIntervalu <= levyHorniRohIntervalu.vratY()
-                            || vrchol.konecIntervalu >= pravyDolniRohIntervalu.vratY()) 
+                            || vrchol.konecIntervalu >= pravyDolniRohIntervalu.vratY())
                         {
                             NajdiInterval(levyHorniRohIntervalu, pravyDolniRohIntervalu, vrchol.levyPotomek, dimenzeX);
                             NajdiInterval(levyHorniRohIntervalu, pravyDolniRohIntervalu, vrchol.pravyPotomek, dimenzeX);
@@ -330,8 +332,38 @@ namespace Datove_struktury_2020.Data
                     }
 
                 }
-            }   
+            }
         }
+
+        // prohlidka(PrvekRange < T > vrchol, AkceCallback akce, bool dimenzeX) – metoda
+        // provádějící prohlídku, dotraverzuje k nejlevějšímu listu stromu, jehož kořen odpovídá
+        // parametru vrchol, a následně projde zřetězený seznam se všemi plnohodnotnými prvky,
+        // nad kterými vykoná zvolenou akci(během fáze ladění navíc kontroluje korektnost
+        // umístění prvků ve struktuře),
+        private void Prohlidka(PrvekRozsahovehoStromu vrchol, bool dimenzeX)
+        {  
+            // dotraverzovat k platnemu vrcholu
+            if(vrchol != null)
+            {
+                if (vrchol.platny == true)
+                {
+                    vysledekIntervalovehoHledani.Add(vrchol.nositelDat);
+                    if (vrchol.dalsiPrvekRozsahovehoStromu !=null)
+                    {
+                        Prohlidka(vrchol.dalsiPrvekRozsahovehoStromu, dimenzeX);
+                    }
+                }
+                else
+                {
+                    if (vrchol.levyPotomek != null)
+                    {
+                        Prohlidka(vrchol.levyPotomek, dimenzeX);
+                    }
+                }
+            }
+            
+        }                             
+
 
         /// <summary>
         /// Uzel stromu.
@@ -349,7 +381,7 @@ namespace Datove_struktury_2020.Data
             public T nositelDat;
 
             public int zacatekIntervalu, konecIntervalu;
-
+             
             // pro prvek prvek rozsahoveho stromu - "list"
             public PrvekRozsahovehoStromu(T s)
             {
@@ -362,7 +394,7 @@ namespace Datove_struktury_2020.Data
             {
                 this.zacatekIntervalu = navigacniVrcholX;
                 this.konecIntervalu = navigacnivrcholY;
-                platny = false;  
+                platny = false;
             }
 
         }
