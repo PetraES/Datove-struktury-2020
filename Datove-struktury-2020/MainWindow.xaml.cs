@@ -473,6 +473,27 @@ namespace Datove_struktury_2020
                 mapa.UlozMapu();
             }
         }
+
+        ISouradnice zacatekOblastiPolom;
+        ISouradnice konecOblastiPolom;
+
+        private void canvasElem_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var point = e.GetPosition((IInputElement)sender);
+            zacatekOblastiPolom = new Data2Dim ((int)point.X,(int)point.Y);
+
+        }
+
+        private void canvasElem_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (zacatekOblastiPolom != null)
+            {
+                var point = e.GetPosition((IInputElement)sender);
+                konecOblastiPolom = new Data2Dim((int)point.X, (int)point.Y);
+                System.Windows.Shapes.Rectangle a = new System.Windows.Shapes.Rectangle();
+                
+            }
+        }
     }
 
 }

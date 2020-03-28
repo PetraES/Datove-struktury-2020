@@ -47,7 +47,7 @@
             </Label>
 
             <Canvas x:Name="canvasElem" Height="529" Canvas.Top="223" Width="910" Background="#7F20B2AA"
-                    Canvas.Left="10" MouseLeftButtonDown="canvasElem_MouseLeftButtonDown"/>
+                    Canvas.Left="10" MouseLeftButtonDown="canvasElem_MouseLeftButtonDown" MouseDown="canvasElem_MouseDown" MouseMove="canvasElem_MouseMove"/>
             <ComboBox x:Name="TypVrcholu_comboBox" Canvas.Left="220" Canvas.Top="120" 
                       Width="100" Height="30" SelectedIndex="0">
                 <ListBoxItem Content="Křižovatka"/>
