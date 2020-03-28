@@ -51,15 +51,11 @@ namespace Datove_struktury_2020.Data
             VrcholyUzVyresene.Clear();
             this.klicKonce = konec;
 
-            PrvekHaldy<Cesta> obecnyPrvek = new PrvekHaldy<Cesta>();
-
             Cesta c = new Cesta();
             c.AktualniVrchol = zacatek;
             c.CenaCeleCesty = 0;
-            obecnyPrvek.Informace = c;
-            obecnyPrvek.Priorita = 0;
 
-            prioritniFronta.VlozPrvek(obecnyPrvek);
+            prioritniFronta.VlozPrvek(c, 0);
             ProjdiGraf();
         }
 
@@ -96,31 +92,27 @@ namespace Datove_struktury_2020.Data
                 cestaSNovymUsekem.AktualniVrchol = novyVrchol;
                 cestaSNovymUsekem.CenaCeleCesty = cena;
 
-                PrvekHaldy<Cesta> obecnyPrvek = new PrvekHaldy<Cesta>();
-                obecnyPrvek.Priorita = (int)cena;
-                obecnyPrvek.Informace = cestaSNovymUsekem;
 
                 // pokud nahrazovana cesta konci v hledané zastávce nastavime jako nejkratsi cestu 
-                if (obecnyPrvek.Informace.AktualniVrchol == klicKonce)
+                if (cestaSNovymUsekem.AktualniVrchol == klicKonce)
                 {
-                    NejkratsiNalezenaCesta = obecnyPrvek.Informace;
+                    NejkratsiNalezenaCesta = cestaSNovymUsekem;
                 }
 
-                //v prioritni fronte hledam cestu, ktera konci v aktualnim vrcholu
-                for (int i = 0; i < prioritniFronta.haldaEma.Count; i++)
+                foreach (Cesta cestaZGertrudy in prioritniFronta.vratPrvky())
                 {
-                    if (prioritniFronta.haldaEma[i].Informace.AktualniVrchol.Equals(novyVrchol))
+                    //v prioritni fronte hledam cestu, ktera konci v aktualnim vrcholu
+                    //jestlize ma aktualne nalezena cesta mensi cenu, nahradi dosavadni
+                    if (cestaZGertrudy.AktualniVrchol.Equals(novyVrchol) && cena < cestaZGertrudy.CenaCeleCesty)
                     {
-                        //jestlize ma aktualne nalezena cesta mensi cenu, nahradi dosavadni
-                        if (prioritniFronta.haldaEma[i].Priorita > cena)
+                        bool nahrazeno = prioritniFronta.NahradPrvek(cestaZGertrudy, cestaSNovymUsekem, (int)cestaSNovymUsekem.CenaCeleCesty);
+                        if (nahrazeno)
                         {
-                            prioritniFronta.haldaEma[i] = obecnyPrvek;
-                            prioritniFronta.PrerovnejHypu();
                             return;
-                        }
+                        } 
                     }
                 }
-                prioritniFronta.VlozPrvek(obecnyPrvek);
+                prioritniFronta.VlozPrvek(cestaSNovymUsekem, (int)cena);
             }
         }
 
@@ -132,16 +124,16 @@ namespace Datove_struktury_2020.Data
         public void ProjdiGraf()
 
         {
-            PrvekHaldy<Cesta> dosavadniProjitaCesta = prioritniFronta.OdeberPrvek();
+            Cesta dosavadniProjitaCesta = prioritniFronta.OdeberPrvek();
             if (dosavadniProjitaCesta == null)
             {
                 return;
             }
 
             //v hranate zavorce je x-ty prvek listu - tady je to ten posledni, posledni projita cesta, tady h
-            DataHran h = dosavadniProjitaCesta.Informace.NavstiveneHrany.Count == 0 ? null : dosavadniProjitaCesta.Informace.NavstiveneHrany[dosavadniProjitaCesta.Informace.NavstiveneHrany.Count - 1];
+            DataHran h = dosavadniProjitaCesta.NavstiveneHrany.Count == 0 ? null : dosavadniProjitaCesta.NavstiveneHrany[dosavadniProjitaCesta.NavstiveneHrany.Count - 1];
             
-            foreach (DataHran obecnaHrana in ag.VratIncidentniHrany(dosavadniProjitaCesta.Informace.AktualniVrchol))
+            foreach (DataHran obecnaHrana in ag.VratIncidentniHrany(dosavadniProjitaCesta.AktualniVrchol))
             {
                 // preskoci cestu po ktere jsme prisli
                 if (obecnaHrana == h)
@@ -151,26 +143,26 @@ namespace Datove_struktury_2020.Data
 
                 // Informace je nositel informace, ktera je prioritizovana, tady treba cesta
                 // hledam, ktery vrchol se pouzije jako naslednik 
-                if (dosavadniProjitaCesta.Informace.AktualniVrchol == obecnaHrana.PocatekHrany)
+                if (dosavadniProjitaCesta.AktualniVrchol == obecnaHrana.PocatekHrany)
                 {
                     VlozCestuDoFronty(
                         obecnaHrana.KonecHrany,
                         obecnaHrana,
-                        dosavadniProjitaCesta.Informace.CenaCeleCesty + obecnaHrana.DelkaHrany,
-                        dosavadniProjitaCesta.Informace);
+                        dosavadniProjitaCesta.CenaCeleCesty + obecnaHrana.DelkaHrany,
+                        dosavadniProjitaCesta);
                 }
-                else if (dosavadniProjitaCesta.Informace.AktualniVrchol == obecnaHrana.KonecHrany)
+                else if (dosavadniProjitaCesta.AktualniVrchol == obecnaHrana.KonecHrany)
                 {
                     VlozCestuDoFronty(
                         obecnaHrana.PocatekHrany,
                         obecnaHrana,
-                        dosavadniProjitaCesta.Informace.CenaCeleCesty + obecnaHrana.DelkaHrany,
-                        dosavadniProjitaCesta.Informace);
+                        dosavadniProjitaCesta.CenaCeleCesty + obecnaHrana.DelkaHrany,
+                        dosavadniProjitaCesta);
                 }
             }
 
             //pridam do listu vyresenych vrcholu
-            VrcholyUzVyresene.Add(dosavadniProjitaCesta.Informace.AktualniVrchol);
+            VrcholyUzVyresene.Add(dosavadniProjitaCesta.AktualniVrchol);
             ProjdiGraf();
         }
 

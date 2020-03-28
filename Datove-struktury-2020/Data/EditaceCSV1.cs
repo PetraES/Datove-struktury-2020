@@ -52,6 +52,12 @@ namespace Datove_struktury_2020.Data
             return radek.Split(';');
         }
 
+        private string[] RozsekejRadkyPomezerach(string radek)
+        {
+            return radek.Split(';');
+        }
+
+
         public void ZapisDoCSV(string cestaKSouboru, string data) 
         {
             StreamWriter sw = new StreamWriter(cestaKSouboru);

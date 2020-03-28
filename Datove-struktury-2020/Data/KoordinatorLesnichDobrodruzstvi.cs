@@ -12,9 +12,9 @@ namespace Datove_struktury_2020.Data
         private EditaceCSV editujCSV = new EditaceCSV();
 
         // vrcholy jsou body v mapě
-        private string cestaKsouboruObce = @"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\Obce.csv";
+        private string cestaKsouboruObce50 = @"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\Obce.csv";
         //hrany jsou cesty v lese
-        private string cestaKsouboruCesty = @"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\Cesty.csv";
+        private string cestaKsouboruCesty50 = @"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\Cesty.csv";
 
         /// <summary>
         /// Konstruktor. Při konstrukci třídy načte data ze souborů.
@@ -31,7 +31,7 @@ namespace Datove_struktury_2020.Data
         /// </summary>
         public void nactiVrcholyZCSV()
         {
-            List<string[]> objekt = editujCSV.NactiSoubor(cestaKsouboruObce);
+            List<string[]> objekt = editujCSV.NactiSoubor(cestaKsouboruObce50);
 
             //ukladani poradi radku do int, aby se pak dala vynechat hlavicka souboru Cesty
             int poradiRadku = 0;
@@ -66,7 +66,7 @@ namespace Datove_struktury_2020.Data
         /// </summary>
         public void nactiHranyZCSV()
         {
-            List<string[]> objekt = editujCSV.NactiSoubor(cestaKsouboruCesty);
+            List<string[]> objekt = editujCSV.NactiSoubor(cestaKsouboruCesty50);
             //ukladani poradi radku do int, aby se pak dala vynechat hlavicka souboru Cesty
             int poradiRadku = 0;
             foreach (string[] radek in objekt)
@@ -144,7 +144,7 @@ namespace Datove_struktury_2020.Data
                     v.YSouradniceVrcholu,
                     (int)v.TypVrcholu);
             }
-            editujCSV.ZapisDoCSV(cestaKsouboruObce, vrcholy);
+            editujCSV.ZapisDoCSV(cestaKsouboruObce50, vrcholy);
 
             string hrany = "klicPocatek;klicKonec;delkaCesty\n";
             foreach (DataHran h in AG.VratSeznamHran())
@@ -154,7 +154,7 @@ namespace Datove_struktury_2020.Data
                     h.KonecHrany,
                     h.DelkaHrany);
             }
-            editujCSV.ZapisDoCSV(cestaKsouboruCesty, hrany);
+            editujCSV.ZapisDoCSV(cestaKsouboruCesty50, hrany);
         }
 
         /// <summary>
