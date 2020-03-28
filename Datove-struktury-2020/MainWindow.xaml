@@ -26,11 +26,11 @@
             <Button x:Name="PridejCestuButton" Canvas.Left="370" Canvas.Top="28"
                     Content="Přidej cestu" Height="30" Width="120" Click="PridejCestuButton_Click" FontSize="18" RenderTransformOrigin="-15,0"/>
             <Button x:Name="NajdiCestuButton" Content="Najdi nejkratší cestu" Height="30"
-                    Canvas.Left="585" Canvas.Top="28" Width="120" 
+                    Canvas.Left="495" Canvas.Top="28" Width="120" 
                     Click="NajdiCestuButt_Click" FontSize="18" RenderTransformOrigin="-15,0"
                     />
             <Button x:Name="VlozBodButton" Content="Vlož bod" Height="30"
-                    Canvas.Left="800" Canvas.Top="28" Width="120"
+                    Canvas.Left="620" Canvas.Top="28" Width="120"
                     Click="VlozBodButton_Click" FontSize="18" RenderTransformOrigin="-15,0"/>
             <Button x:Name="tlacitko_ANO" Content="ANO,souhlasím" Canvas.Left="229" Canvas.Top="168" 
                     Click="ANO_Button_Click" RenderTransformOrigin="0.454,-0.349" Height="30" Width="30" 

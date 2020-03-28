@@ -162,8 +162,8 @@ namespace Datove_struktury_2020
                 jeOznacena = true;
             }
 
-            DataVrcholu pocatekHrany = mapa.najdiVrchol(lesniStezka.PocatekHrany);
-            DataVrcholu konecHrany = mapa.najdiVrchol(lesniStezka.KonecHrany);
+            DataVrcholu pocatekHrany = mapa.NajdiVrchol(lesniStezka.PocatekHrany);
+            DataVrcholu konecHrany = mapa.NajdiVrchol(lesniStezka.KonecHrany);
 
             Line myline = new Line
             {
@@ -253,7 +253,7 @@ namespace Datove_struktury_2020
             var dot = (Ellipse)sender;
             string klicVrcholu = dot.Name.Replace("_", " ");
 
-            DataVrcholu hledanyVrcholvMape = mapa.najdiVrchol(klicVrcholu);
+            DataVrcholu hledanyVrcholvMape = mapa.NajdiVrchol(klicVrcholu);
 
             if (hledanyVrcholvMape != null)
             {
@@ -272,7 +272,7 @@ namespace Datove_struktury_2020
                     nastavTextLabelu("Pocatecni bod je: " + pocatek.ToString() + ".\n"
                         + "Konečný bod je: " + konec.ToString() + ". Hledám nejkratší cestu...");
 
-                    Cesta cesta = mapa.najdiCestu(pocatek.NazevVrcholu, konec.NazevVrcholu);
+                    Cesta cesta = mapa.NajdiCestu(pocatek.NazevVrcholu, konec.NazevVrcholu);
                     if (cesta == null)
                     {
                         nastavTextLabelu("Cestu se nepodařilo nalézt.");
@@ -299,7 +299,7 @@ namespace Datove_struktury_2020
                     else
                     {
                         konec = hledanyVrcholvMape;
-                        DataHran novaHrana = mapa.vytvorHranu(pocatek.NazevVrcholu, konec.NazevVrcholu, (short)spocitejDelkuHrany(pocatek, konec));
+                        DataHran novaHrana = mapa.VytvorHranu(pocatek.NazevVrcholu, konec.NazevVrcholu, (short)spocitejDelkuHrany(pocatek, konec));
                         KresliSilnici(novaHrana);
                         stisknutoVytvorCestu = false;
                         nastavTextLabelu("Cesta byla vytvořena.");
@@ -337,7 +337,7 @@ namespace Datove_struktury_2020
             float yDo = (float)((line.Y2 - 4) / scaleY);
 
             // vrchol Z jako zacatek
-            DataVrcholu vrhcholZ = mapa.najdiVrchol(kliceVrcholu[0]);
+            DataVrcholu vrhcholZ = mapa.NajdiVrchol(kliceVrcholu[0]);
             if (vrhcholZ != null)
             {
                 // DataHran silnice = (DataHran)(from item in vrhcholZ.ListHran where item.KonecHrany.XSouradniceVrcholu.Equals(xDo) && item.KonecHrany.YSouradniceVrcholu.Equals(yDo) select item).First();
@@ -426,7 +426,7 @@ namespace Datove_struktury_2020
             {
                 TypyVrcholu typVrcholu = (TypyVrcholu)TypVrcholu_comboBox.SelectedIndex;
                 string nazevVrcholu = nazevVrcholuTextBox.Text;
-                DataVrcholu pridanyVrchol = mapa.vlozVrchol((int)gBod.X, (int)gBod.Y, typVrcholu, nazevVrcholu);
+                DataVrcholu pridanyVrchol = mapa.VlozVrchol((int)gBod.X, (int)gBod.Y, typVrcholu, nazevVrcholu);
                 vykresliObec(pridanyVrchol);
                 SkrytPrvkyVytvorBod();
                 nastavTextLabelu("Hotovo, vypadá to, že máme nový bod.");
@@ -470,7 +470,7 @@ namespace Datove_struktury_2020
             if (result == MessageBoxResult.Yes)
             {
                 // kdyz se zmackne Yes tak se ulozi nova podoba mapy do .csv souboru
-                mapa.ulozMapu();
+                mapa.UlozMapu();
             }
         }
     }
