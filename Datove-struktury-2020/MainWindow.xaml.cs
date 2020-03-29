@@ -476,12 +476,49 @@ namespace Datove_struktury_2020
 
         ISouradnice zacatekOblastiPolom;
         ISouradnice konecOblastiPolom;
+        System.Windows.Shapes.Rectangle a;
+
+        private int PorovnejSouradnice(int s1, int s2)
+        {            
+            if (s1 < s2)
+            {
+                return s1;
+            }
+            else
+            {
+                return s2;
+            }                         
+        }
+
+        private void VykresliRectangle()
+        {
+            bool novy = false;
+            if (a == null)
+            {
+                novy = true;
+                a = new System.Windows.Shapes.Rectangle();
+            }
+            int x1 = zacatekOblastiPolom.vratX();
+            int y1 = zacatekOblastiPolom.vratY();
+            int x2 = konecOblastiPolom.vratX();
+            int y2 = konecOblastiPolom.vratY();
+            int xmin = PorovnejSouradnice(x1, x2);
+            int ymin = PorovnejSouradnice(y1, y2);
+            a.Margin = new Thickness(xmin, ymin, 0, 0);
+            a.Width = Math.Abs(x2 - x1);
+            a.Height = Math.Abs(y2 - y1);
+            a.Stroke = new SolidColorBrush(Colors.GreenYellow);
+            a.StrokeThickness = 5;
+            if (novy)
+            {
+                canvasElem.Children.Add(a);
+            }
+        }
 
         private void canvasElem_MouseDown(object sender, MouseButtonEventArgs e)
         {
             var point = e.GetPosition((IInputElement)sender);
-            zacatekOblastiPolom = new Data2Dim ((int)point.X,(int)point.Y);
-
+            zacatekOblastiPolom = new Data2Dim((int)point.X, (int)point.Y);
         }
 
         private void canvasElem_MouseMove(object sender, MouseEventArgs e)
@@ -490,9 +527,29 @@ namespace Datove_struktury_2020
             {
                 var point = e.GetPosition((IInputElement)sender);
                 konecOblastiPolom = new Data2Dim((int)point.X, (int)point.Y);
-                System.Windows.Shapes.Rectangle a = new System.Windows.Shapes.Rectangle();
-                
+                VykresliRectangle();
             }
+        }
+
+        private void canvasElem_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            var point = e.GetPosition((IInputElement)sender);
+            konecOblastiPolom = new Data2Dim((int)point.X, (int)point.Y);
+            VykresliRectangle();
+            List<DataVrcholu> polamaneVrcholy =  mapa.ZpracujInterval(zacatekOblastiPolom, konecOblastiPolom);
+
+            //aby se neprekresloval rectangl pri pohybu mysi
+            zacatekOblastiPolom = null;
+
+            foreach (DataVrcholu vrchol in polamaneVrcholy) 
+            {
+                IEnumerable<DataHran> polamaneHrany = mapa.VratIncedencniHrany(vrchol.NazevVrcholu);
+                foreach (DataHran hrana in polamaneHrany)
+                {
+                    hrana.JeFunkcniCesta = false;
+                }
+            }
+            vykresliMapu();            
         }
     }
 

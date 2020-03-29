@@ -101,6 +101,11 @@ namespace Datove_struktury_2020.Data
             return ag.VratSeznamHran();
         }
 
+        public IEnumerable<DataHran> VratIncedencniHrany(string klicVrcholu)
+        {
+            return ag.VratIncidentniHrany(klicVrcholu);
+        }
+
         /// <summary>
         /// Zpřístupní kolekci vrcholů pro vykreslení.
         /// </summary>
