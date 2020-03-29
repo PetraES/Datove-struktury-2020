@@ -290,9 +290,9 @@ namespace Datove_struktury_2020.Data
                 {
                     if (vrchol.nositelDat.vratX() >= levyHorniRohIntervalu.vratX()
                         && vrchol.nositelDat.vratX() <= pravyDolniRohIntervalu.vratX()
-                        && vrchol.nositelDat.vratY() <= levyHorniRohIntervalu.vratY()
-                        && vrchol.nositelDat.vratY() >= pravyDolniRohIntervalu.vratY())
-                    {
+                        && vrchol.nositelDat.vratY() >= levyHorniRohIntervalu.vratY()
+                        && vrchol.nositelDat.vratY() <= pravyDolniRohIntervalu.vratY()) // TODO: k uvaze
+                    {                                               
                         vysledekIntervalovehoHledani.Add(vrchol.nositelDat);
                     }
                 }
@@ -321,7 +321,7 @@ namespace Datove_struktury_2020.Data
                             && vrchol.konecIntervalu <= pravyDolniRohIntervalu.vratY())
                         {
                             // TODO funkce prohlidka (vsechny listy podstromu a ulozi je do listu)
-                            
+                            Prohlidka(vrchol, dimenzeX);
                         }
                         else if (vrchol.zacatekIntervalu <= levyHorniRohIntervalu.vratY()
                             || vrchol.konecIntervalu >= pravyDolniRohIntervalu.vratY())

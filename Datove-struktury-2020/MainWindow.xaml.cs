@@ -22,9 +22,6 @@ namespace Datove_struktury_2020
     /// </summary>
     public partial class MainWindow : Window
     {
-        private int scaleX = 4; // Settings.Default.mapXScale;
-        private int scaleY = 2; // Settings.Default.mapYScale;
-
         bool urcenPocatecniBod; // true pokud stisknu tlacitko vyhledej cestu
         bool urcenKonecnyBod; // je-li vybran/urcen pocatecni bod pak se nastavi na true
         bool stisknutoVytvorVrchol; //pokud dojde ke stsknuti tlacitka, nastavi se na true
@@ -54,7 +51,7 @@ namespace Datove_struktury_2020
             {
                 MessageBox.Show(e.Message, "Nepodařilo se načíst les!", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
-            vykresliMapu();
+            VykresliMapu();
         }
 
         /// <summary>
@@ -90,7 +87,7 @@ namespace Datove_struktury_2020
         /// <summary>
         /// Postupně prochází body a hrany grafu a vykresluje je.
         /// </summary>
-        public void vykresliMapu()
+        public void VykresliMapu()
         {
             canvasElem.Children.Clear();
             foreach (DataVrcholu vrchol in mapa.GetVrcholy())
@@ -134,7 +131,7 @@ namespace Datove_struktury_2020
             }
             Canvas.SetZIndex(teckaNaVrcholu, 3);
 
-            teckaNaVrcholu.Margin = new Thickness(vrchol.XSouradniceVrcholu * scaleX, vrchol.YSouradniceVrcholu * scaleY, 0, 0);
+            teckaNaVrcholu.Margin = new Thickness(vrchol.XSouradniceVrcholu, vrchol.YSouradniceVrcholu, 0, 0);
 
             //DELEGAT tu se zaregistruje funkce OnElipse.. na jako event handler na akci MouseLeft.. - DELEGAT
             teckaNaVrcholu.MouseLeftButtonDown += OnEllipseMouseLeftButtonDown;
@@ -142,7 +139,7 @@ namespace Datove_struktury_2020
             TextBlock TB = new TextBlock();
             TB.Text = vrchol.NazevVrcholu;
             BitmapCacheBrush bcb = new BitmapCacheBrush(TB);
-            TB.Margin = new Thickness(vrchol.XSouradniceVrcholu * scaleX - 15, vrchol.YSouradniceVrcholu * scaleY + 10, 0, 0);
+            TB.Margin = new Thickness(vrchol.XSouradniceVrcholu - 15, vrchol.YSouradniceVrcholu + 10, 0, 0);
             TB.FontSize = 10;
             Canvas.SetZIndex(TB, 20);
 
@@ -156,10 +153,15 @@ namespace Datove_struktury_2020
         /// <param name="lesniStezka">nese <c>DataHran<c> potřebné k vytvoření hrany</param>
         private void KresliSilnici(DataHran lesniStezka)
         {
-            bool jeOznacena = false;
+            //default je hyr
+            Brush barvaStezky = Brushes.Beige;
             if (lesniStezka.OznaceniHrany)
             {
-                jeOznacena = true;
+                barvaStezky = Brushes.Black;
+            } 
+            else if (!lesniStezka.JeFunkcniCesta)
+            {
+                barvaStezky = Brushes.DarkGray;
             }
 
             DataVrcholu pocatekHrany = mapa.NajdiVrchol(lesniStezka.PocatekHrany);
@@ -168,12 +170,12 @@ namespace Datove_struktury_2020
             Line myline = new Line
             {
                 // Name = String.Format("{0}__{1}", lesniStezka.PocatekHrany, lesniStezka.KonecHrany),
-                Stroke = jeOznacena ? Brushes.Black : Brushes.Beige,
+                Stroke = barvaStezky,
                 StrokeThickness = 10,
-                X1 = pocatekHrany.XSouradniceVrcholu * scaleX + 4,
-                Y1 = pocatekHrany.YSouradniceVrcholu * scaleY + 4,
-                X2 = konecHrany.XSouradniceVrcholu * scaleX + 4,
-                Y2 = konecHrany.YSouradniceVrcholu * scaleY + 4
+                X1 = pocatekHrany.XSouradniceVrcholu + 4,
+                Y1 = pocatekHrany.YSouradniceVrcholu + 4,
+                X2 = konecHrany.XSouradniceVrcholu + 4,
+                Y2 = konecHrany.YSouradniceVrcholu + 4
             };
             myline.Opacity = 0.9;
             myline.MouseLeftButtonDown += OnLineMouseLeftButtonDown;
@@ -184,23 +186,23 @@ namespace Datove_struktury_2020
             TextBlock TB = new TextBlock();
             TB.Text = $"{lesniStezka.DelkaHrany} min";
             BitmapCacheBrush bcb = new BitmapCacheBrush(TB);
-            TB.Margin = new Thickness(xLabel * scaleX - 10, yLabel * scaleY + 5, 0, 0);
+            TB.Margin = new Thickness(xLabel - 10, yLabel + 5, 0, 0);
             TB.FontSize = 10;
             Canvas.SetZIndex(TB, 20);
             canvasElem.Children.Add(TB);
 
-            if (lesniStezka.JeFunkcniCesta == false)
-            {
-                Ellipse currentDot = new Ellipse();
-                currentDot.Stroke = new SolidColorBrush(Colors.Red);
-                currentDot.StrokeThickness = 1;
-                Canvas.SetZIndex(currentDot, 10);
-                currentDot.Height = 10;
-                currentDot.Width = 10;
-                currentDot.Fill = new SolidColorBrush(Colors.Red);
-                currentDot.Margin = new Thickness(xLabel * scaleX, yLabel * scaleY, 0, 0);
-                canvasElem.Children.Add(currentDot);
-            }
+            //if (lesniStezka.JeFunkcniCesta == false)
+            //{
+            //    Ellipse currentDot = new Ellipse();
+            //    currentDot.Stroke = new SolidColorBrush(Colors.Red);
+            //    currentDot.StrokeThickness = 1;
+            //    Canvas.SetZIndex(currentDot, 10);
+            //    currentDot.Height = 10;
+            //    currentDot.Width = 10;
+            //    currentDot.Fill = new SolidColorBrush(Colors.Red);
+            //    currentDot.Margin = new Thickness(xLabel, yLabel, 0, 0);
+            //    canvasElem.Children.Add(currentDot);
+            //}
         }
 
         /// <summary>
@@ -222,7 +224,7 @@ namespace Datove_struktury_2020
             {
                 h.OznaceniHrany = false;
             }
-            vykresliMapu();
+            VykresliMapu();
         }
 
         /// <summary>
@@ -285,7 +287,7 @@ namespace Datove_struktury_2020
                         h.OznaceniHrany = true;
                         vypisCesty += "(" + h.PocatekHrany + ", " + h.KonecHrany + "), ";
                     }
-                    vykresliMapu();
+                    VykresliMapu();
                     nastavTextLabelu(vypisCesty);
                 }
                 //  pro ulozeni pocatecniho vrcholu cesty, vytvoreni a vykresleni hrany
@@ -331,10 +333,10 @@ namespace Datove_struktury_2020
         {
             var line = (Line)sender;
             string[] kliceVrcholu = line.Name.Split("|");
-            float xZ = (float)((line.X1 - 4) / scaleX);
-            float yZ = (float)((line.Y1 - 4) / scaleY);
-            float xDo = (float)((line.X2 - 4) / scaleX);
-            float yDo = (float)((line.Y2 - 4) / scaleY);
+            float xZ = (float)((line.X1 - 4));
+            float yZ = (float)((line.Y1 - 4));
+            float xDo = (float)((line.X2 - 4));
+            float yDo = (float)((line.Y2 - 4));
 
             // vrchol Z jako zacatek
             DataVrcholu vrhcholZ = mapa.NajdiVrchol(kliceVrcholu[0]);
@@ -397,8 +399,8 @@ namespace Datove_struktury_2020
             {
                 var dot = (Canvas)sender;
                 System.Windows.Point g = e.GetPosition((IInputElement)sender);
-                int x = (int)(g.X / scaleX);
-                int y = (int)(g.Y / scaleY);
+                int x = (int)(g.X);
+                int y = (int)(g.Y);
                 string textdoLabelu = "Vytvářený bod má souřadnice: " + x + "," + y + ". " +
                     "Můžete zvolit název a druh bodu. \nPoté stiknutím tlačítka ANO/NE zvolit jeho umístění do mapy.";
                 nastavTextLabelu(textdoLabelu);
@@ -492,10 +494,8 @@ namespace Datove_struktury_2020
 
         private void VykresliRectangle()
         {
-            bool novy = false;
             if (a == null)
             {
-                novy = true;
                 a = new System.Windows.Shapes.Rectangle();
             }
             int x1 = zacatekOblastiPolom.vratX();
@@ -509,7 +509,7 @@ namespace Datove_struktury_2020
             a.Height = Math.Abs(y2 - y1);
             a.Stroke = new SolidColorBrush(Colors.GreenYellow);
             a.StrokeThickness = 5;
-            if (novy)
+            if (!canvasElem.Children.Contains(a))
             {
                 canvasElem.Children.Add(a);
             }
@@ -517,6 +517,8 @@ namespace Datove_struktury_2020
 
         private void canvasElem_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            nastavTextLabelu("Pro výběr intervalu prosím táhněte zlevého horního rohu do pravého dolního," +
+                " v opačném případě nebude vybrána oblast.");
             var point = e.GetPosition((IInputElement)sender);
             zacatekOblastiPolom = new Data2Dim((int)point.X, (int)point.Y);
         }
@@ -535,21 +537,27 @@ namespace Datove_struktury_2020
         {
             var point = e.GetPosition((IInputElement)sender);
             konecOblastiPolom = new Data2Dim((int)point.X, (int)point.Y);
-            VykresliRectangle();
-            List<DataVrcholu> polamaneVrcholy =  mapa.ZpracujInterval(zacatekOblastiPolom, konecOblastiPolom);
-
-            //aby se neprekresloval rectangl pri pohybu mysi
-            zacatekOblastiPolom = null;
-
+            foreach (DataHran v in mapa.VratHrany())
+            {
+                v.JeFunkcniCesta = true;
+            }
+            List<DataVrcholu> polamaneVrcholy = mapa.ZpracujInterval(zacatekOblastiPolom, konecOblastiPolom);
+            string msg = "Pocet nalezenych vrcholu: " + polamaneVrcholy.Count + " zacatek:" + zacatekOblastiPolom + ", konec:" + konecOblastiPolom + ", Jmena vrcholu:\n";
+            
             foreach (DataVrcholu vrchol in polamaneVrcholy) 
             {
+                msg += vrchol.NazevVrcholu + ", ";
                 IEnumerable<DataHran> polamaneHrany = mapa.VratIncedencniHrany(vrchol.NazevVrcholu);
                 foreach (DataHran hrana in polamaneHrany)
                 {
                     hrana.JeFunkcniCesta = false;
                 }
             }
-            vykresliMapu();            
+            nastavTextLabelu(msg);
+            VykresliMapu();
+            VykresliRectangle();
+            //aby se neprekresloval Rectangle pri pohybu mysi
+            zacatekOblastiPolom = null;
         }
     }
 

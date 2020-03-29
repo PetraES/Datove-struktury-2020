@@ -43,5 +43,10 @@ namespace Datove_struktury_2020.Data
         {
             return druhaKlicovaHodnota;
         }
+
+        public override string ToString()
+        {
+            return String.Format("({0};{1})", vratX(), vratY());
+        }
     }
 }

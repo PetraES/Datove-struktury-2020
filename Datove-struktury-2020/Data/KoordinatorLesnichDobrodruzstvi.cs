@@ -13,7 +13,7 @@ namespace Datove_struktury_2020.Data
         private readonly EditaceCSV editorCSV = new EditaceCSV();
 
         // vrcholy jsou body v mapě
-        private readonly string cestaKsouboruObce50 = @"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\Obce.csv";
+        private readonly string cestaKsouboruObce50 = @"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\Obce2.csv";
         //hrany jsou cesty v lese
         private readonly string cestaKsouboruCesty50 = @"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\Cesty.csv";
 
