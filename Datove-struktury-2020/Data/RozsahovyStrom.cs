@@ -103,7 +103,8 @@ namespace Datove_struktury_2020.Data
         /// ať už jde o navigační vrchol nebo plnohodnotný prvek</returns>
         private PrvekRozsahovehoStromu VybudujStrom(List<T> seznamPrvku, PrvekRozsahovehoStromu prvekDruheDimenze, bool dimenzeX)
         {
-            PrvekRozsahovehoStromu pomocny = VybudujPodstrom(seznamPrvku, null, null, dimenzeX);
+            PrvekRozsahovehoStromu predchozi = null;
+            PrvekRozsahovehoStromu pomocny = VybudujPodstrom(seznamPrvku, null, ref predchozi, dimenzeX);
             //případné spojení vrcholu podstromu s prvkem opačné dimenze
             if (prvekDruheDimenze != null)
             {
@@ -122,7 +123,7 @@ namespace Datove_struktury_2020.Data
         /// <returns>Vrací "pomocny", což je pomocný abstraktní uzel, který drží prvek rozsahového stromu,
         /// ať už jde o navigační vrchol nebo plnohodnotný prvek</returns>
         private PrvekRozsahovehoStromu VybudujPodstrom(List<T> seznamPrvku, PrvekRozsahovehoStromu predek,
-            PrvekRozsahovehoStromu predchoziZListu, bool dimenzeX)
+            ref PrvekRozsahovehoStromu predchoziZListu, bool dimenzeX)
         {
             PrvekRozsahovehoStromu pomocny;
             if (seznamPrvku.Count >= 2)
@@ -154,8 +155,8 @@ namespace Datove_struktury_2020.Data
                 List<T> prvkyLevehoPodstromu = new List<T>(seznamPrvku.GetRange(0, y)); //getRange chce start index a pocetPrvku
                 List<T> prvkyPravyhoPodstromu = new List<T>(seznamPrvku.GetRange(y, (x - y)));
                 // vybudovani podstromů z rozdělených prvků, rekurze
-                pomocny.levyPotomek = VybudujPodstrom(prvkyLevehoPodstromu, pomocny, predchoziZListu, dimenzeX);
-                pomocny.pravyPotomek = VybudujPodstrom(prvkyPravyhoPodstromu, pomocny, predchoziZListu, dimenzeX);
+                pomocny.levyPotomek = VybudujPodstrom(prvkyLevehoPodstromu, pomocny, ref predchoziZListu, dimenzeX);
+                pomocny.pravyPotomek = VybudujPodstrom(prvkyPravyhoPodstromu, pomocny, ref predchoziZListu, dimenzeX);
             }
             // byl-li pro budování předán jediný prvek, stane se plnohodnotným prvkem
             else
@@ -169,6 +170,7 @@ namespace Datove_struktury_2020.Data
                     predchoziZListu.dalsiPrvekRozsahovehoStromu = pomocny;
                     pomocny.predchoziPrvekzRozsahovehoStromu = predchoziZListu;
                 }
+                predchoziZListu = pomocny;
             }
             // pro navig. vrchol ve stromu první dimenze je vybudován strom druhé dimenze
             if (dimenzeX == true && pomocny.platny == false)
@@ -321,7 +323,7 @@ namespace Datove_struktury_2020.Data
                             && vrchol.konecIntervalu <= pravyDolniRohIntervalu.vratY())
                         {
                             // TODO funkce prohlidka (vsechny listy podstromu a ulozi je do listu)
-                            Prohlidka(vrchol, dimenzeX);
+                            Prohlidka(levyHorniRohIntervalu, pravyDolniRohIntervalu, vrchol, dimenzeX);
                         }
                         else if (vrchol.zacatekIntervalu <= levyHorniRohIntervalu.vratY()
                             || vrchol.konecIntervalu >= pravyDolniRohIntervalu.vratY())
@@ -340,24 +342,30 @@ namespace Datove_struktury_2020.Data
         // parametru vrchol, a následně projde zřetězený seznam se všemi plnohodnotnými prvky,
         // nad kterými vykoná zvolenou akci(během fáze ladění navíc kontroluje korektnost
         // umístění prvků ve struktuře),
-        private void Prohlidka(PrvekRozsahovehoStromu vrchol, bool dimenzeX)
+        private void Prohlidka(ISouradnice levyHorniRohIntervalu, ISouradnice pravyDolniRohIntervalu, PrvekRozsahovehoStromu vrchol, bool dimenzeX)
         {  
             // dotraverzovat k platnemu vrcholu
             if(vrchol != null)
             {
                 if (vrchol.platny == true)
                 {
-                    vysledekIntervalovehoHledani.Add(vrchol.nositelDat);
-                    if (vrchol.dalsiPrvekRozsahovehoStromu !=null)
+                    if (vrchol.nositelDat.vratX() >= levyHorniRohIntervalu.vratX()
+                        && vrchol.nositelDat.vratX() <= pravyDolniRohIntervalu.vratX()
+                        && vrchol.nositelDat.vratY() >= levyHorniRohIntervalu.vratY()
+                        && vrchol.nositelDat.vratY() <= pravyDolniRohIntervalu.vratY()) // TODO: k uvaze
                     {
-                        Prohlidka(vrchol.dalsiPrvekRozsahovehoStromu, dimenzeX);
+                        vysledekIntervalovehoHledani.Add(vrchol.nositelDat);
+                        if (vrchol.dalsiPrvekRozsahovehoStromu != null)
+                        {
+                            Prohlidka(levyHorniRohIntervalu, pravyDolniRohIntervalu, vrchol.dalsiPrvekRozsahovehoStromu, dimenzeX);
+                        }
                     }
                 }
                 else
                 {
                     if (vrchol.levyPotomek != null)
                     {
-                        Prohlidka(vrchol.levyPotomek, dimenzeX);
+                        Prohlidka(levyHorniRohIntervalu, pravyDolniRohIntervalu, vrchol.levyPotomek, dimenzeX);
                     }
                 }
             }
