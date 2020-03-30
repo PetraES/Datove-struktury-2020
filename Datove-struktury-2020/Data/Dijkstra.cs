@@ -141,6 +141,13 @@ namespace Datove_struktury_2020.Data
                     continue;
                 }
 
+                // TODO: pokud bude potreba, mohou se vynechat cesty polomu viz kod nize.
+                // Je potreba dodat tlacitka pripadne
+                // if (obecnaHrana.JeFunkcniCesta == false)
+                // {
+                //     continue;
+                // }
+
                 // Informace je nositel informace, ktera je prioritizovana, tady treba cesta
                 // hledam, ktery vrchol se pouzije jako naslednik 
                 if (dosavadniProjitaCesta.AktualniVrchol == obecnaHrana.PocatekHrany)
