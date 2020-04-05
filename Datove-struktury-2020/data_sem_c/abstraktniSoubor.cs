@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Datove_struktury_2020.data_sem_c
 {
-    class AbstraktniSoubor<K, Z>
+    class AbstraktniSoubor<K, Z> where K : IComparable
     {
         string cestaKSouboru;
 
@@ -22,7 +22,6 @@ namespace Datove_struktury_2020.data_sem_c
         {
             this.cestaKSouboru = cesta;
             fs = new FileStream(cesta, FileMode.OpenOrCreate);
-            
         }
 
         // Convert an object to a byte array
@@ -49,6 +48,7 @@ namespace Datove_struktury_2020.data_sem_c
             }
         }
 
+
         public Z Cti(K klic)
         {
             return default;
@@ -61,6 +61,7 @@ namespace Datove_struktury_2020.data_sem_c
 
         public void Zrus(K klic)
         {
+            
 
         }
 
@@ -71,13 +72,47 @@ namespace Datove_struktury_2020.data_sem_c
 
         private void CtiBlok(int i)
         {
-
+            NastavPozici(i);
+            if (i == 0)
+            {
+                byte[] prozatimnibufferRB = new byte[velikostRB];
+                fs.Read(prozatimnibufferRB);
+            }
+            else
+            {
+                byte[] prozatimniBufferBlok = new byte[velikostZaznamu];
+                fs.Read(prozatimniBufferBlok);
+            }           
         }
 
-        private void ZapisBlok(int i)
+        private void ZapisBlok(int indexBloku)
         {
-            // fs.Seek(10 + (20 * i))
-            // fs.Write(buffer);
+            NastavPozici(indexBloku);
+
+            if (indexBloku == 0)
+            {
+                byte[] ridiciBlok = ObjectToByteArray(RB);
+                fs.Write(ridiciBlok);
+            }
+            else
+            {
+                byte[] blok = ObjectToByteArray(buffer);
+                fs.Write(blok);
+            }
+        }
+
+        private void NastavPozici(int indexBloku)
+        {
+            if (indexBloku == 0)
+            {
+                //nastavi idex na nulu a jde od zacatku
+                fs.Seek(0, SeekOrigin.Begin);
+            }
+            else
+            {
+                int poziceBlokuNaZadanemIndexuVSouboru = velikostRB + (velikostZaznamu * RB.BlokovyFaktor * (indexBloku - 1));
+                fs.Seek(poziceBlokuNaZadanemIndexuVSouboru, SeekOrigin.Begin);
+            }
         }
 
         public void VybudovaniSouboru(IEnumerable<KeyValuePair<K, Z>> kolekceDat, int f)
@@ -93,14 +128,14 @@ namespace Datove_struktury_2020.data_sem_c
                 }
             }
 
-       
+
         }
 
         private void PridejZaznamDoBloku(Zaznam zaznam)
         {
             if (RB.PrvniVolny == RB.BlokovyFaktor)
             {
-                   
+
             }
         }
 
@@ -117,13 +152,60 @@ namespace Datove_struktury_2020.data_sem_c
         {
             if (klic != null)
             {
-            
+
             }
 
             return Z;
         }
 
-        public void vyhledejBinarne() { }
+        public Z vyhledejBinarne(K klic)
+        {
+            int pocetBloku = RB.PocetBloku;
+            int pulka = 1 + ((pocetBloku - 1) / 2);
+
+            if (pocetBloku >= 1)
+            {
+                
+                CtiBlok(pulka);
+
+                if (buffer != null)
+                {
+                    //prohledavani jednotlivych zaznamu v danem bloku
+                    foreach (Zaznam zaznamBloku in buffer.poleZaznamu)
+                    {
+                        //je-li vyhledavany klic shodny s klicem v danem zaznamu v bloku
+                        if (klic.CompareTo(zaznamBloku.klic) == 0)
+                        {
+                            return zaznamBloku.zaznam;
+                        }  
+                        // TODO
+                        else if (klic.CompareTo(zaznamBloku.klic) == 1)
+                        { 
+                            zmenit blok
+                        }                       
+                    }
+                }
+
+
+
+
+                else
+                {
+                    throw new Exception("Pri bin vyhledavani buffer nulovy");
+                }
+            }
+            else if ()
+            {
+            }
+            else
+            {
+                throw new Exception("nelze vuhledavat binarne, soubor ma nula zaznamu")
+            }
+
+            
+
+        
+        }
 
         public void vyhledejInterpolacne()
         {
@@ -132,9 +214,9 @@ namespace Datove_struktury_2020.data_sem_c
 
 
         private class Blok
-        {            
-            bool[] platny; // 1 byte v pameti
-            Zaznam[] poleZaznamu;
+        {
+            public bool[] platny; // 1 byte v pameti
+            public Zaznam[] poleZaznamu;
 
             public Blok(int f)
             {
@@ -149,12 +231,12 @@ namespace Datove_struktury_2020.data_sem_c
         /// </summary>
         private class Zaznam
         {
-            Z zaznam; 
-            K klic;
+            public Z zaznam;
+            public K klic;
 
-            public Zaznam(K klic, Z zaznam) 
+            public Zaznam(K klic, Z zaznam)
             {
-                this.zaznam = zaznam; 
+                this.zaznam = zaznam;
                 this.klic = klic;
             }
         }
