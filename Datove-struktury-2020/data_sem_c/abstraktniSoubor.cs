@@ -21,7 +21,11 @@ namespace Datove_struktury_2020.data_sem_c
             fs = new FileStream(cesta, FileMode.OpenOrCreate);
         }
 
-        // Convert an object to a byte array
+        /// <summary>
+        /// Convert an object to a byte array.
+        /// </summary>
+        /// <param name="obj">Objekt k serializaci.</param>
+        /// <returns>Pole bajtu.</returns>
         private static byte[] ObjectToByteArray(Object obj)
         {
             BinaryFormatter bf = new BinaryFormatter();
@@ -32,7 +36,11 @@ namespace Datove_struktury_2020.data_sem_c
             }
         }
 
-        // Convert a byte array to an Object
+        /// <summary>
+        /// Convert a byte array to an Object.
+        /// </summary>
+        /// <param name="arrBytes">Pole bajtu, ze kterych se sklada objekt.</param>
+        /// <returns>Deserializovany objekt.</returns>
         private static Object ByteArrayToObject(byte[] arrBytes)
         {
             using (var memStream = new MemoryStream())
@@ -50,9 +58,9 @@ namespace Datove_struktury_2020.data_sem_c
         /// </summary>
         /// <param name="klic">Hodnota, kterou chceme smazat.</param>
         /// <returns>Zaznam</returns>
-        public Z Smaz(K klic)
+        public Z OdeberSpecifickyZaznam(K klic)
         {
-            Z zz = Vyhledej(klic, ZpusobVyhledvani.Binarni );
+            Z zz = VyhledejSpecifickyZaznam(klic, ZpusobVyhledvani.Binarni );
             // smazani z RAM
             b.poleZaznamu[rb.AktualniZaznam] = null;
             // zapsat novou podobu bloku do souboru
@@ -60,6 +68,10 @@ namespace Datove_struktury_2020.data_sem_c
             return zz;
         }
 
+        /// <summary>
+        /// Načte blok ze souboru do paměti.
+        /// </summary>
+        /// <param name="i">Pozice bloku v souboru.</param>
         private void CtiBlok(int i)
         {
             NastavPozici(i);
@@ -79,6 +91,10 @@ namespace Datove_struktury_2020.data_sem_c
             rb.AktualniZaznam = 0;
         }
 
+        /// <summary>
+        /// Zapisuje blok do souboru. Nejprve nastavi pozici bloku v souboru.
+        /// </summary>
+        /// <param name="indexBloku">Poradi bloku v souboru.</param>
         private void ZapisBlok(int indexBloku)
         {
             NastavPozici(indexBloku);
@@ -95,6 +111,10 @@ namespace Datove_struktury_2020.data_sem_c
             }
         }
 
+        /// <summary>
+        /// Nastavuje pozici v rámci třídy ukazatel odkud je potřeba číst (kolik bytu přeskočit).
+        /// </summary>
+        /// <param name="indexBloku">Index bloku na který chceme nastavit pozici, odkud budeme číst soubor na disku.</param>
         private void NastavPozici(int indexBloku)
         {
             if (indexBloku == 0)
@@ -109,6 +129,11 @@ namespace Datove_struktury_2020.data_sem_c
             }
         }
 
+        /// <summary>
+        /// Vybudování struktury souboru pro manipulaci s daty.
+        /// </summary>
+        /// <param name="kolekceDat">Kolekce dat.</param>
+        /// <param name="f">Blokovy faktor - počet bloků záznamů včetně řídícího.</param>
         public void VybudovaniSouboru(IEnumerable<KeyValuePair<K, Z>> kolekceDat, int f)
         {
             rb.BlokovyFaktor = f;
@@ -132,6 +157,11 @@ namespace Datove_struktury_2020.data_sem_c
             ZapisBlok(0);
         }
 
+        /// <summary>
+        /// Vkládání záznamu do bloku.
+        /// </summary>
+        /// <param name="zaznam">Záznam.</param>
+        /// <param name="citac">pořadí v bloku.</param>
         private void VlozZaznamDoBloku(Zaznam zaznam, int citac)
         {
             int indexBloku = citac / rb.BlokovyFaktor + 1;
@@ -148,24 +178,47 @@ namespace Datove_struktury_2020.data_sem_c
             b.poleZaznamu[indexZaznamu] = zaznam;
         }
 
+        /// <summary>
+        /// Vytvori nový objekt bloku v paměti.
+        /// </summary>
         private void InicializujBlok()
         {
             b = new Blok(rb.BlokovyFaktor);
         }
 
-        public Z Vyhledej(K klic, ZpusobVyhledvani zpusob)
+        /// <summary>
+        /// Vyhledává specifický záznam. 
+        /// </summary>
+        /// <param name="klic">Klíč vyhledávaného záznamu.</param>
+        /// <param name="zpusob">Způsob - binární nebo interpolační vyhledávání.</param>
+        /// <returns>Vyhledaný záznam <Z>.</returns>
+        public Z VyhledejSpecifickyZaznam(K klic, ZpusobVyhledvani zpusob)
         {
-            switch (zpusob)
+            // stary zapis: 
+            // switch (zpusob)
+            //{
+            //    case ZpusobVyhledvani.Binarni:
+            //        return VyhledejBinarne(klic);
+            //    case ZpusobVyhledvani.Interpolacni:
+            //        return VyhledejInterpolacne(klic);
+            //    default:
+            //        throw new Exception("Mission impossible, zpusob vyhledavani neodpovida.");
+            //}
+
+            //novej zapis switche s lambda vyrazem
+            return zpusob switch
             {
-                case ZpusobVyhledvani.Binarni:
-                    return VyhledejBinarne(klic);
-                case ZpusobVyhledvani.Interpolacni:
-                    return VyhledejInterpolacne(klic);
-                default:
-                    throw new Exception("Mission impossible, zpusob vyhledavani neodpovida.");
-            }
+                ZpusobVyhledvani.Binarni => VyhledejBinarne(klic),
+                ZpusobVyhledvani.Interpolacni => VyhledejInterpolacne(klic),
+                _ => throw new Exception("Mission impossible, zpusob vyhledavani neodpovida."),
+            };
         }
 
+        /// <summary>
+        /// Binární vyhledávání podle zadaného klíče.
+        /// </summary>
+        /// <param name="klic">Vyhledávaný klíč.</param>
+        /// <returns>Data záznamu (data vyhledatelné klíčem).</returns>
         private Z VyhledejBinarne(K klic)
         {
             int pravyInterval = rb.PocetBloku;
@@ -214,11 +267,13 @@ namespace Datove_struktury_2020.data_sem_c
             }
         }
 
+        // TODO
         private Z VyhledejInterpolacne(K klic)
         {
             float d;
             return default;
         }
+
 
         private class Blok
         {
@@ -234,7 +289,10 @@ namespace Datove_struktury_2020.data_sem_c
 
         /// <summary>
         /// Uchovava zaznam, ktery je v bloku.
-        /// // x-16byte, y-16 byte, klic v csv - 60 byte (30*char po 2 bytech), K klic - 60 byte = 152 byte
+        /// x-16 byte,
+        /// y-16 byte,
+        /// klic v csv - 60 byte (30*char po 2 bytech),
+        /// K klic - 60 byte = 152 byte.
         /// </summary>
         private class Zaznam
         {
@@ -262,7 +320,6 @@ namespace Datove_struktury_2020.data_sem_c
             // Nepotrebujeme, nevkladame.
             //public int PrvniVolny { get; set; }
             //public int PrvniObsazeny { get; set; }
-
         }
     }
 
