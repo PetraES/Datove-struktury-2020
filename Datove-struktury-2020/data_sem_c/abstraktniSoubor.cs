@@ -274,6 +274,17 @@ namespace Datove_struktury_2020.data_sem_c
             return default;
         }
 
+        //TODO
+        private int transformujKlic(K klic)
+        {
+            String s = klic.ToString().ToLower();
+            string ab = " abcd";
+
+            {
+                ab.IndexOf(s[i])
+            }
+
+        }
 
         private class Blok
         {

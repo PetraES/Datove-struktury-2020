@@ -23,14 +23,14 @@
         </Grid.RowDefinitions>
 
         <Canvas x:Name="canvasMainElem" Margin="14,15,37,224" Grid.ColumnSpan="2">
-            <Button x:Name="PridejCestuButton" Canvas.Left="370" Canvas.Top="28"
+            <Button x:Name="PridejCestuButton" Canvas.Left="373" Canvas.Top="13"
                     Content="Přidej cestu" Height="30" Width="120" Click="PridejCestuButton_Click" FontSize="18" RenderTransformOrigin="-15,0"/>
             <Button x:Name="NajdiCestuButton" Content="Najdi nejkratší cestu" Height="30"
-                    Canvas.Left="495" Canvas.Top="28" Width="120" 
+                    Canvas.Left="498" Canvas.Top="13" Width="120" 
                     Click="NajdiCestuButt_Click" FontSize="18" RenderTransformOrigin="-15,0"
                     />
             <Button x:Name="VlozBodButton" Content="Vlož bod" Height="30"
-                    Canvas.Left="620" Canvas.Top="28" Width="120"
+                    Canvas.Left="623" Canvas.Top="13" Width="120"
                     Click="VlozBodButton_Click" FontSize="18" RenderTransformOrigin="-15,0"/>
             <Button x:Name="tlacitko_ANO" Content="ANO,souhlasím" Canvas.Left="229" Canvas.Top="168" 
                     Click="ANO_Button_Click" RenderTransformOrigin="0.454,-0.349" Height="30" Width="30" 
@@ -39,15 +39,16 @@
                     RenderTransformOrigin="0.454,-0.349" Height="30" Width="30"/>
             <Label 
                 x:Name="label1" 
-                Height="100" Width="550"
-                Canvas.Left="370" Canvas.Top="85" 
+                Height="100" Width="538"
+                Canvas.Left="355" Canvas.Top="93" 
                 FontSize="14"
                 Background="WhiteSmoke">
                 <TextBlock TextWrapping="WrapWithOverflow"></TextBlock>
             </Label>
 
             <Canvas x:Name="canvasElem" Height="529" Canvas.Top="217" Width="910" Background="#7F20B2AA"
-                    Canvas.Left="10" MouseLeftButtonDown="canvasElem_MouseLeftButtonDown" MouseDown="canvasElem_MouseDown" MouseMove="canvasElem_MouseMove" MouseUp="canvasElem_MouseUp"/>
+                    Canvas.Left="10" MouseLeftButtonDown="canvasElem_MouseLeftButtonDown" 
+                    MouseDown="canvasElem_MouseDown" MouseMove="canvasElem_MouseMove" MouseUp="canvasElem_MouseUp"/>
             <ComboBox x:Name="TypVrcholu_comboBox" Canvas.Left="220" Canvas.Top="120" 
                       Width="100" Height="30" SelectedIndex="0">
                 <ListBoxItem Content="Křižovatka"/>
@@ -68,6 +69,11 @@
                 Content="Prosím potvrďte vaši volbu" 
                    Canvas.Left="10" Canvas.Top="160"
                    Background="WhiteSmoke"/>
+            <Button Content="SEM A+B" Background ="#7F20B2AA" Canvas.Left="20" Canvas.Top="13" 
+                    Height="30" Width="90" FontSize="18" Click="SEMAB_Button_Click"/>
+            <Button Content="SEM C" Background ="#7F20B2AA" Canvas.Left="120" Canvas.Top="13"
+                    Height="30" Width="90" FontSize="18" Click="SEMC_Button_Click"/>
+            <Button Content="Button" Canvas.Left="405" Canvas.Top="65"/>
         </Canvas>
 
 
