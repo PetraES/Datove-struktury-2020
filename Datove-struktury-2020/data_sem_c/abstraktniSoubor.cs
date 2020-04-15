@@ -232,31 +232,30 @@ namespace Datove_struktury_2020.data_sem_c
                     CtiBlok(polovinaIntervalu);
                     if (b != null)
                     {
-                        // prohledavani jednotlivych zaznamu v danem bloku
-                        // foreach (Zaznam zaznamBloku in buffer.poleZaznamu)
-                        for (int i = 0; i < b.poleZaznamu.Length; i++)
+                        b.ResetujPoziciAktualnihoZaznamu();
+                        Zaznam pomocnaPromennaZaznamu; //pomocna promenna
+                        bool jdiDoPrava = true; //pomocna promenna
+
+                        //prvni prirazeni do pomocne promenne a pak porovnani, jestli je tam zaznam
+                        while ((pomocnaPromennaZaznamu = b.VratDalsiZaznam()) != null)
                         {
-                            rb.AktualniZaznam = i;
-                            // ktery chci index
-                            Zaznam zaznamBloku = b.poleZaznamu[i];
+                            rb.AktualniZaznam = b.poziceAktualnihoZaznamu;
                             //je-li vyhledavany v bloku
-                            if (klic.CompareTo(zaznamBloku.klic) == 0)
+                            if (klic.CompareTo(pomocnaPromennaZaznamu.klic) == 0)
                             {
-                                return zaznamBloku.zaznam;
+                                return pomocnaPromennaZaznamu.zaznam;
                             }
                             // vyhledavany klic je mensi nez klic v zaznamu = jdeme do leva
-                            else if (klic.CompareTo(zaznamBloku.klic) == -1)
+                            else if (klic.CompareTo(pomocnaPromennaZaznamu.klic) == -1)
                             {
                                 pravyInterval = polovinaIntervalu - 1;
+                                jdiDoPrava = false;
                                 break;
                             }
-                            // jdeme doprava
-                            //TODO doresit kdyz budou v zaznamech nejaky data nuly
-                            else if (i == b.poleZaznamu.Length - 1 && klic.CompareTo(zaznamBloku.klic) == 1)
-                            {
-                                levyInterval = polovinaIntervalu + 1;
-                                break;
-                            }
+                        }
+                        if (jdiDoPrava == true)
+                        {
+                            levyInterval = polovinaIntervalu + 1;
                         }
                     }
                 }
@@ -270,19 +269,83 @@ namespace Datove_struktury_2020.data_sem_c
         // TODO
         private Z VyhledejInterpolacne(K klic)
         {
-            float d;
-            return default;
+            int levyInterval = 1;
+            int pravyInterval = rb.PocetBloku;
+
+            K bl = default; //prvni blok
+            K br = default; //posledni blok
+            
+            CtiBlok(1);
+            bl = b.VratPrvniZaznam().klic;
+            CtiBlok(rb.PocetBloku);
+            br = b.VratPosledniZaznam().klic; 
+
+            while (true)
+            {
+                if (pravyInterval >= 1)
+                {
+                    double d = (transformujKlic(klic) - transformujKlic(bl)) / (transformujKlic(br) - transformujKlic(bl));
+                    int posiceBlokuVIntervalu = levyInterval + (int)((pravyInterval - levyInterval + 1) * d);
+                    CtiBlok(posiceBlokuVIntervalu);
+                    if (b != null)
+                    {
+                        b.ResetujPoziciAktualnihoZaznamu();
+                        Zaznam pomocnaPromennaZaznamu; //pomocna promenna
+                        bool jdiDoPrava = true; //pomocna promenna
+
+                        //prvni prirazeni do pomocne promenne a pak porovnani, jestli je tam zaznam
+                        while ((pomocnaPromennaZaznamu = b.VratDalsiZaznam()) != null)
+                        {
+                            rb.AktualniZaznam = b.poziceAktualnihoZaznamu;
+                            //je-li vyhledavany v bloku
+                            if (klic.CompareTo(pomocnaPromennaZaznamu.klic) == 0)
+                            {
+                                return pomocnaPromennaZaznamu.zaznam;
+                            }
+                            // vyhledavany klic je mensi nez klic v zaznamu = jdeme do leva
+                            else if (klic.CompareTo(pomocnaPromennaZaznamu.klic) == -1)
+                            {
+                                pravyInterval = posiceBlokuVIntervalu - 1;
+                                jdiDoPrava = false;
+                                break;
+                            }
+                        }
+                        if (jdiDoPrava ==true)
+                        {
+                            levyInterval = posiceBlokuVIntervalu + 1;
+                        }
+                    }
+                }
+                else
+                {
+                    throw new Exception("Pri binarnim vyhledavani prvek nenalezen.");
+                }
+            }
         }
 
         //TODO
-        private int transformujKlic(K klic)
+        private long transformujKlic(K klic)
         {
-            String s = klic.ToString().ToLower();
-            string ab = " abcd";
-
+            if (klic != null)
             {
-                ab.IndexOf(s[i])
+                String s = klic.ToString().ToLower();
+                string abeceda = " aábcčdďeéěfghiíjklmnňoópqrřsštťuúůvwxyýzž";
+                long docasna = 0;
+                int mocnina = 0;
+
+                for (int i = s.Length - 1; i >= 0; i--)
+                {
+                    int poziceVAbecede = abeceda.IndexOf(s[i]);
+                    docasna = docasna + (long)(Math.Pow(abeceda.Length, mocnina) * poziceVAbecede);
+                    mocnina++;
+                }
+                return docasna;
+            } 
+            else 
+            {
+                throw new Exception("Zadaný klíč nenalezen. Transformace na číslo neproběhla.");
             }
+            
 
         }
 
@@ -290,11 +353,55 @@ namespace Datove_struktury_2020.data_sem_c
         {
             public bool[] platny; // 1 byte v pameti
             public Zaznam[] poleZaznamu;
+            public int poziceAktualnihoZaznamu = -1;
 
             public Blok(int f)
             {
                 platny = new bool[f];
                 poleZaznamu = new Zaznam[f];
+            }
+
+            public Zaznam VratPrvniZaznam()
+            {
+                for (int i = 0; i < poleZaznamu.Length; i++)
+                {
+                    if (platny[i] == true && poleZaznamu[i] != null)
+                    {                   
+                        return poleZaznamu[i];
+                    }                
+                }
+                return null;               
+            }
+
+            public Zaznam VratPosledniZaznam()
+            {
+                for (int i = poleZaznamu.Length - 1 ; i >= 0; i--)
+                {
+                    if (platny[i] == true && poleZaznamu[i] != null)
+                    {
+                        return poleZaznamu[i];
+                    }
+                }
+                return null;
+            }
+
+            public Zaznam VratDalsiZaznam()
+            {
+                // zacneme hledat platny zaznam od posledniho vraceneho zaznamu
+                for (int i = poziceAktualnihoZaznamu + 1; i < poleZaznamu.Length; i++)
+                {
+                    if (platny[i] == true && poleZaznamu[i] != null)
+                    {
+                        poziceAktualnihoZaznamu = i;
+                        return poleZaznamu[i];
+                    }
+                }
+                return null;
+            }
+
+            public void ResetujPoziciAktualnihoZaznamu()
+            {
+                poziceAktualnihoZaznamu = -1;
             }
         }
 
