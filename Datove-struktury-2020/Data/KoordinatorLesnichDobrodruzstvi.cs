@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Datove_struktury_2020.data_sem_c;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,6 +10,8 @@ namespace Datove_struktury_2020.Data
         private readonly RozsahovyStrom<DataVrcholu> rs = new RozsahovyStrom<DataVrcholu>();
         // Abstraktni graf ma K,V,H 
         private AbstraktniGraf<string, DataVrcholu, DataHran> ag = new AbstraktniGraf<string, DataVrcholu, DataHran>();
+        // deklarace Abstraktniho souboru K, Z ale inicializuje se az v konstruktoru, r33
+        private AbstraktniSoubor<string, DataVrcholu> abstraktniSoubor;
         private readonly Dijkstra dijkstra;
         private readonly EditaceCSV editorCSV = new EditaceCSV();
 
@@ -16,6 +19,10 @@ namespace Datove_struktury_2020.Data
         private readonly string cestaKsouboruObce50 = @"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\Obce2.csv";
         //hrany jsou cesty v lese
         private readonly string cestaKsouboruCesty50 = @"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\Cesty.csv";
+        // cesta, kam se bude ukladat abstraktni soubor SEM C
+        private readonly string cestaKsouboruSemC = @"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\SemCDadaAS";
+        // cesta ku csv souboru pro SEM C
+        private readonly string cestaKsouboruSemCOrigo = @"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\mestaCZ.csv";
 
         public List<DataVrcholu> ZpracujInterval(ISouradnice a, ISouradnice b)
         {
@@ -28,16 +35,55 @@ namespace Datove_struktury_2020.Data
         public KoordinatorLesnichDobrodruzstvi()
         {
             dijkstra = new Dijkstra(ag);
-            NactiVrcholyZCSV();
+            abstraktniSoubor = new AbstraktniSoubor<string, DataVrcholu>(cestaKsouboruSemC);
+            NactiVrcholyProSemA();
             NactiHranyZCSV();
         }
 
         /// <summary>
-        /// Načítání vrcholů ze souboru, vynechání hlavičky souboru.
+        /// Načítání vrcholů pro abstraktní soubor SEM C.
         /// </summary>
-        public void NactiVrcholyZCSV()
+        public void NactiVrcholyProSemC()
         {
-            List<string[]> objekt = editorCSV.NactiSoubor(cestaKsouboruObce50);
+            List<DataVrcholu> vrcholy5000 = NactiDataVrcholuZCsv(cestaKsouboruSemCOrigo);
+            List<KeyValuePair<string, DataVrcholu>> listDvouHodnot = new List<KeyValuePair<string, DataVrcholu>>();
+            for (int i=0; i <= vrcholy5000.Count -1; i++)
+            {
+                DataVrcholu dv = vrcholy5000[i]; //zalozit promennou vrcholu, protoze forem mam jen indexy
+                KeyValuePair<string, DataVrcholu> kvp = new KeyValuePair<string, DataVrcholu>(dv.NazevVrcholu,dv);
+                listDvouHodnot.Add(kvp);
+
+            }
+            
+            // blokacni faktor nastaven na 5
+            abstraktniSoubor.VybudujSoubor(listDvouHodnot,5);
+            // todo nacpi do AS
+        }
+
+        /// <summary>
+        /// Načítání vrcholů pro mapu SEM A.
+        /// </summary>
+        public void NactiVrcholyProSemA()
+        {
+            List<DataVrcholu> vrcholy = NactiDataVrcholuZCsv(cestaKsouboruObce50);
+            foreach (DataVrcholu dv in vrcholy)
+            {
+                ag.PridejVrchol(dv.NazevVrcholu, dv);
+            }
+            // List ma pretizeny konstruktor, ktery je schopny prijmout kolekci typu IEnumerable
+            rs.Vybuduj(new List<DataVrcholu>(ag.VratSeznamVrcholu()));
+
+        }
+
+        /// <summary>
+        /// Načítání vrcholů ze souboru, vynechání hlavičky souboru. Hlavicka může zůstat.
+        /// </summary>
+        /// <param name="cesta">Cesta k souboru.</param>
+        /// <returns>List Vrcholů.</returns>
+        public List<DataVrcholu> NactiDataVrcholuZCsv(String cesta)
+        {
+            List<DataVrcholu> vysledek = new List<DataVrcholu>();
+            List<string[]> objekt = editorCSV.NactiSoubor(cesta);
 
             //ukladani poradi radku do int, aby se pak dala vynechat hlavicka souboru Cesty
             int poradiRadku = 0;
@@ -53,10 +99,9 @@ namespace Datove_struktury_2020.Data
                 v.XSouradniceVrcholu = float.Parse(radek[1]);
                 v.YSouradniceVrcholu = float.Parse(radek[2]);
                 v.TypVrcholu = (TypyVrcholu)int.Parse(radek[3]);
-                ag.PridejVrchol(v.NazevVrcholu, v);
+                vysledek.Add(v);
             }
-            // List ma pretizeny konstruktor, ktery je schopny prijmout kolekci typu IEnumerable
-            rs.Vybuduj(new List<DataVrcholu>(ag.VratSeznamVrcholu()));
+            return vysledek;
         }
 
         /// <summary>

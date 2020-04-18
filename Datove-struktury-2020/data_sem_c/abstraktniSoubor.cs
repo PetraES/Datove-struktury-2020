@@ -6,13 +6,11 @@ using System.Text;
 
 namespace Datove_struktury_2020.data_sem_c
 {
-    class AbstraktniSoubor<K, Z> where K : IComparable
+    class AbstraktniSoubor<K, Z> where K : IComparable where Z : IVelikostZaznamu
     {
-        int velikostRB = 24;
-        int velikostZaznamu = 152;
-
+        readonly int velikostRB = 24;
+      
         FileStream fs;
-
         Blok b;
         RidiciBlok rb = new RidiciBlok();
 
@@ -83,7 +81,7 @@ namespace Datove_struktury_2020.data_sem_c
             }
             else
             {
-                byte[] prozatimniBufferBlok = new byte[velikostZaznamu];
+                byte[] prozatimniBufferBlok = new byte[rb.VelikostZaznamu];
                 fs.Read(prozatimniBufferBlok);
                 b = (Blok)ByteArrayToObject(prozatimniBufferBlok);
             }
@@ -124,7 +122,7 @@ namespace Datove_struktury_2020.data_sem_c
             }
             else
             {
-                int poziceBlokuNaZadanemIndexuVSouboru = velikostRB + (velikostZaznamu * rb.BlokovyFaktor * (indexBloku - 1));
+                int poziceBlokuNaZadanemIndexuVSouboru = velikostRB + (rb.VelikostZaznamu * rb.BlokovyFaktor * (indexBloku - 1));
                 fs.Seek(poziceBlokuNaZadanemIndexuVSouboru, SeekOrigin.Begin);
             }
         }
@@ -134,7 +132,7 @@ namespace Datove_struktury_2020.data_sem_c
         /// </summary>
         /// <param name="kolekceDat">Kolekce dat.</param>
         /// <param name="f">Blokovy faktor - počet bloků záznamů včetně řídícího.</param>
-        public void VybudovaniSouboru(IEnumerable<KeyValuePair<K, Z>> kolekceDat, int f)
+        public void VybudujSoubor(IEnumerable<KeyValuePair<K, Z>> kolekceDat, int f)
         {
             rb.BlokovyFaktor = f;
             InicializujBlok();
@@ -145,6 +143,7 @@ namespace Datove_struktury_2020.data_sem_c
                 int pomocnaPromenna = 0;
                 foreach (KeyValuePair<K, Z> data in kolekceDat)
                 {
+                    rb.VelikostZaznamu = data.Value.vratVelikostZaznamu();
                     Zaznam z = new Zaznam(data.Key, data.Value);
                     VlozZaznamDoBloku(z, pomocnaPromenna++);
                 }
@@ -426,8 +425,8 @@ namespace Datove_struktury_2020.data_sem_c
 
         private class RidiciBlok
         {
+            public int VelikostZaznamu { get; set; }
             public int PocetBloku { get; set; }
-
             /// <summary>
             /// Pocet zaznamu v bloku
             /// </summary>

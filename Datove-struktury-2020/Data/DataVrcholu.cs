@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Datove_struktury_2020.data_sem_c;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,7 +8,7 @@ namespace Datove_struktury_2020.Data
     /// <summary>
     /// Třída reprezentující datovou strukturu vrcholu/bodu na mapě.
     /// </summary>
-    class DataVrcholu : ISouradnice
+    class DataVrcholu : ISouradnice, IVelikostZaznamu
     {
         public string NazevVrcholu { get; set; } //property
         public float XSouradniceVrcholu { get; set; } //property
@@ -22,6 +23,11 @@ namespace Datove_struktury_2020.Data
         public int vratY()
         {
             return (int)YSouradniceVrcholu;
+        }
+
+        public int vratVelikostZaznamu()
+        {
+            return 152;
         }
 
         public override string ToString()
@@ -46,7 +52,7 @@ namespace Datove_struktury_2020.Data
             {
                 throw new ArgumentException("Porovnavany objekt neni stejneho datoveho typu!");
             }
-        }
+        }      
     }
   
     public enum TypyVrcholu
