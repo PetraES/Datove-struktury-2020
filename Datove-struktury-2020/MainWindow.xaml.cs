@@ -98,15 +98,31 @@ namespace Datove_struktury_2020
             NajdiCestuButton.Visibility = Visibility.Hidden;
             VlozBodButton.Visibility = Visibility.Hidden;
             canvasElem.Visibility = Visibility.Hidden;
+            label1.Visibility = Visibility.Hidden;
+            NazevKliceLabel.Visibility = Visibility.Hidden;
+            NazevKliceTextBox.Visibility = Visibility.Hidden;
+            OdeberKlicButton.Visibility = Visibility.Hidden;
+            HledejKlicBinarneButton.Visibility = Visibility.Hidden;
+            HledejKlicInterpolacne.Visibility = Visibility.Hidden;
         }
 
-        public void OdkryjPrvky()
+        public void OdkryjPrvkySemA()
         {
             PridejCestuButton.Visibility = Visibility.Visible;
             NajdiCestuButton.Visibility = Visibility.Visible;
             VlozBodButton.Visibility = Visibility.Visible;
             label1.Visibility = Visibility.Visible;
             canvasElem.Visibility = Visibility.Visible;
+        }
+
+        public void OdkryjPrvkySemC()
+        {
+            label1.Visibility = Visibility.Visible;
+            NazevKliceLabel.Visibility = Visibility.Visible;
+            NazevKliceTextBox.Visibility = Visibility.Visible;
+            OdeberKlicButton.Visibility = Visibility.Visible;
+            HledejKlicBinarneButton.Visibility = Visibility.Visible;
+            HledejKlicInterpolacne.Visibility = Visibility.Visible;
         }
 
         /// <summary>
@@ -585,12 +601,13 @@ namespace Datove_struktury_2020
 
         private void SEMAB_Button_Click(object sender, RoutedEventArgs e)
         {
-            OdkryjPrvky();
+            OdkryjPrvkySemA();
         }
 
         private void SEMC_Button_Click(object sender, RoutedEventArgs e)
         {
             SryjPrvky();
+            OdkryjPrvkySemC();
         }
 
         private void HledejKlicBinarneButton_Click(object sender, RoutedEventArgs e)
