@@ -631,7 +631,7 @@ namespace Datove_struktury_2020
             try
             {
                 DataVrcholu hledanyVrchol = mapa.NajdiVrcholSemC(klic, ZpusobVyhledvani.Binarni);
-                NastavTextLabelu(hledanyVrchol.NazevVrcholu);
+                ZobrazVysledekHledanidoLabelu1(hledanyVrchol);
             }
             catch (Exception ex)
             {
@@ -646,7 +646,7 @@ namespace Datove_struktury_2020
             try
             {
                 DataVrcholu hledanyVrchol = mapa.NajdiVrcholSemC(klic, ZpusobVyhledvani.Interpolacni);
-                NastavTextLabelu(hledanyVrchol.NazevVrcholu);
+                ZobrazVysledekHledanidoLabelu1(hledanyVrchol);
             }
             catch (Exception ex)
             {
@@ -655,6 +655,20 @@ namespace Datove_struktury_2020
 
         }
 
+        private void ZobrazVysledekHledanidoLabelu1(DataVrcholu dv)
+        {
+            int pocetBloku = mapa.VratPocetBlokuVSouboru();
+            List<int> prosleBloky = mapa.VratPocetProjitychBloku();
+            string zprava = "Počet navštívených bloků: " + prosleBloky.Count + "\n Počet bloků v souboru:" + pocetBloku;
+            zprava += "\n Navštívené bloky: ";
+            foreach (int b in prosleBloky)
+            {
+                zprava += b + ", ";
+            }
+            zprava += "\n Nalezen klíč: " + dv.NazevVrcholu;
+            NastavTextLabelu(zprava);
+
+        }
         private void OdeberKlicButton_Click(object sender, RoutedEventArgs e)
         {
             string klic = NazevKliceTextBox.Text;

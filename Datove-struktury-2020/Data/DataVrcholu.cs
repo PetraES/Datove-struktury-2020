@@ -8,6 +8,7 @@ namespace Datove_struktury_2020.Data
     /// <summary>
     /// Třída reprezentující datovou strukturu vrcholu/bodu na mapě.
     /// </summary>
+    [Serializable]
     class DataVrcholu : ISouradnice, IVelikostZaznamu
     {
         public string NazevVrcholu { get; set; } //property
@@ -27,7 +28,7 @@ namespace Datove_struktury_2020.Data
 
         public int vratVelikostZaznamu()
         {
-            return 152;
+            return 500;
         }
 
         public override string ToString()

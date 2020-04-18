@@ -8,11 +8,12 @@ namespace Datove_struktury_2020.data_sem_c
 {
     class AbstraktniSoubor<K, Z> where K : IComparable where Z : IVelikostZaznamu
     {
-        readonly int velikostRB = 24;
+        readonly int velikostRB = 1000;
       
         FileStream fs;
         Blok b;
         RidiciBlok rb = new RidiciBlok();
+        List<int> seznamProchazenychBloku = new List<int>();
 
         public AbstraktniSoubor(string cesta)
         {
@@ -20,8 +21,18 @@ namespace Datove_struktury_2020.data_sem_c
             fs = new FileStream(cesta, FileMode.OpenOrCreate);
             if (existujeSoubor == true)
             {
-                // CtiBlok(0);
+                CtiBlok(0);
             }
+        }
+
+        public List<int> VratSeznamProchazenychBloku()
+        {
+            return seznamProchazenychBloku;
+        }
+
+        public int VratCelkovyPocetBlokuVSouboru()
+        {
+            return rb.PocetBloku;
         }
 
         /// <summary>
@@ -68,6 +79,7 @@ namespace Datove_struktury_2020.data_sem_c
                 Z zz = VyhledejSpecifickyZaznam(klic, ZpusobVyhledvani.Binarni);
                 // smazani z RAM
                 b.poleZaznamu[rb.AktualniZaznam] = null;
+                b.platny[rb.AktualniZaznam] = false;
                 // zapsat novou podobu bloku do souboru
                 ZapisBlok(rb.AktualniBlok);
                 return zz;
@@ -82,11 +94,12 @@ namespace Datove_struktury_2020.data_sem_c
         /// <summary>
         /// Načte blok ze souboru do paměti, kde int i je pozice bloku v souboru.
         /// </summary>
-        /// <param name="i">Pozice bloku v souboru.</param>
-        private void CtiBlok(int i)
-        {
-            NastavPozici(i);
-            if (i == 0)
+        /// <param name="indexBloku">Pozice bloku v souboru.</param>
+        private void CtiBlok(int indexBloku)
+        {           
+            NastavPozici(indexBloku);
+            // kdyz je ridici blok
+            if (indexBloku == 0)
             {
                 byte[] prozatimnibufferRB = new byte[velikostRB];
                 fs.Read(prozatimnibufferRB);
@@ -94,11 +107,12 @@ namespace Datove_struktury_2020.data_sem_c
             }
             else
             {
-                byte[] prozatimniBufferBlok = new byte[rb.VelikostZaznamu];
+                byte[] prozatimniBufferBlok = new byte[rb.VelikostZaznamu * rb.BlokovyFaktor];
                 fs.Read(prozatimniBufferBlok);
                 b = (Blok)ByteArrayToObject(prozatimniBufferBlok);
+                seznamProchazenychBloku.Add(indexBloku);
             }
-            rb.AktualniBlok = i;
+            rb.AktualniBlok = indexBloku;
             rb.AktualniZaznam = 0;
         }
 
@@ -110,6 +124,7 @@ namespace Datove_struktury_2020.data_sem_c
         {
             NastavPozici(indexBloku);
 
+            // kdyz je to ridici blok
             if (indexBloku == 0)
             {
                 byte[] ridiciBlok = ObjectToByteArray(rb);
@@ -119,6 +134,7 @@ namespace Datove_struktury_2020.data_sem_c
             {
                 byte[] blok = ObjectToByteArray(b);
                 fs.Write(blok);
+
             }
         }
 
@@ -185,8 +201,9 @@ namespace Datove_struktury_2020.data_sem_c
                 ZapisBlok(rb.AktualniBlok);
                 InicializujBlok();
                 rb.AktualniBlok++;
-                rb.PocetBloku++;
+                rb.PocetBloku = rb.PocetBloku + 1;
             }
+            b.platny[indexZaznamu] = true;
             b.poleZaznamu[indexZaznamu] = zaznam;
         }
 
@@ -208,16 +225,17 @@ namespace Datove_struktury_2020.data_sem_c
         {
             // stary zapis: 
             // switch (zpusob)
-            //{
+            // {
             //    case ZpusobVyhledvani.Binarni:
             //        return VyhledejBinarne(klic);
             //    case ZpusobVyhledvani.Interpolacni:
             //        return VyhledejInterpolacne(klic);
             //    default:
             //        throw new Exception("Mission impossible, zpusob vyhledavani neodpovida.");
-            //}
+            // }
 
             //novej zapis switche s lambda vyrazem
+            seznamProchazenychBloku.Clear();
             return zpusob switch
             {
                 ZpusobVyhledvani.Binarni => VyhledejBinarne(klic),
@@ -240,7 +258,11 @@ namespace Datove_struktury_2020.data_sem_c
             {
                 if (pravyInterval >= 1)
                 {
-                    int polovinaIntervalu = 1 + ((pravyInterval - levyInterval) / 2);
+                    if (pravyInterval < levyInterval)                  
+                    {
+                        throw new Exception("Binarni vyhledavani nenalezlo klic.");
+                    }
+                    int polovinaIntervalu = levyInterval + ((pravyInterval - levyInterval) / 2);
                     CtiBlok(polovinaIntervalu);
                     if (b != null)
                     {
@@ -278,7 +300,6 @@ namespace Datove_struktury_2020.data_sem_c
             }
         }
 
-        // TODO
         private Z VyhledejInterpolacne(K klic)
         {
             int levyInterval = 1;
@@ -296,8 +317,20 @@ namespace Datove_struktury_2020.data_sem_c
             {
                 if (pravyInterval >= 1)
                 {
-                    double d = (transformujKlic(klic) - transformujKlic(bl)) / (transformujKlic(br) - transformujKlic(bl));
+                    if (pravyInterval < levyInterval || pravyInterval > rb.PocetBloku || levyInterval < 1)
+                    {
+                        throw new Exception("Interpolacni vyhledavani nenalezlo klic.");
+                    }
+
+                    long a = TransformujKlic(klic) / 100000000000;
+                    long z = TransformujKlic(bl) / 100000000000;
+                    long c = TransformujKlic(br) / 100000000000;
+                    
+                    // TODO
+
+                    double d = (double)(TransformujKlic(klic) - TransformujKlic(bl)) / (double)(TransformujKlic(br) - TransformujKlic(bl));
                     int posiceBlokuVIntervalu = levyInterval + (int)((pravyInterval - levyInterval + 1) * d);
+                    posiceBlokuVIntervalu = posiceBlokuVIntervalu > rb.PocetBloku ? rb.PocetBloku : posiceBlokuVIntervalu;
                     CtiBlok(posiceBlokuVIntervalu);
                     if (b != null)
                     {
@@ -335,13 +368,12 @@ namespace Datove_struktury_2020.data_sem_c
             }
         }
 
-        //TODO
-        private long transformujKlic(K klic)
+        private long TransformujKlic(K klic)
         {
             if (klic != null)
             {
                 String s = klic.ToString().ToLower();
-                string abeceda = " aábcčdďeéěfghiíjklmnňoópqrřsštťuúůvwxyýzž";
+                string abeceda = " _()aábcčdďeéěfghiíjklmnňoópqrřsštťuúůvwxyýzž";
                 long docasna = 0;
                 int mocnina = 0;
 
@@ -357,10 +389,9 @@ namespace Datove_struktury_2020.data_sem_c
             {
                 throw new Exception("Zadaný klíč nenalezen. Transformace na číslo neproběhla.");
             }
-            
-
         }
 
+        [Serializable]
         private class Blok
         {
             public bool[] platny; // 1 byte v pameti
@@ -424,6 +455,7 @@ namespace Datove_struktury_2020.data_sem_c
         /// klic v csv - 60 byte (30*char po 2 bytech),
         /// K klic - 60 byte = 152 byte.
         /// </summary>
+        [Serializable]
         private class Zaznam
         {
             public Z zaznam;
@@ -436,6 +468,7 @@ namespace Datove_struktury_2020.data_sem_c
             }
         }
 
+        [Serializable]
         private class RidiciBlok
         {
             public int VelikostZaznamu { get; set; }

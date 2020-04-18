@@ -10,9 +10,9 @@ namespace Datove_struktury_2020.Data
     {
         private readonly RozsahovyStrom<DataVrcholu> rs = new RozsahovyStrom<DataVrcholu>();
         // Abstraktni graf ma K,V,H 
-        private AbstraktniGraf<string, DataVrcholu, DataHran> ag = new AbstraktniGraf<string, DataVrcholu, DataHran>();
+        private readonly AbstraktniGraf<string, DataVrcholu, DataHran> ag = new AbstraktniGraf<string, DataVrcholu, DataHran>();
         // Deklarace Abstraktniho souboru K, Z ale inicializuje se az v konstruktoru, r33
-        private AbstraktniSoubor<string, DataVrcholu> abstraktniSoubor;
+        private readonly AbstraktniSoubor<string, DataVrcholu> abstraktniSoubor;
         private readonly Dijkstra dijkstra;
         private readonly EditaceCSV editorCSV = new EditaceCSV();
 
@@ -36,13 +36,24 @@ namespace Datove_struktury_2020.Data
         public KoordinatorLesnichDobrodruzstvi()
         {
             dijkstra = new Dijkstra(ag);
+            bool existuje = File.Exists(cestaKsouboruSemC);
             abstraktniSoubor = new AbstraktniSoubor<string, DataVrcholu>(cestaKsouboruSemC);
             NactiVrcholyProSemA();
             NactiHranyZCSV();
-            if (File.Exists(cestaKsouboruSemC) == false)
+            if (existuje == false)
             {
                 NactiVrcholyProSemC();
             }
+        }
+
+        public List<int> VratPocetProjitychBloku()
+        {
+            return abstraktniSoubor.VratSeznamProchazenychBloku();
+        }
+
+        public int VratPocetBlokuVSouboru()
+        {
+            return abstraktniSoubor.VratCelkovyPocetBlokuVSouboru();
         }
 
         /// <summary>
@@ -57,7 +68,8 @@ namespace Datove_struktury_2020.Data
                 DataVrcholu dv = vrcholy5000[i]; //zalozit promennou vrcholu, protoze forem mam jen indexy
                 KeyValuePair<string, DataVrcholu> kvp = new KeyValuePair<string, DataVrcholu>(dv.NazevVrcholu,dv);
                 listDvouHodnot.Add(kvp);
-            }           
+            }
+            listDvouHodnot.Sort((a, b) => a.Key.ToLower().CompareTo(b.Key.ToLower()));
             // blokacni faktor nastaven na 5
             abstraktniSoubor.VybudujSoubor(listDvouHodnot,5);
             // todo nacpi do AS
@@ -101,7 +113,10 @@ namespace Datove_struktury_2020.Data
                 v.NazevVrcholu = radek[0];
                 v.XSouradniceVrcholu = float.Parse(radek[1]);
                 v.YSouradniceVrcholu = float.Parse(radek[2]);
-                v.TypVrcholu = (TypyVrcholu)int.Parse(radek[3]);
+                if (radek.Length >= 4)
+                {
+                    v.TypVrcholu = (TypyVrcholu)int.Parse(radek[3]);
+                }
                 vysledek.Add(v);
             }
             return vysledek;

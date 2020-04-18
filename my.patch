@@ -1,0 +1,130 @@
+diff --git a/Datove-struktury-2020/Data/DataVrcholu.cs b/Datove-struktury-2020/Data/DataVrcholu.cs
+index 42cef32..04e6951 100644
+--- a/Datove-struktury-2020/Data/DataVrcholu.cs
++++ b/Datove-struktury-2020/Data/DataVrcholu.cs
+@@ -8,6 +8,7 @@ namespace Datove_struktury_2020.Data
+     /// <summary>
+     /// Třída reprezentující datovou strukturu vrcholu/bodu na mapě.
+     /// </summary>
++    [Serializable]
+     class DataVrcholu : ISouradnice, IVelikostZaznamu
+     {
+         public string NazevVrcholu { get; set; } //property
+@@ -27,7 +28,7 @@ namespace Datove_struktury_2020.Data
+ 
+         public int vratVelikostZaznamu()
+         {
+-            return 152;
++            return 500;
+         }
+ 
+         public override string ToString()
+diff --git a/Datove-struktury-2020/Data/KoordinatorLesnichDobrodruzstvi.cs b/Datove-struktury-2020/Data/KoordinatorLesnichDobrodruzstvi.cs
+index c24045c..5671f49 100644
+--- a/Datove-struktury-2020/Data/KoordinatorLesnichDobrodruzstvi.cs
++++ b/Datove-struktury-2020/Data/KoordinatorLesnichDobrodruzstvi.cs
+@@ -36,10 +36,11 @@ namespace Datove_struktury_2020.Data
+         public KoordinatorLesnichDobrodruzstvi()
+         {
+             dijkstra = new Dijkstra(ag);
++            bool existuje = File.Exists(cestaKsouboruSemC);
+             abstraktniSoubor = new AbstraktniSoubor<string, DataVrcholu>(cestaKsouboruSemC);
+             NactiVrcholyProSemA();
+             NactiHranyZCSV();
+-            if (File.Exists(cestaKsouboruSemC) == false)
++            if (existuje == false)
+             {
+                 NactiVrcholyProSemC();
+             }
+diff --git a/Datove-struktury-2020/data_sem_c/abstraktniSoubor.cs b/Datove-struktury-2020/data_sem_c/abstraktniSoubor.cs
+index 794d5cb..8cea03e 100644
+--- a/Datove-struktury-2020/data_sem_c/abstraktniSoubor.cs
++++ b/Datove-struktury-2020/data_sem_c/abstraktniSoubor.cs
+@@ -8,7 +8,7 @@ namespace Datove_struktury_2020.data_sem_c
+ {
+     class AbstraktniSoubor<K, Z> where K : IComparable where Z : IVelikostZaznamu
+     {
+-        readonly int velikostRB = 24;
++        readonly int velikostRB = 1000;
+       
+         FileStream fs;
+         Blok b;
+@@ -20,7 +20,7 @@ namespace Datove_struktury_2020.data_sem_c
+             fs = new FileStream(cesta, FileMode.OpenOrCreate);
+             if (existujeSoubor == true)
+             {
+-                // CtiBlok(0);
++                CtiBlok(0);
+             }
+         }
+ 
+@@ -68,6 +68,7 @@ namespace Datove_struktury_2020.data_sem_c
+                 Z zz = VyhledejSpecifickyZaznam(klic, ZpusobVyhledvani.Binarni);
+                 // smazani z RAM
+                 b.poleZaznamu[rb.AktualniZaznam] = null;
++                b.platny[rb.AktualniBlok] = false;
+                 // zapsat novou podobu bloku do souboru
+                 ZapisBlok(rb.AktualniBlok);
+                 return zz;
+@@ -94,7 +95,7 @@ namespace Datove_struktury_2020.data_sem_c
+             }
+             else
+             {
+-                byte[] prozatimniBufferBlok = new byte[rb.VelikostZaznamu];
++                byte[] prozatimniBufferBlok = new byte[rb.VelikostZaznamu * rb.BlokovyFaktor];
+                 fs.Read(prozatimniBufferBlok);
+                 b = (Blok)ByteArrayToObject(prozatimniBufferBlok);
+             }
+@@ -185,8 +186,9 @@ namespace Datove_struktury_2020.data_sem_c
+                 ZapisBlok(rb.AktualniBlok);
+                 InicializujBlok();
+                 rb.AktualniBlok++;
+-                rb.PocetBloku++;
++                rb.PocetBloku = rb.PocetBloku + 1;
+             }
++            b.platny[indexZaznamu] = true;
+             b.poleZaznamu[indexZaznamu] = zaznam;
+         }
+ 
+@@ -240,7 +242,7 @@ namespace Datove_struktury_2020.data_sem_c
+             {
+                 if (pravyInterval >= 1)
+                 {
+-                    int polovinaIntervalu = 1 + ((pravyInterval - levyInterval) / 2);
++                    int polovinaIntervalu = levyInterval + ((pravyInterval - levyInterval) / 2);
+                     CtiBlok(polovinaIntervalu);
+                     if (b != null)
+                     {
+@@ -298,7 +300,7 @@ namespace Datove_struktury_2020.data_sem_c
+                 {
+                     double d = (transformujKlic(klic) - transformujKlic(bl)) / (transformujKlic(br) - transformujKlic(bl));
+                     int posiceBlokuVIntervalu = levyInterval + (int)((pravyInterval - levyInterval + 1) * d);
+-                    CtiBlok(posiceBlokuVIntervalu);
++                    CtiBlok(posiceBlokuVIntervalu > rb.PocetBloku ? rb.PocetBloku : posiceBlokuVIntervalu);
+                     if (b != null)
+                     {
+                         b.ResetujPoziciAktualnihoZaznamu();
+@@ -361,6 +363,7 @@ namespace Datove_struktury_2020.data_sem_c
+ 
+         }
+ 
++        [Serializable]
+         private class Blok
+         {
+             public bool[] platny; // 1 byte v pameti
+@@ -424,6 +427,7 @@ namespace Datove_struktury_2020.data_sem_c
+         /// klic v csv - 60 byte (30*char po 2 bytech),
+         /// K klic - 60 byte = 152 byte.
+         /// </summary>
++        [Serializable]
+         private class Zaznam
+         {
+             public Z zaznam;
+@@ -436,6 +440,7 @@ namespace Datove_struktury_2020.data_sem_c
+             }
+         }
+ 
++        [Serializable]
+         private class RidiciBlok
+         {
+             public int VelikostZaznamu { get; set; }
