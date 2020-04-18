@@ -104,6 +104,7 @@ namespace Datove_struktury_2020
             OdeberKlicButton.Visibility = Visibility.Hidden;
             HledejKlicBinarneButton.Visibility = Visibility.Hidden;
             HledejKlicInterpolacne.Visibility = Visibility.Hidden;
+            RangeTreeButton.Visibility = Visibility.Hidden;
         }
 
         public void OdkryjPrvkySemA()
@@ -113,6 +114,7 @@ namespace Datove_struktury_2020
             VlozBodButton.Visibility = Visibility.Visible;
             label1.Visibility = Visibility.Visible;
             canvasElem.Visibility = Visibility.Visible;
+            RangeTreeButton.Visibility = Visibility.Visible;
         }
 
         public void OdkryjPrvkySemC()
@@ -601,6 +603,7 @@ namespace Datove_struktury_2020
 
         private void SEMAB_Button_Click(object sender, RoutedEventArgs e)
         {
+            SryjPrvky();
             OdkryjPrvkySemA();
         }
 
@@ -653,6 +656,12 @@ namespace Datove_struktury_2020
             {
                 NastavTextLabelu(ex.Message);
             }
+
+        }
+
+        // TODO zprovoznit aby to delalo range tree az po zmacknuti cudliku, jinak to nici vyhledavani nejkratsi
+        private void RangeTreeButton_Click(object sender, RoutedEventArgs e)
+        {
 
         }
     }

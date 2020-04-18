@@ -23,20 +23,22 @@
         </Grid.RowDefinitions>
 
         <Canvas x:Name="canvasMainElem" Margin="14,15,37,224" Grid.ColumnSpan="2">
-            <Button x:Name="PridejCestuButton" Canvas.Left="709" Canvas.Top="28"
-                    Content="Přidej cestu" Height="30" Width="120" Click="PridejCestuButton_Click" FontSize="18" RenderTransformOrigin="-15,0"/>
-            <Button x:Name="NajdiCestuButton" Content="Najdi nejkratší cestu" Height="30"
-                    Canvas.Left="459" Canvas.Top="28" Width="120" 
-                    Click="NajdiCestuButt_Click" FontSize="18" RenderTransformOrigin="-15,0"
+            <Button x:Name="NajdiCestuButton" Content="Nejkratší" Height="30"
+                    Canvas.Left="10" Canvas.Top="55" Width="70" 
+                    Click="NajdiCestuButt_Click" RenderTransformOrigin="-15,0"
                     />
             <Button x:Name="VlozBodButton" Content="Vlož bod" Height="30"
-                    Canvas.Left="584" Canvas.Top="28" Width="120"
-                    Click="VlozBodButton_Click" FontSize="18" RenderTransformOrigin="-15,0"/>
-            <Button x:Name="tlacitko_ANO" Content="ANO" Canvas.Left="220" Canvas.Top="163" 
-                    Click="ANO_Button_Click" RenderTransformOrigin="0.454,-0.349" Height="30" Width="40" 
+                    Canvas.Left="85" Canvas.Top="55" Width="70"
+                    Click="VlozBodButton_Click" RenderTransformOrigin="-15,0"/>
+            <Button x:Name="PridejCestuButton" Canvas.Left="160" Canvas.Top="55"
+                    Content="Přidej cestu" Height="30" Width="70"
+                    Click="PridejCestuButton_Click" RenderTransformOrigin="-15,0"/>
+            <Button x:Name="RangeTreeButton" Content="RangeTree" Canvas.Left="235" Canvas.Top="55" Height="30" Width="70" Click="RangeTreeButton_Click"/>
+            <Button x:Name="tlacitko_ANO" Content="ANO" Canvas.Left="220" Canvas.Top="165" 
+                    Click="ANO_Button_Click" RenderTransformOrigin="0.454,-0.349" Height="25" Width="40" 
                     BorderThickness="1,1,1,1" Visibility="Visible"/>
-            <Button x:Name="tlacitko_NE" Content="NE" Canvas.Left="280" Canvas.Top="163" Click="NE_Button_Click" 
-                    RenderTransformOrigin="0.454,-0.349" Height="30" Width="40"/>
+            <Button x:Name="tlacitko_NE" Content="NE" Canvas.Left="280" Canvas.Top="165" Click="NE_Button_Click" 
+                    RenderTransformOrigin="0.454,-0.349" Height="25" Width="40"/>
             <Label 
                 x:Name="label1" 
                 Height="88" Width="583"
@@ -49,32 +51,33 @@
             <Canvas x:Name="canvasElem" Height="529" Canvas.Top="217" Width="910" Background="#7F20B2AA"
                     Canvas.Left="10" MouseLeftButtonDown="canvasElem_MouseLeftButtonDown" 
                     MouseDown="canvasElem_MouseDown" MouseMove="canvasElem_MouseMove" MouseUp="canvasElem_MouseUp"/>
-            <ComboBox x:Name="TypVrcholu_comboBox" Canvas.Left="220" Canvas.Top="117" 
-                      Width="100" Height="30" SelectedIndex="0">
+            <ComboBox x:Name="TypVrcholu_comboBox" Canvas.Left="220" Canvas.Top="130" 
+                      Width="100" Height="25" SelectedIndex="0">
                 <ListBoxItem Content="Křižovatka"/>
                 <ListBoxItem Content="Odpočívadlo"/>
                 <ListBoxItem Content="Zastávka"/>
             </ComboBox>
-            <TextBox x:Name="nazevVrcholuTextBox" Canvas.Left="220" Canvas.Top="67" TextWrapping="Wrap" 
-                     Width="100" Height="30" BorderThickness="1,1,1,1"/>
+            <TextBox x:Name="nazevVrcholuTextBox" Canvas.Left="220" Canvas.Top="95" TextWrapping="Wrap" 
+                     Width="100" Height="25" BorderThickness="1,1,1,1"/>
             <Label x:Name="nazevVrcholuLabel" 
                    Content="Prosím zadejte název nového bodu:" 
-                   Canvas.Left="12" Canvas.Top="67" 
-                   Background="WhiteSmoke" Height="30" Width="200"/>
+                   Canvas.Left="10" Canvas.Top="95" 
+                   Background="WhiteSmoke" Height="25" Width="200"/>
             <Label x:Name="druhVrcholuLabel" 
                 Content="Prosím zadejte název nového bodu:" 
-                   Canvas.Left="12" Canvas.Top="117"
-                   Background="WhiteSmoke" Height="30" />
+                   Canvas.Left="10" Canvas.Top="130"
+                   Background="WhiteSmoke" Height="25" />
             <Label x:Name="ANO_NEVrcholuLabel" 
-                Content="Prosím potvrďte vaši volbu" 
-                   Canvas.Left="12" Canvas.Top="163"
-                   Background="WhiteSmoke" Height ="30" Width="200"/>
+                Content="Prosím potvrďte vaši volbu:" 
+                   Canvas.Left="10" Canvas.Top="165"
+                   Background="WhiteSmoke" Height ="25" Width="200"/>
             <Button Content="SEM A+B" Background ="#7F20B2AA" Canvas.Left="20" Canvas.Top="13" 
                     Height="30" Width="90" FontSize="18" Click="SEMAB_Button_Click"/>
             <Button Content="SEM C" Background ="#7F20B2AA" Canvas.Left="120" Canvas.Top="13"
                     Height="30" Width="90" FontSize="18" Click="SEMC_Button_Click"/>
             <Button x:Name="HledejKlicBinarneButton" Content="Hledej binárně" Canvas.Left="584"
                     Canvas.Top="65" Click="HledejKlicBinarneButton_Click" Height="30" Width="120" FontSize="18"/>
+            
             <TextBox x:Name="NazevKliceTextBox" Canvas.Left="335" Canvas.Top="65" TextWrapping="Wrap"
                      Width="120" Foreground="#7F20B2AA" Height="30" FontSize="18"/>
             <Label x:Name="NazevKliceLabel" Content="Název klíče:" Canvas.Left="335" Canvas.Top="28"
@@ -83,7 +86,7 @@
                     Click="OdeberKlicButton_Click" Height="30" Width="120" FontSize="18"/>
             <Button x:Name="HledejKlicInterpolacne" Content="Hledej interpolačně" Canvas.Left="709" Canvas.Top="65"
                     Click="HledejKlicInterpolacne_Click" Height="30" Width="170" FontSize="18"/>
-        </Canvas>
+             </Canvas>
 
 
     </Grid>
