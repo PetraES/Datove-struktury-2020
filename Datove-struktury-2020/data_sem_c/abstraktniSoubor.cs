@@ -16,7 +16,12 @@ namespace Datove_struktury_2020.data_sem_c
 
         public AbstraktniSoubor(string cesta)
         {
+            bool existujeSoubor = File.Exists(cesta);
             fs = new FileStream(cesta, FileMode.OpenOrCreate);
+            if (existujeSoubor == true)
+            {
+                // CtiBlok(0);
+            }
         }
 
         /// <summary>
@@ -58,16 +63,24 @@ namespace Datove_struktury_2020.data_sem_c
         /// <returns>Zaznam</returns>
         public Z OdeberSpecifickyZaznam(K klic)
         {
-            Z zz = VyhledejSpecifickyZaznam(klic, ZpusobVyhledvani.Binarni );
-            // smazani z RAM
-            b.poleZaznamu[rb.AktualniZaznam] = null;
-            // zapsat novou podobu bloku do souboru
-            ZapisBlok(rb.AktualniBlok);
-            return zz;
+            try
+            {
+                Z zz = VyhledejSpecifickyZaznam(klic, ZpusobVyhledvani.Binarni);
+                // smazani z RAM
+                b.poleZaznamu[rb.AktualniZaznam] = null;
+                // zapsat novou podobu bloku do souboru
+                ZapisBlok(rb.AktualniBlok);
+                return zz;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Zaznam nebyl odebran.");
+            }
+           
         }
 
         /// <summary>
-        /// Načte blok ze souboru do paměti.
+        /// Načte blok ze souboru do paměti, kde int i je pozice bloku v souboru.
         /// </summary>
         /// <param name="i">Pozice bloku v souboru.</param>
         private void CtiBlok(int i)
@@ -317,7 +330,7 @@ namespace Datove_struktury_2020.data_sem_c
                 }
                 else
                 {
-                    throw new Exception("Pri binarnim vyhledavani prvek nenalezen.");
+                    throw new Exception("Pri Interpolacnim vyhledavani prvek nenalezen.");
                 }
             }
         }

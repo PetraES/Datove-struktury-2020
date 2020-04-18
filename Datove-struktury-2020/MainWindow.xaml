@@ -73,7 +73,11 @@
                     Height="30" Width="90" FontSize="18" Click="SEMAB_Button_Click"/>
             <Button Content="SEM C" Background ="#7F20B2AA" Canvas.Left="120" Canvas.Top="13"
                     Height="30" Width="90" FontSize="18" Click="SEMC_Button_Click"/>
-            <Button Content="Button" Canvas.Left="405" Canvas.Top="65"/>
+            <Button x:Name="HledejKlicBinarneButton" Content="Hledej binárně" Canvas.Left="623" Canvas.Top="48" Click="HledejKlicBinarneButton_Click"/>
+            <TextBox x:Name="NazevKliceTextBox" Canvas.Left="459" Canvas.Top="52" Text="Název klíče" TextWrapping="Wrap" Width="146" Foreground="#FD7C7272" Height="27"/>
+            <Label x:Name="NazevKliceLabel" Content="Název klíče:" Canvas.Left="373" Canvas.Top="53" Background="#FF53A624"/>
+            <Button x:Name="OdeberKlicButton" Content="Odeber klíč" Canvas.Left="767" Canvas.Top="51" Click="OdeberKlicButton_Click"/>
+            <Button x:Name="HledejKlicInterpolacne" Content="Hledej interpolačně" Canvas.Left="623" Canvas.Top="68" Click="HledejKlicInterpolacne_Click"/>
         </Canvas>
 
 

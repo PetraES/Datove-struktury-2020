@@ -1,6 +1,7 @@
 ﻿using Datove_struktury_2020.data_sem_c;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Datove_struktury_2020.Data
@@ -10,14 +11,14 @@ namespace Datove_struktury_2020.Data
         private readonly RozsahovyStrom<DataVrcholu> rs = new RozsahovyStrom<DataVrcholu>();
         // Abstraktni graf ma K,V,H 
         private AbstraktniGraf<string, DataVrcholu, DataHran> ag = new AbstraktniGraf<string, DataVrcholu, DataHran>();
-        // deklarace Abstraktniho souboru K, Z ale inicializuje se az v konstruktoru, r33
+        // Deklarace Abstraktniho souboru K, Z ale inicializuje se az v konstruktoru, r33
         private AbstraktniSoubor<string, DataVrcholu> abstraktniSoubor;
         private readonly Dijkstra dijkstra;
         private readonly EditaceCSV editorCSV = new EditaceCSV();
 
         // vrcholy jsou body v mapě
         private readonly string cestaKsouboruObce50 = @"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\Obce2.csv";
-        //hrany jsou cesty v lese
+        // hrany jsou cesty v lese
         private readonly string cestaKsouboruCesty50 = @"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\Cesty.csv";
         // cesta, kam se bude ukladat abstraktni soubor SEM C
         private readonly string cestaKsouboruSemC = @"C:\Users\petra\source\repos\Datove-struktury-2020\Datove-struktury-2020\Resources\SemCDadaAS";
@@ -38,6 +39,10 @@ namespace Datove_struktury_2020.Data
             abstraktniSoubor = new AbstraktniSoubor<string, DataVrcholu>(cestaKsouboruSemC);
             NactiVrcholyProSemA();
             NactiHranyZCSV();
+            if (File.Exists(cestaKsouboruSemC) == false)
+            {
+                NactiVrcholyProSemC();
+            }
         }
 
         /// <summary>
@@ -52,9 +57,7 @@ namespace Datove_struktury_2020.Data
                 DataVrcholu dv = vrcholy5000[i]; //zalozit promennou vrcholu, protoze forem mam jen indexy
                 KeyValuePair<string, DataVrcholu> kvp = new KeyValuePair<string, DataVrcholu>(dv.NazevVrcholu,dv);
                 listDvouHodnot.Add(kvp);
-
-            }
-            
+            }           
             // blokacni faktor nastaven na 5
             abstraktniSoubor.VybudujSoubor(listDvouHodnot,5);
             // todo nacpi do AS
@@ -109,9 +112,19 @@ namespace Datove_struktury_2020.Data
         /// </summary>
         /// <param name="klicVrcholu"></param>
         /// <returns></returns>
-        public DataVrcholu NajdiVrchol(string klicVrcholu)
+        public DataVrcholu NajdiVrcholSemA(string klicVrcholu)
         {
             return ag.VratVrchol(klicVrcholu);
+        }
+
+        public DataVrcholu NajdiVrcholSemC(string klic, ZpusobVyhledvani zv)
+        {
+            return abstraktniSoubor.VyhledejSpecifickyZaznam(klic, zv);
+        }
+
+        public DataVrcholu OdeberVrcholSemC(string klic)
+        {
+            return abstraktniSoubor.OdeberSpecifickyZaznam(klic);
         }
 
         /// <summary>
@@ -174,7 +187,7 @@ namespace Datove_struktury_2020.Data
             {
                 throw new Exception("Neplatný název bodu.");
             }
-            else if(NajdiVrchol(nazevVrcholu) != null)
+            else if(NajdiVrcholSemA(nazevVrcholu) != null)
             {
                 throw new Exception("Bod již exitsuje. Prosím zvolte jiný.");
             }

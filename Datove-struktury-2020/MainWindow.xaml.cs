@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Datove_struktury_2020.Data;
 using System.Drawing;
+using Datove_struktury_2020.data_sem_c;
 
 namespace Datove_struktury_2020
 {
@@ -42,7 +43,7 @@ namespace Datove_struktury_2020
         public MainWindow()
         {
             InitializeComponent();
-            SryjPrvky();           
+            SryjPrvky();
             try
             {
                 mapa = new KoordinatorLesnichDobrodruzstvi();
@@ -84,7 +85,7 @@ namespace Datove_struktury_2020
             ANO_NEVrcholuLabel.Visibility = Visibility.Visible;
         }
 
-        public void SryjPrvky() 
+        public void SryjPrvky()
         {
             tlacitko_ANO.Visibility = Visibility.Hidden;
             tlacitko_NE.Visibility = Visibility.Hidden;
@@ -96,20 +97,17 @@ namespace Datove_struktury_2020
             PridejCestuButton.Visibility = Visibility.Hidden;
             NajdiCestuButton.Visibility = Visibility.Hidden;
             VlozBodButton.Visibility = Visibility.Hidden;
-            label1.Visibility = Visibility.Hidden;
             canvasElem.Visibility = Visibility.Hidden;
         }
 
         public void OdkryjPrvky()
         {
-            
             PridejCestuButton.Visibility = Visibility.Visible;
             NajdiCestuButton.Visibility = Visibility.Visible;
             VlozBodButton.Visibility = Visibility.Visible;
             label1.Visibility = Visibility.Visible;
             canvasElem.Visibility = Visibility.Visible;
         }
-
 
         /// <summary>
         /// Postupně prochází body a hrany grafu a vykresluje je.
@@ -185,14 +183,14 @@ namespace Datove_struktury_2020
             if (lesniStezka.OznaceniHrany)
             {
                 barvaStezky = Brushes.Black;
-            } 
+            }
             else if (!lesniStezka.JeFunkcniCesta)
             {
                 barvaStezky = Brushes.DarkGray;
             }
 
-            DataVrcholu pocatekHrany = mapa.NajdiVrchol(lesniStezka.PocatekHrany);
-            DataVrcholu konecHrany = mapa.NajdiVrchol(lesniStezka.KonecHrany);
+            DataVrcholu pocatekHrany = mapa.NajdiVrcholSemA(lesniStezka.PocatekHrany);
+            DataVrcholu konecHrany = mapa.NajdiVrcholSemA(lesniStezka.KonecHrany);
 
             Line myline = new Line
             {
@@ -281,7 +279,7 @@ namespace Datove_struktury_2020
             var dot = (Ellipse)sender;
             string klicVrcholu = dot.Name.Replace("_", " ");
 
-            DataVrcholu hledanyVrcholvMape = mapa.NajdiVrchol(klicVrcholu);
+            DataVrcholu hledanyVrcholvMape = mapa.NajdiVrcholSemA(klicVrcholu);
 
             if (hledanyVrcholvMape != null)
             {
@@ -354,7 +352,6 @@ namespace Datove_struktury_2020
             return delkaHrany;
         }
 
-
         void OnLineMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var line = (Line)sender;
@@ -365,7 +362,7 @@ namespace Datove_struktury_2020
             float yDo = (float)((line.Y2 - 4));
 
             // vrchol Z jako zacatek
-            DataVrcholu vrhcholZ = mapa.NajdiVrchol(kliceVrcholu[0]);
+            DataVrcholu vrhcholZ = mapa.NajdiVrcholSemA(kliceVrcholu[0]);
             if (vrhcholZ != null)
             {
                 // DataHran silnice = (DataHran)(from item in vrhcholZ.ListHran where item.KonecHrany.XSouradniceVrcholu.Equals(xDo) && item.KonecHrany.YSouradniceVrcholu.Equals(yDo) select item).First();
@@ -507,7 +504,7 @@ namespace Datove_struktury_2020
         System.Windows.Shapes.Rectangle a;
 
         private int PorovnejSouradnice(int s1, int s2)
-        {            
+        {
             if (s1 < s2)
             {
                 return s1;
@@ -515,7 +512,7 @@ namespace Datove_struktury_2020
             else
             {
                 return s2;
-            }                         
+            }
         }
 
         private void VykresliRectangle()
@@ -569,8 +566,8 @@ namespace Datove_struktury_2020
             }
             List<DataVrcholu> polamaneVrcholy = mapa.ZpracujInterval(zacatekOblastiPolom, konecOblastiPolom);
             string msg = "Pocet nalezenych vrcholu: " + polamaneVrcholy.Count + " zacatek:" + zacatekOblastiPolom + ", konec:" + konecOblastiPolom + ", Jmena vrcholu:\n";
-            
-            foreach (DataVrcholu vrchol in polamaneVrcholy) 
+
+            foreach (DataVrcholu vrchol in polamaneVrcholy)
             {
                 msg += vrchol.NazevVrcholu + ", ";
                 IEnumerable<DataHran> polamaneHrany = mapa.VratIncedencniHrany(vrchol.NazevVrcholu);
@@ -594,6 +591,52 @@ namespace Datove_struktury_2020
         private void SEMC_Button_Click(object sender, RoutedEventArgs e)
         {
             SryjPrvky();
+        }
+
+        private void HledejKlicBinarneButton_Click(object sender, RoutedEventArgs e)
+        {
+            string klic = NazevKliceTextBox.Text;
+
+            try
+            {
+                DataVrcholu hledanyVrchol = mapa.NajdiVrcholSemC(klic, ZpusobVyhledvani.Binarni);
+                NastavTextLabelu(hledanyVrchol.NazevVrcholu);
+            }
+            catch (Exception ex)
+            {
+                NastavTextLabelu(ex.Message);
+            }
+        }
+
+        private void HledejKlicInterpolacne_Click(object sender, RoutedEventArgs e)
+        {
+            string klic = NazevKliceTextBox.Text;
+
+            try
+            {
+                DataVrcholu hledanyVrchol = mapa.NajdiVrcholSemC(klic, ZpusobVyhledvani.Interpolacni);
+                NastavTextLabelu(hledanyVrchol.NazevVrcholu);
+            }
+            catch (Exception ex)
+            {
+                NastavTextLabelu(ex.Message);
+            }
+
+        }
+
+        private void OdeberKlicButton_Click(object sender, RoutedEventArgs e)
+        {
+            string klic = NazevKliceTextBox.Text;
+            try
+            {
+                DataVrcholu odebiranyVrchol = mapa.OdeberVrcholSemC(klic);
+                NastavTextLabelu("Byl odebrán klíč: " + odebiranyVrchol.NazevVrcholu);
+            }
+            catch (Exception ex)
+            {
+                NastavTextLabelu(ex.Message);
+            }
+
         }
     }
 
