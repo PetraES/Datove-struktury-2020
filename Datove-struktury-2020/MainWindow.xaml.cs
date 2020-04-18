@@ -27,6 +27,7 @@ namespace Datove_struktury_2020
         bool urcenKonecnyBod; // je-li vybran/urcen pocatecni bod pak se nastavi na true
         bool stisknutoVytvorVrchol; //pokud dojde ke stsknuti tlacitka, nastavi se na true
         bool stisknutoVytvorCestu; //pokud dojde ke stsknuti tlacitka, nastavi se na true
+        bool stisknutoRangeTree; // pokud dojde ke stisknuti tlacitka, nastavi se na true
 
         //je to struktura
         System.Windows.Point gBod;
@@ -125,6 +126,7 @@ namespace Datove_struktury_2020
             OdeberKlicButton.Visibility = Visibility.Visible;
             HledejKlicBinarneButton.Visibility = Visibility.Visible;
             HledejKlicInterpolacne.Visibility = Visibility.Visible;
+            NastavTextLabelu(" ");
         }
 
         /// <summary>
@@ -266,6 +268,7 @@ namespace Datove_struktury_2020
             foreach (DataHran h in mapa.VratHrany())
             {
                 h.OznaceniHrany = false;
+                h.JeFunkcniCesta = true;
             }
             VykresliMapu();
         }
@@ -558,10 +561,14 @@ namespace Datove_struktury_2020
 
         private void canvasElem_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            NastavTextLabelu("Pro výběr intervalu prosím táhněte zlevého horního rohu do pravého dolního," +
+            if (stisknutoRangeTree == true)
+            {
+                NastavTextLabelu("Pro výběr intervalu prosím táhněte zlevého horního rohu do pravého dolního," +
                 " v opačném případě nebude vybrána oblast.");
-            var point = e.GetPosition((IInputElement)sender);
-            zacatekOblastiPolom = new Data2Dim((int)point.X, (int)point.Y);
+                var point = e.GetPosition((IInputElement)sender);
+                zacatekOblastiPolom = new Data2Dim((int)point.X, (int)point.Y);
+            }
+            
         }
 
         private void canvasElem_MouseMove(object sender, MouseEventArgs e)
@@ -576,29 +583,33 @@ namespace Datove_struktury_2020
 
         private void canvasElem_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            var point = e.GetPosition((IInputElement)sender);
-            konecOblastiPolom = new Data2Dim((int)point.X, (int)point.Y);
-            foreach (DataHran v in mapa.VratHrany())
+            if (stisknutoRangeTree == true)
             {
-                v.JeFunkcniCesta = true;
-            }
-            List<DataVrcholu> polamaneVrcholy = mapa.ZpracujInterval(zacatekOblastiPolom, konecOblastiPolom);
-            string msg = "Pocet nalezenych vrcholu: " + polamaneVrcholy.Count + " zacatek:" + zacatekOblastiPolom + ", konec:" + konecOblastiPolom + ", Jmena vrcholu:\n";
-
-            foreach (DataVrcholu vrchol in polamaneVrcholy)
-            {
-                msg += vrchol.NazevVrcholu + ", ";
-                IEnumerable<DataHran> polamaneHrany = mapa.VratIncedencniHrany(vrchol.NazevVrcholu);
-                foreach (DataHran hrana in polamaneHrany)
+                var point = e.GetPosition((IInputElement)sender);
+                konecOblastiPolom = new Data2Dim((int)point.X, (int)point.Y);
+                foreach (DataHran v in mapa.VratHrany())
                 {
-                    hrana.JeFunkcniCesta = false;
+                    v.JeFunkcniCesta = true;
                 }
-            }
-            NastavTextLabelu(msg);
-            VykresliMapu();
-            VykresliRectangle();
-            //aby se neprekresloval Rectangle pri pohybu mysi
-            zacatekOblastiPolom = null;
+                List<DataVrcholu> polamaneVrcholy = mapa.ZpracujInterval(zacatekOblastiPolom, konecOblastiPolom);
+                string msg = "Pocet nalezenych vrcholu: " + polamaneVrcholy.Count + " zacatek:" + zacatekOblastiPolom + ", konec:" + konecOblastiPolom + ", Jmena vrcholu:\n";
+
+                foreach (DataVrcholu vrchol in polamaneVrcholy)
+                {
+                    msg += vrchol.NazevVrcholu + ", ";
+                    IEnumerable<DataHran> polamaneHrany = mapa.VratIncedencniHrany(vrchol.NazevVrcholu);
+                    foreach (DataHran hrana in polamaneHrany)
+                    {
+                        hrana.JeFunkcniCesta = false;
+                    }
+                }
+                NastavTextLabelu(msg);
+                VykresliMapu();
+                VykresliRectangle();
+                //aby se neprekresloval Rectangle pri pohybu mysi
+                zacatekOblastiPolom = null;
+                stisknutoRangeTree = false;
+            }           
         }
 
         private void SEMAB_Button_Click(object sender, RoutedEventArgs e)
@@ -662,7 +673,8 @@ namespace Datove_struktury_2020
         // TODO zprovoznit aby to delalo range tree az po zmacknuti cudliku, jinak to nici vyhledavani nejkratsi
         private void RangeTreeButton_Click(object sender, RoutedEventArgs e)
         {
-
+            ResetujAkce();
+            stisknutoRangeTree = true;
         }
     }
 

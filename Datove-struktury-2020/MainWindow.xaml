@@ -79,7 +79,7 @@
                     Canvas.Top="65" Click="HledejKlicBinarneButton_Click" Height="30" Width="120" FontSize="18"/>
             
             <TextBox x:Name="NazevKliceTextBox" Canvas.Left="335" Canvas.Top="65" TextWrapping="Wrap"
-                     Width="120" Foreground="#7F20B2AA" Height="30" FontSize="18"/>
+                     Width="120" Foreground="#FF0628FF" Height="30" FontSize="18" ForceCursor="True"/>
             <Label x:Name="NazevKliceLabel" Content="Název klíče:" Canvas.Left="335" Canvas.Top="28"
                    Background="#7F20B2AA" Height="30" Width="120" FontSize="18"/>
             <Button x:Name="OdeberKlicButton" Content="Odeber klíč" Canvas.Left="459" Canvas.Top="65"
