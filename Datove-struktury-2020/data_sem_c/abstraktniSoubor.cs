@@ -8,6 +8,7 @@ namespace Datove_struktury_2020.data_sem_c
 {
     class AbstraktniSoubor<K, Z> where K : IComparable where Z : IVelikostZaznamu
     {
+        private const string ABECEDA = " ()_aAáÁbBcCčČdDďĎeEéÉěĚfFgGhHiIíÍjJkKlLmMnNňŇoOóÓpPqQrRřŘsSšŠtTťŤuUúÚůŮvVwWxXyZýŹzZžŽ";
         readonly int velikostRB = 1000;
       
         FileStream fs;
@@ -111,6 +112,7 @@ namespace Datove_struktury_2020.data_sem_c
                 fs.Read(prozatimniBufferBlok);
                 b = (Blok)ByteArrayToObject(prozatimniBufferBlok);
                 seznamProchazenychBloku.Add(indexBloku);
+               
             }
             rb.AktualniBlok = indexBloku;
             rb.AktualniZaznam = 0;
@@ -305,14 +307,14 @@ namespace Datove_struktury_2020.data_sem_c
             int levyInterval = 1;
             int pravyInterval = rb.PocetBloku;
 
-            K bl = default; //prvni blok
-            K br = default; //posledni blok
+            K bl; //prvni blok
+            K br; //posledni blok
             
             CtiBlok(1);
             bl = b.VratPrvniZaznam().klic;
             CtiBlok(rb.PocetBloku);
-            br = b.VratPosledniZaznam().klic; 
-
+            br = b.VratPosledniZaznam().klic;
+            long hondotaKlice = TransformujKlic(klic);
             while (true)
             {
                 if (pravyInterval >= 1)
@@ -322,14 +324,16 @@ namespace Datove_struktury_2020.data_sem_c
                         throw new Exception("Interpolacni vyhledavani nenalezlo klic.");
                     }
 
-                    long a = TransformujKlic(klic) / 100000000000;
-                    long z = TransformujKlic(bl) / 100000000000;
-                    long c = TransformujKlic(br) / 100000000000;
-                    
-                    // TODO
+                    long blt = TransformujKlic(bl);
+                    long brt = TransformujKlic(br);
 
-                    double d = (double)(TransformujKlic(klic) - TransformujKlic(bl)) / (double)(TransformujKlic(br) - TransformujKlic(bl));
-                    int posiceBlokuVIntervalu = levyInterval + (int)((pravyInterval - levyInterval + 1) * d);
+                    double d = (double)(hondotaKlice - blt) / (double)(brt - blt);
+                    if (d < 0 || d > 1)
+                    {
+                        d = Math.Min(1, Math.Max(0, d));
+                    }
+                    
+                    int posiceBlokuVIntervalu = levyInterval + (int)((pravyInterval - levyInterval) * d);
                     posiceBlokuVIntervalu = posiceBlokuVIntervalu > rb.PocetBloku ? rb.PocetBloku : posiceBlokuVIntervalu;
                     CtiBlok(posiceBlokuVIntervalu);
                     if (b != null)
@@ -351,6 +355,7 @@ namespace Datove_struktury_2020.data_sem_c
                             else if (klic.CompareTo(pomocnaPromennaZaznamu.klic) == -1)
                             {
                                 pravyInterval = posiceBlokuVIntervalu - 1;
+                                br = b.VratPrvniZaznam().klic;
                                 jdiDoPrava = false;
                                 break;
                             }
@@ -358,6 +363,7 @@ namespace Datove_struktury_2020.data_sem_c
                         if (jdiDoPrava ==true)
                         {
                             levyInterval = posiceBlokuVIntervalu + 1;
+                            bl = b.VratPosledniZaznam().klic;
                         }
                     }
                 }
@@ -368,24 +374,25 @@ namespace Datove_struktury_2020.data_sem_c
             }
         }
 
-        private long TransformujKlic(K klic)
+        public long TransformujKlic(K klic)
         {
             if (klic != null)
             {
-                String s = klic.ToString().ToLower();
-                string abeceda = " _()aábcčdďeéěfghiíjklmnňoópqrřsštťuúůvwxyýzž";
-                long docasna = 0;
-                int mocnina = 0;
+                String s = klic.ToString();
+                string abeceda = ABECEDA;
+                double docasna = 0;
+                int maximalniDelkaKlice = 30;
 
-                for (int i = s.Length - 1; i >= 0; i--)
+                for (int i = 0; i < s.Length; i++)
                 {
                     int poziceVAbecede = abeceda.IndexOf(s[i]);
-                    docasna = docasna + (long)(Math.Pow(abeceda.Length, mocnina) * poziceVAbecede);
-                    mocnina++;
+                    double dv = (Math.Pow(10, maximalniDelkaKlice * 2));
+                    docasna = docasna + ((dv) * (double)poziceVAbecede);
+                    maximalniDelkaKlice--;
                 }
-                return docasna;
-            } 
-            else 
+                return (long)(Math.Log10(docasna) * 1000000.0);
+            }
+            else
             {
                 throw new Exception("Zadaný klíč nenalezen. Transformace na číslo neproběhla.");
             }

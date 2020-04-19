@@ -72,7 +72,6 @@ namespace Datove_struktury_2020.Data
             listDvouHodnot.Sort((a, b) => a.Key.ToLower().CompareTo(b.Key.ToLower()));
             // blokacni faktor nastaven na 5
             abstraktniSoubor.VybudujSoubor(listDvouHodnot,5);
-            // todo nacpi do AS
         }
 
         /// <summary>
