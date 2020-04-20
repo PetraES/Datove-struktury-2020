@@ -46,11 +46,19 @@ namespace Datove_struktury_2020.Data
             }
         }
 
+        /// <summary>
+        /// Metoda pro zjištění počtu projitých bloků při vyhledávání v souboru.
+        /// </summary>
+        /// <returns>Vrací list procházených bloků.</returns>
         public List<int> VratPocetProjitychBloku()
         {
             return abstraktniSoubor.VratSeznamProchazenychBloku();
         }
 
+        /// <summary>
+        /// Metoda pro zjištění celkového počtu bloků v souboru.
+        /// </summary>
+        /// <returns>Celkový počet bloků v souboru.</returns>
         public int VratPocetBlokuVSouboru()
         {
             return abstraktniSoubor.VratCelkovyPocetBlokuVSouboru();

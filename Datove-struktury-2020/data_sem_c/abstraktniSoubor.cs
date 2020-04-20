@@ -302,6 +302,11 @@ namespace Datove_struktury_2020.data_sem_c
             }
         }
 
+        /// <summary>
+        /// Interpolační vyhledávání.
+        /// </summary>
+        /// <param name="klic">Hledaný klíč v souboru.</param>
+        /// <returns>Záznam v bloku. </returns>
         private Z VyhledejInterpolacne(K klic)
         {
             int levyInterval = 1;
@@ -355,6 +360,7 @@ namespace Datove_struktury_2020.data_sem_c
                             else if (klic.CompareTo(pomocnaPromennaZaznamu.klic) == -1)
                             {
                                 pravyInterval = posiceBlokuVIntervalu - 1;
+
                                 br = b.VratPrvniZaznam().klic;
                                 jdiDoPrava = false;
                                 break;
@@ -373,7 +379,11 @@ namespace Datove_struktury_2020.data_sem_c
                 }
             }
         }
-
+        /// <summary>
+        /// Transformuje klíč na číselnou hodnotu.
+        /// </summary>
+        /// <param name="klic">Hledaný výraz typu K, klíč. </param>
+        /// <returns>Číselnou hodnotu transformovaného klíče.</returns>
         public long TransformujKlic(K klic)
         {
             if (klic != null)
@@ -398,6 +408,9 @@ namespace Datove_struktury_2020.data_sem_c
             }
         }
 
+        /// <summary>
+        /// Zástupná třída pro Uchování dat bloku. 
+        /// </summary>
         [Serializable]
         private class Blok
         {
@@ -475,6 +488,9 @@ namespace Datove_struktury_2020.data_sem_c
             }
         }
 
+        /// <summary>
+        /// Data ridiciho bloku.
+        /// </summary>
         [Serializable]
         private class RidiciBlok
         {
